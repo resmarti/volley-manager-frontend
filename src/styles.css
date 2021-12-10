@@ -50,6 +50,6 @@ a {
 .fixed-button {
     position: fixed;
     top: 75px;
-    right: 20px;
+    right: 0px;
     z-index: 100;
 }

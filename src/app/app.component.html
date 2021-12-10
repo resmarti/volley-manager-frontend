@@ -24,7 +24,14 @@
     </div>
 </nav>
 <div class="container" id="main-container">
-    <a (click)="onOpenModal('add')" class="btn btn-primary tooltips fixed-button" data-placement="top" data-original-title="ContectualMenu"><i class="fa fa-ellipsis-v"></i> </a>
+    <div class="btn-group dropleft fixed-button">
+        <button type="button" class="btn btn-primary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-ellipsis-v"></i> 
+        </button>
+        <div class="dropdown-menu">
+            <a (click)="onOpenModal('add')" class="dropdown-item tooltips" data-placement="top" data-original-title="ContectualMenu"><i class="fa fa-plus"></i> Person hinzufügen</a>
+        </div>
+    </div>
     <div class="row">
         <div *ngFor="let person of persons" class="col-md-6 col-xl-3">
             <div class="card m-b-30">
@@ -44,7 +51,7 @@
                 <div class="card-body">
                     <div class="float-right btn-group btn-group-sm">
                         <a (click)="onOpenModal('edit', person)" class="btn btn-primary tooltips" data-placement="top" data-original-title="Edit"><i class="fa fa-pencil"></i> </a>
-                        <a (click)="onOpenModal('delete', person)" class="btn btn-secondary tooltips" data-placement="top" data-original-title="Delete"><i class="fa fa-times"></i></a>
+                        <a (click)="onOpenModal('delete', person)" class="btn btn-danger tooltips" data-placement="top" data-original-title="Delete"><i class="fa fa-times"></i></a>
                     </div>
                 </div>
             </div>
