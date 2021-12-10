@@ -23,6 +23,7 @@ export class AppComponent implements OnInit {
     this.personService.getPersons().subscribe(
       (response: Person[]) => {
         this.persons = response;
+        console.log(this.persons);
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
