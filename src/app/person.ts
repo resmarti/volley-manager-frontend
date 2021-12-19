@@ -1,12 +1,16 @@
 export interface Person {
     id: number;
-    vorname: string;
-    nachname: string;
-    geburtsdatum: string;
-    email: string;
-    mobil: string;
-    spieler: boolean;
-    trainer: boolean;
-    admin: boolean;
+    firstName: string;
+    lastName: string;
+    dateOfBirth: string;
+    emailaddressPlayer: string;
+    mobileNumberPlayer: string;
+    street: string;
+    streetNb: number;
+    postalCode: number;
+    location: string;
+    isPlayer: boolean;
+    isTrainer: boolean;
+    isAdmin: boolean;
     imageUrl: string;
 }

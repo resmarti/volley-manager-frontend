@@ -77,10 +77,10 @@ export class AppComponent implements OnInit {
     console.log(key);
     const results: Person[] = [];
     for (const person of this.persons) {
-      if (person.vorname.toLowerCase().indexOf(key.toLowerCase()) !== -1
-      || person.nachname.toLowerCase().indexOf(key.toLowerCase()) !== -1
-      || person.email.toLowerCase().indexOf(key.toLowerCase()) !== -1
-      || person.mobil.toLowerCase().indexOf(key.toLowerCase()) !== -1) {
+      if (person.firstName.toLowerCase().indexOf(key.toLowerCase()) !== -1
+      || person.lastName.toLowerCase().indexOf(key.toLowerCase()) !== -1
+      || person.emailaddressPlayer.toLowerCase().indexOf(key.toLowerCase()) !== -1
+      || person.mobileNumberPlayer.toLowerCase().indexOf(key.toLowerCase()) !== -1) {
         results.push(person);
       }
     }
@@ -95,17 +95,17 @@ export class AppComponent implements OnInit {
     const button = document.createElement('button');
     button.type = 'button'
     button.style.display = 'none';
-    button.setAttribute('data-toggle', 'modal');
+    button.setAttribute('data-bs-toggle', 'modal');
     if(mode === 'add') {
-      button.setAttribute('data-target', '#addPersonModal')
+      button.setAttribute('data-bs-target', '#addPersonModal')
     }
     else if(mode === 'edit') {
       this.editPerson = person;
-      button.setAttribute('data-target', '#updatePersonModal')
+      button.setAttribute('data-bs-target', '#updatePersonModal')
     }
     else if(mode === 'delete') {
       this.deletePerson = person;
-      button.setAttribute('data-target', '#deletePersonModal')
+      button.setAttribute('data-bs-target', '#deletePersonModal')
     }
     container?.appendChild(button);
     button.click();

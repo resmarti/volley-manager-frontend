@@ -1,35 +1,35 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" style="color:white;">Volleyball-Manager</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarColor02">
-        <ul class="navbar-nav mr-auto nav-tabs">
-            <li class="nav-item active">
-                <a class="nav-link">Mitglieder<span class="sr-only">(current)</span></a>
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+                <a class="nav-link active">Mitglieder</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" (click)="onOpenModal('add')">Teams<span class="sr-only">(current)</span></a>
+                <a class="nav-link" (click)="onOpenModal('add')">Teams</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" (click)="onOpenModal('add')">Events<span class="sr-only">(current)</span></a>
+                <a class="nav-link" (click)="onOpenModal('add')">Events</a>
             </li>
             <!--<li class="nav-item active">
                 <a class="nav-link" (click)="onOpenModal('add')">Person hinzufügen <span class="sr-only">(current)</span></a>
             </li>-->
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <input type="search" (ngModelChange)="searchPerson(key.value)" #key="ngModel" ngModel name="key" id="searchName" class="form-control mr-sm-2" placeholder="Suche Personen..." required>
+        <form class="d-flex">
+            <input class="form-control me-2" type="search" (ngModelChange)="searchPerson(key.value)" #key="ngModel" ngModel name="key" id="searchName" placeholder="Suche Personen..." required>
         </form>
     </div>
 </nav>
 <div class="container" id="main-container">
     <div class="btn-group dropleft fixed-button">
-        <button type="button" class="btn btn-primary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fa fa-ellipsis-v"></i> 
+        <button type="button" class="btn btn-primary" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="bi bi-three-dots-vertical"></i> 
         </button>
         <div class="dropdown-menu">
-            <a (click)="onOpenModal('add')" class="dropdown-item tooltips" data-placement="top" data-original-title="ContectualMenu"><i class="fa fa-plus"></i> Person hinzufügen</a>
+            <a (click)="onOpenModal('add')" class="dropdown-item tooltips" data-placement="top" data-original-title="ContectualMenu"><i class="bi bi-plus-lg"></i> Person hinzufügen</a>
         </div>
     </div>
     <div class="row">
@@ -40,18 +40,52 @@
                         <a href=""><img src="assets/avatar.png" alt="" class="img-fluid rounded-circle w-60"></a>
                     </div>
                     <div class="col-6 card-title align-self-center mb-0">
-                        <h5>{{person?.vorname}}</h5>
-                        <p class="m-0">{{person?.geburtsdatum}}</p>
+                        <h5>{{person?.firstName}}<br/>{{person?.lastName}}</h5>
+                        <p class="m-0">{{ person?.dateOfBirth | date:'dd.MM.YYYY' }}</p>
                     </div>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><i class="fa fa-envelope float-right"></i>{{person?.email}}</li>
-                    <li class="list-group-item"><i class="fa fa-phone float-right"></i>Phone : {{person?.mobil}}</li>
+                    <li class="list-group-item">
+                        <div class="d-flex flex-row">
+                            <div class="p-1"><i class="bi bi-envelope float-right"></i></div>
+                            <div class="p-1">{{person?.emailaddressPlayer}}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="d-flex flex-row">
+                            <div class="p-1"><i class="bi bi-telephone float-right"></i></div>
+                            <div class="p-1">{{person?.mobileNumberPlayer}}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="d-flex flex-row">
+                            <div class="p-1"><i class="bi bi-house-door"></i></div>
+                            <div class="p-1">{{person?.street}} {{person?.streetNb}}<br/>{{person?.postalCode}} {{person?.location}}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="d-flex flex-row">
+                            <div class="p-1"><i *ngIf="person?.isPlayer; else showFalse" class="bi bi-check-circle text-success"></i>
+                            </div>
+                            <div class="p-1">Spieler/in</div>
+                        </div>
+                        <div class="d-flex flex-row">
+                            <div class="p-1"><i *ngIf="person?.isTrainer; else showFalse" class="bi bi-check-circle text-success"></i>
+                            </div>
+                            <div class="p-1">Trainer/in</div>
+                        </div>
+                        <div class="d-flex flex-row">
+                            <div class="p-1"><i *ngIf="person?.isAdmin; else showFalse" class="bi bi-check-circle text-success"></i>
+                            </div>
+                            <div class="p-1">Admin</div>
+                        </div>
+                    </li>
+                    <ng-template #showFalse><i class="bi bi-x-circle text-danger"></i></ng-template>
                 </ul>
                 <div class="card-body">
-                    <div class="float-right btn-group btn-group-sm">
-                        <a (click)="onOpenModal('edit', person)" class="btn btn-primary tooltips" data-placement="top" data-original-title="Edit"><i class="fa fa-pencil"></i> </a>
-                        <a (click)="onOpenModal('delete', person)" class="btn btn-danger tooltips" data-placement="top" data-original-title="Delete"><i class="fa fa-times"></i></a>
+                    <div class="float-end btn-group btn-group-sm">
+                        <a (click)="onOpenModal('edit', person)" class="btn btn-primary tooltips" data-placement="top" data-original-title="Edit"><i class="bi bi-pencil"></i> </a>
+                        <a (click)="onOpenModal('delete', person)" class="btn btn-danger tooltips" data-placement="top" data-original-title="Delete"><i class="bi bi-x-lg"></i></a>
                     </div>
                 </div>
             </div>
@@ -63,35 +97,96 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addPersonModalLabel">Add Person</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-            </button>
+                    <h5 class="modal-title" id="addPersonModalLabel">Person hinzufügen</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form #addForm="ngForm" (ngSubmit)="onAddPerson(addForm)">
-                        <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="text" ngModel name="name" class="form-control" id="name" placeholder="Name" required>
+                        <div class="form-group mb-3">
+                            <label for="firstName">Vorname</label>
+                            <input type="text" ngModel #firstName="ngModel" [class.is-valid]="firstName.valid && firstName.touched" [class.is-invalid]="firstName.invalid && (firstName.dirty || firstName.touched)" name="firstName" class="form-control" id="firstName" placeholder="Vorname"
+                                required>
+                            <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="invalid-feedback">
+                                <div *ngIf="firstName.errors?.['required']">
+                                    Der Vorname wird benötigt.
+                                </div>
+                            </div>
+                            <label for="lastName">Nachname</label>
+                            <input type="text" ngModel #lastName="ngModel" [class.is-valid]="lastName.valid && lastName.touched" [class.is-invalid]="lastName.invalid && (lastName.dirty || lastName.touched)" name="lastName" class="form-control" id="lastName" placeholder="Nachname"
+                                required>
+                            <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" class="invalid-feedback">
+                                <div *ngIf="lastName.errors?.['required']">
+                                    Der Nachname wird benötigt.
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="email">Email Address</label>
-                            <input type="email" ngModel name="email" class="form-control" id="email" placeholder="Email" required>
+                        <div class="form-group mb-3">
+                            <label for="dateOfBirth">Geburtsdatum</label>
+                            <input type="date" ngModel #dateOfBirth="ngModel" [class.is-valid]="dateOfBirth.valid && dateOfBirth.touched" [class.is-invalid]="dateOfBirth.invalid && (dateOfBirth.dirty || dateOfBirth.touched)" name="dateOfBirth" class="form-control" id="dateOfBirth"
+                                placeholder="Geburtsdatum" required>
                         </div>
-                        <div class="form-group">
-                            <label for="phone">Job title</label>
-                            <input type="text" ngModel name="jobTitle" class="form-control" id="jobTile" placeholder="Job title" required>
+                        <div class="form-group mb-3">
+                            <label for="emailaddressPlayer">Email Address</label>
+                            <input type="email" ngModel #email="ngModel" [class.is-valid]="email.valid && email.touched" [class.is-invalid]="email.invalid && (email.dirty || email.touched)" name="emailaddressPlayer" class="form-control" id="emailaddressPlayer" placeholder="name@gmail.com"
+                                required email>
+                            <div *ngIf="email.invalid && (email.dirty || email.touched)" class="invalid-feedback">
+                                <div *ngIf="email.errors?.['required']">
+                                    Die Emailadresse wird benötigt.
+                                </div>
+                                <div *ngIf="email.errors?.['email']">
+                                    Das ist keine gültige Emailadresse.
+                                </div>
+                            </div>
+                            <label for="mobileNumberPlayer">Telefonnummer (mobil)</label>
+                            <input type="tel" ngModel #mobileNumber="ngModel" [class.is-valid]="mobileNumber.valid && mobileNumber.touched" [class.is-invalid]="mobileNumber.invalid && (mobileNumber.dirty || mobileNumber.touched)" name="mobileNumberPlayer" class="form-control" id="mobileNumberPlayer"
+                                placeholder="Telefonnummer" pattern="\+\d{1,2} \d{2} \d{3} \d{2} \d{2}" required>
+                            <div *ngIf="mobileNumber.invalid && (mobileNumber.dirty || mobileNumber.touched)" class="invalid-feedback">
+                                <div *ngIf="mobileNumber.errors?.['required']">
+                                    Die Emailadresse wird benötigt.
+                                </div>
+                                <div *ngIf="mobileNumber.errors?.['pattern']">
+                                    Die Telefonummer sollte das Format "+41 78 888 88 88" haben.
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="phone">Phone</label>
-                            <input type="text" ngModel name="phone" class="form-control" id="phone" placeholder="Phone" required>
+                        <div class="form-group mb-3">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <label for="street">Strasse</label>
+                                    <input type="text" ngModel name="street" class="form-control" id="street" placeholder="Strasse" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="streetNb">Nummer</label>
+                                    <input type="number" ngModel name="streetNb" class="form-control" id="streetNb" placeholder="" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label for="postalCode">Strasse</label>
+                                    <input type="number" ngModel name="postalCode" class="form-control" id="postalCode" placeholder="PLZ" required>
+                                </div>
+                                <div class="col-md-8">
+                                    <label for="location">Ort</label>
+                                    <input type="text" ngModel name="location" class="form-control" id="location" placeholder="Ort" required>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="phone">Image URL</label>
-                            <input type="text" ngModel name="imageUrl" class="form-control" id="imageUrl" placeholder="Image URL" required>
+                        <div class="form-group mb-3">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" ngModel name="isPlayer" type="checkbox" role="switch" id="isPlayer">
+                                <label class="form-check-label" for="isPlayer">Spieler/in</label>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" ngModel name="isTrainer" type="checkbox" role="switch" id="isTrainer">
+                                <label class="form-check-label" for="isTrainer">Trainer/in</label>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" ngModel name="isAdmin" type="checkbox" role="switch" id="isAdmin">
+                                <label class="form-check-label" for="isAdmin">Administrator/in</label>
+                            </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" id="add-person-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" id="add-person-form" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary">Save changes</button>
                         </div>
                     </form>
@@ -105,37 +200,35 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="updatePersonModalLabel">Person {{editPerson?.vorname}} editieren</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-             <span aria-hidden="true">&times;</span>
-             </button>
+                    <h5 class="modal-title" id="updatePersonModalLabel">Person {{editPerson?.firstName}} editieren</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form #editForm="ngForm">
                         <div class="form-group">
                             <label for="name">Name</label>
-                            <input type="text" ngModel="{{editPerson?.vorname}}" name="name" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Name">
+                            <input type="text" ngModel="{{editPerson?.firstName}}" name="name" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Name">
                         </div>
                         <input type="hidden" ngModel="{{editPerson?.id}}" name="id" class="form-control" id="id" placeholder="Email">
-                        <input type="hidden" ngModel="{{editPerson?.geburtsdatum}}" name="userCode" class="form-control" id="userCode" placeholder="Email">
+                        <input type="hidden" ngModel="{{editPerson?.dateOfBirth}}" name="userCode" class="form-control" id="userCode" placeholder="Email">
                         <div class="form-group">
                             <label for="email">Email Address</label>
-                            <input type="email" ngModel="{{editPerson?.email}}" name="email" class="form-control" id="email" placeholder="Email">
+                            <input type="email" ngModel="{{editPerson?.emailaddressPlayer}}" name="email" class="form-control" id="email" placeholder="Email">
                         </div>
                         <div class="form-group">
                             <label for="phone">Job title</label>
-                            <input type="text" ngModel="{{editPerson?.email}}" name="jobTitle" class="form-control" id="jobTitle" placeholder="Job title">
+                            <input type="text" ngModel="{{editPerson?.emailaddressPlayer}}" name="jobTitle" class="form-control" id="jobTitle" placeholder="Job title">
                         </div>
                         <div class="form-group">
                             <label for="phone">Phone</label>
-                            <input type="text" ngModel="{{editPerson?.mobil}}" name="phone" class="form-control" id="phone" name="phone" placeholder="Phone">
+                            <input type="text" ngModel="{{editPerson?.mobileNumberPlayer}}" name="phone" class="form-control" id="phone" name="phone" placeholder="Phone">
                         </div>
                         <div class="form-group">
                             <label for="phone">Image URL</label>
                             <input type="text" ngModel="{{editPerson?.imageUrl}}" name="imageUrl" class="form-control" id="imageUrl" placeholder="Image URL">
                         </div>
                         <div class="modal-footer">
-                            <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">Close</button>
+                            <button type="button" id="" data-bs-dismiss="modal" class="btn btn-secondary">Close</button>
                             <button (click)="onUpdatePerson(editForm.value)" data-dismiss="modal" class="btn btn-primary">Save changes</button>
                         </div>
                     </form>
@@ -150,14 +243,12 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="deleteModelLabel">Person löschen</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-             <span aria-hidden="true">&times;</span>
-             </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>Bist du sicher, dass du die Person {{deletePerson?.vorname}} {{deletePerson?.nachname}} löschen möchtest?</p>
+                    <p>Bist du sicher, dass du die Person {{deletePerson?.firstName}} {{deletePerson?.lastName}} löschen möchtest?</p>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
                         <button (click)="onDeletePerson(deletePerson!.id)" class="btn btn-danger" data-dismiss="modal">Yes</button>
                     </div>
                 </div>
