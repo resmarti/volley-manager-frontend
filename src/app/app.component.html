@@ -36,10 +36,13 @@
         <div *ngFor="let person of persons" class="col-md-6 col-xl-3">
             <div class="card m-b-30">
                 <div class="card-body row">
-                    <div class="col-6">
-                        <a href=""><img src="assets/avatar.png" alt="" class="img-fluid rounded-circle w-60"></a>
+                    <div class="col-4">
+                        <img src="assets/avatar.png" alt="" class="img-fluid rounded-circle w-60">
+                        <i *ngIf="person?.gender=='m'" class="bi bi-gender-male"></i>
+                        <i *ngIf="person?.gender=='f'" class="bi bi-gender-female"></i>
+                        <i *ngIf="person?.gender=='d'" class="bi bi-gender-ambiguous"></i>
                     </div>
-                    <div class="col-6 card-title align-self-center mb-0">
+                    <div class="col-8 card-title align-self-center mb-0">
                         <h5>{{person?.firstName}}<br/>{{person?.lastName}}</h5>
                         <p class="m-0">{{ person?.dateOfBirth | date:'dd.MM.YYYY' }}</p>
                     </div>
@@ -137,6 +140,12 @@
                                     Das ist keine gültige Emailadresse.
                                 </div>
                             </div>
+                            <label for="gender">Geschlecht</label>
+                            <select class="form-select" ngModel #gender="ngModel" [class.is-valid]="gender.valid && gender.touched" [class.is-invalid]="gender.invalid && (gender.dirty || gender.touched)" name="gender" class="form-control" id="gender" aria-label="Geschlecht" required>
+                                <option value="m">männlich</option>
+                                <option value="f">weiblich</option>
+                                <option value="d">divers</option>
+                            </select>
                             <label for="mobileNumberPlayer">Telefonnummer (mobil)</label>
                             <input type="tel" ngModel #mobileNumber="ngModel" [class.is-valid]="mobileNumber.valid && mobileNumber.touched" [class.is-invalid]="mobileNumber.invalid && (mobileNumber.dirty || mobileNumber.touched)" name="mobileNumberPlayer" class="form-control" id="mobileNumberPlayer"
                                 placeholder="Telefonnummer" pattern="\+\d{1,2} \d{2} \d{3} \d{2} \d{2}" required>

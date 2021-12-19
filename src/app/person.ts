@@ -3,6 +3,7 @@ export interface Person {
     firstName: string;
     lastName: string;
     dateOfBirth: string;
+    gender: string;
     emailaddressPlayer: string;
     mobileNumberPlayer: string;
     street: string;
