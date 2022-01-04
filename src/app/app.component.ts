@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Person } from './person';
 import { PersonService } from './person.service';
 import { NgForm } from '@angular/forms';
+import { ViewChild, ElementRef} from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -13,6 +14,7 @@ export class AppComponent implements OnInit {
   public persons: Person[];
   public editPerson: Person | undefined;
   public deletePerson: Person | undefined;
+  @ViewChild('closeDeleteModal') closeDeleteModal: ElementRef | undefined;
 
   constructor(private personService: PersonService){
     this.persons = [];
@@ -35,7 +37,6 @@ export class AppComponent implements OnInit {
   }
 
   public onAddPerson(addForm: NgForm): void {
-    //document.getElementById('add-person-form').click();
     this.personService.addPerson(addForm.value).subscribe(
       (response: Person) => {
         console.log(response);
@@ -71,6 +72,9 @@ export class AppComponent implements OnInit {
         alert(error.message);
       }
     );
+    if (this.closeDeleteModal) {
+      this.closeDeleteModal.nativeElement.click();
+    }
   }
 
   public searchPerson(key: string): void {
