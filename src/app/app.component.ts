@@ -2,32 +2,49 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Person } from './person';
 import { PersonService } from './person.service';
-import { NgForm } from '@angular/forms';
-import { ViewChild, ElementRef} from '@angular/core';
+import { trigger, animate, transition, style } from '@angular/animations';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  animations: [
+    trigger('fade', [
+      transition('void => active', [ // using status here for transition
+        style({ opacity: 0 }),
+        animate(1000, style({ opacity: 1 }))
+      ]),
+      transition('* => void', [
+        animate(1000, style({ opacity: 0 }))
+      ])
+    ])
+  ]
 })
 export class AppComponent implements OnInit {
   public persons: Person[];
+  public fallbackPersons: Person[];
   public editPerson: Person | undefined;
   public deletePerson: Person | undefined;
-  @ViewChild('closeDeleteModal') closeDeleteModal: ElementRef | undefined;
+  public alert: any | undefined;
+  public alertType: any | undefined;
+  public searchLength: number;
 
   constructor(private personService: PersonService){
     this.persons = [];
+    this.fallbackPersons =[];
+    this.searchLength = 0;
   }
 
   ngOnInit() {
     this.getPersons();
+    console.log(this.alert);
   } 
 
   public getPersons(): void {
     this.personService.getPersons().subscribe(
       (response: Person[]) => {
         this.persons = response;
+        this.fallbackPersons = this.persons;
         console.log(this.persons);
       },
       (error: HttpErrorResponse) => {
@@ -36,53 +53,17 @@ export class AppComponent implements OnInit {
     );
   }
 
-  public onAddPerson(addForm: NgForm): void {
-    this.personService.addPerson(addForm.value).subscribe(
-      (response: Person) => {
-        console.log(response);
-        this.getPersons();
-        addForm.reset();
-      },
-      (error: HttpErrorResponse) => {
-        alert(error.message);
-        addForm.reset();
-      }
-    );
-  }
-
-  public onUpdatePerson(person: Person): void {
-    this.personService.updatePerson(person).subscribe(
-      (response: Person) => {
-        console.log(response);
-        this.getPersons();
-      },
-      (error: HttpErrorResponse) => {
-        alert(error.message);
-      }
-    );
-  }
-
-  public onDeletePerson(personId: number): void {
-    this.personService.deletePerson(personId).subscribe(
-      (response: void) => {
-        console.log(response);
-        this.getPersons();
-      },
-      (error: HttpErrorResponse) => {
-        alert(error.message);
-      }
-    );
-    if (this.closeDeleteModal) {
-      this.closeDeleteModal.nativeElement.click();
-    }
-  }
-
   public searchPerson(key: string): void {
     console.log(key);
+    if (this.searchLength>key.length) {
+      this.persons=this.fallbackPersons;
+    }
     const results: Person[] = [];
     for (const person of this.persons) {
       if (person.firstName.toLowerCase().indexOf(key.toLowerCase()) !== -1
       || person.lastName.toLowerCase().indexOf(key.toLowerCase()) !== -1
+      || person.street.toLowerCase().indexOf(key.toLowerCase()) !== -1
+      || person.location.toLowerCase().indexOf(key.toLowerCase()) !== -1
       || person.emailaddressPlayer.toLowerCase().indexOf(key.toLowerCase()) !== -1
       || person.mobileNumberPlayer.toLowerCase().indexOf(key.toLowerCase()) !== -1) {
         results.push(person);
@@ -91,7 +72,16 @@ export class AppComponent implements OnInit {
     this.persons = results;
     if (results.length === 0 || !key) {
       this.getPersons();
+    }; 
+    if (results.length ===0) {
+      this.alert="Die Suche hat keine Übereinstimmung gefunden!"
+      this.alertType="warning"
     }
+    else {
+      this.alert=null;
+    }
+    this.searchLength = key.length;
+    console.log(this.searchLength)
   }
 
   public onOpenModal(mode: string, person?: Person): void {

@@ -1,0 +1,13 @@
+<div class="backdrop"></div>
+<div class="alert-box">
+    {{error}}
+    <div class="alert-box-actions text-right">
+        <button type="button" class='btn btn-primary' (click)="onCloseClick()">Close</button>
+    </div>
+</div>
+<div class="alert alert-success d-flex align-items-center" role="alert">
+    <i class="bi bi-check-circle-fill p-1"></i>
+    <div>
+        {{error}}
+    </div>
+</div>

@@ -1,0 +1,127 @@
+<div class="modal fade" id="addPersonModal" tabindex="-1" role="dialog" aria-labelledby="addPersonModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addPersonModalLabel">Person hinzufügen</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!--<form #addForm="ngForm" (ngSubmit)="onAddPerson(addForm)">-->
+                <form #addForm="ngForm" (ngSubmit)="onAddPerson(addForm)">
+                    <div class="form-group mb-3">
+                        <label for="firstName">Vorname</label>
+                        <input type="text" ngModel #firstName="ngModel" [class.is-valid]="firstName.valid && firstName.touched" [class.is-invalid]="firstName.invalid && (firstName.dirty || firstName.touched)" name="firstName" class="form-control" id="firstName" placeholder="Vorname"
+                            required>
+                        <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="invalid-feedback">
+                            <div *ngIf="firstName.errors?.['required']">
+                                Der Vorname wird benötigt.
+                            </div>
+                        </div>
+                        <label for="lastName">Nachname</label>
+                        <input type="text" ngModel #lastName="ngModel" [class.is-valid]="lastName.valid && lastName.touched" [class.is-invalid]="lastName.invalid && (lastName.dirty || lastName.touched)" name="lastName" class="form-control" id="lastName" placeholder="Nachname"
+                            required>
+                        <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" class="invalid-feedback">
+                            <div *ngIf="lastName.errors?.['required']">
+                                Der Nachname wird benötigt.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="dateOfBirth">Geburtsdatum</label>
+                        <input type="date" ngModel #dateOfBirth="ngModel" [class.is-valid]="dateOfBirth.valid && dateOfBirth.touched" [class.is-invalid]="dateOfBirth.invalid && (dateOfBirth.dirty || dateOfBirth.touched)" name="dateOfBirth" class="form-control" id="dateOfBirth"
+                            placeholder="Geburtsdatum" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="emailaddressPlayer">Email Address</label>
+                        <input type="email" ngModel #email="ngModel" [class.is-valid]="email.valid && email.touched" [class.is-invalid]="email.invalid && (email.dirty || email.touched)" name="emailaddressPlayer" class="form-control" id="emailaddressPlayer" placeholder="name@gmail.com"
+                            required email>
+                        <div *ngIf="email.invalid && (email.dirty || email.touched)" class="invalid-feedback">
+                            <div *ngIf="email.errors?.['required']">
+                                Die Emailadresse wird benötigt.
+                            </div>
+                            <div *ngIf="email.errors?.['email']">
+                                Das ist keine gültige Emailadresse.
+                            </div>
+                        </div>
+                        <label for="gender">Geschlecht</label>
+                        <select class="form-select" ngModel #gender="ngModel" [class.is-valid]="gender.valid && gender.touched" [class.is-invalid]="gender.invalid && (gender.dirty || gender.touched)" name="gender" class="form-control" id="gender" aria-label="Geschlecht" required>
+                            <option value="m">männlich</option>
+                            <option value="f">weiblich</option>
+                            <option value="d">divers</option>
+                        </select>
+                        <label for="mobileNumberPlayer">Telefonnummer (mobil)</label>
+                        <input type="tel" ngModel #mobileNumber="ngModel" [class.is-valid]="mobileNumber.valid && mobileNumber.touched" [class.is-invalid]="mobileNumber.invalid && (mobileNumber.dirty || mobileNumber.touched)" name="mobileNumberPlayer" class="form-control" id="mobileNumberPlayer"
+                            placeholder="Telefonnummer" pattern="\+\d{1,2} \d{2} \d{3} \d{2} \d{2}" required>
+                        <div *ngIf="mobileNumber.invalid && (mobileNumber.dirty || mobileNumber.touched)" class="invalid-feedback">
+                            <div *ngIf="mobileNumber.errors?.['required']">
+                                Die Telefonnummer wird benötigt.
+                            </div>
+                            <div *ngIf="mobileNumber.errors?.['pattern']">
+                                Die Telefonummer sollte das Format "+41 78 888 88 88" haben.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <label for="street">Strasse</label>
+                                <input type="text" ngModel #street="ngModel" name="street" [class.is-valid]="street.valid && street.touched" [class.is-invalid]="street.invalid && (street.dirty || street.touched)" class="form-control" id="street" placeholder="Strasse" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="streetNb">Nummer</label>
+                                <input type="text" ngModel #streetNb="ngModel" name="streetNb" [class.is-valid]="streetNb.valid && streetNb.touched" [class.is-invalid]="streetNb.invalid && (streetNb.dirty || streetNb.touched)" class="form-control" id="streetNb" placeholder="" required>
+                            </div>
+                            <div *ngIf="(street.invalid && (street.dirty || street.touched)) || (streetNb.invalid && (streetNb.dirty || streetNb.touched))" class="invalid-feedback">
+                                <div *ngIf="street.errors?.['required'] || streetNb.errors?.['required']">
+                                    Die Strasse und die Hausnummer wird benötig.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="postalCode">PLZ</label>
+                                <input type="number" ngModel #postalCode="ngModel" name="postalCode" [class.is-valid]="postalCode.valid && postalCode.touched" [class.is-invalid]="postalCode.invalid && (postalCode.dirty || postalCode.touched)" class="form-control" id="postalCode" placeholder="PLZ"
+                                    required pattern="\d{4}">
+                                <div *ngIf="postalCode.invalid && (postalCode.dirty || postalCode.touched)" class="invalid-feedback">
+                                    <div *ngIf="postalCode.errors?.['required']">
+                                        Die Postleitzahl wird benötigt.
+                                    </div>
+                                    <div *ngIf="postalCode.errors?.['pattern']">
+                                        Die Postleitzahl sollte vierstellig sein.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <label for="location">Ort</label>
+                                <input type="text" ngModel #location="ngModel" name="location" [class.is-valid]="location.valid && location.touched" [class.is-invalid]="location.invalid && (location.dirty || location.touched)" class="form-control" id="location" placeholder="Ort" required>
+                            </div>
+                            <div *ngIf="location.invalid && (location.dirty || location.touched)" class="invalid-feedback">
+                                <div *ngIf="location.errors?.['required']">
+                                    Der Ort wird benötigt.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" ngModel name="isPlayer" type="checkbox" role="switch" id="isPlayer">
+                            <label class="form-check-label" for="isPlayer">Spieler/in</label>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" ngModel name="isTrainer" type="checkbox" role="switch" id="isTrainer">
+                            <label class="form-check-label" for="isTrainer">Trainer/in</label>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" ngModel name="isAdmin" type="checkbox" role="switch" id="isAdmin">
+                            <label class="form-check-label" for="isAdmin">Administrator/in</label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="add-person-form" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary">Speichern</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
