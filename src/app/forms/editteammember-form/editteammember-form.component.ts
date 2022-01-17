@@ -1,14 +1,13 @@
 import { Component, Input, Output, OnInit, EventEmitter} from '@angular/core';
-import { Person } from 'src/app/person';
-import { PersonService } from '../../person.service';
+import { Teammember } from 'src/app/interfaces/teammember';
+import { TeammemberService } from '../../services/teammember.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { trigger, animate, transition, style } from '@angular/animations';
-import { ThisReceiver } from '@angular/compiler';
 
 @Component({
-  selector: 'editperson-form',
-  templateUrl: './editperson-form.component.html',
-  styleUrls: ['./editperson-form.component.css'],
+  selector: 'editteammember-form',
+  templateUrl: './editteammember-form.component.html',
+  styleUrls: ['./editteammember-form.component.css'],
   animations: [
     trigger('fade', [
       transition('void => active', [ // using status here for transition
@@ -21,23 +20,23 @@ import { ThisReceiver } from '@angular/compiler';
     ])
   ]
 })
-export class EditPersonFormComponent implements OnInit {
-  @Input() editPerson: Person | undefined;
-  @Output("getPersons") getPersons: EventEmitter<any> = new EventEmitter();
+export class EditTeammemberFormComponent implements OnInit {
+  @Input() editTeammember: Teammember | undefined;
+  @Output("getTeammembers") getTeammembers: EventEmitter<any> = new EventEmitter();
 
   public alert: any | undefined;
   public alertType: any | undefined;
 
-  constructor(private personService: PersonService) { }
+  constructor(private teammemberService: TeammemberService) { }
 
   ngOnInit(): void {
   }
 
-  public onUpdatePerson(person: Person): void {
-    this.personService.updatePerson(person).subscribe(
-      (response: Person) => {
+  public onUpdateTeammember(teammember: Teammember): void {
+    this.teammemberService.updateTeammember(teammember).subscribe(
+      (response: Teammember) => {
         console.log(response);
-        this.getPersons.emit();
+        this.getTeammembers.emit();
         this.alert="erfolgreich gespeichert";
         this.alertType="success";
       },

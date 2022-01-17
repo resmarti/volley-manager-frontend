@@ -9,15 +9,22 @@ import { RouterModule, Routes } from '@angular/router'
 
 import { AppComponent } from './app.component';
 
-import { EditPersonFormComponent } from './forms/editperson-form/editperson-form.component';
-import { AddPersonFormComponent } from './forms/addperson-form/addperson-form.component';
-import { DeletePersonFormComponent } from './forms/deleteperson-form/deleteperson-form.component';
 import { TeamsComponent } from './teams/teams.component';
-import { TeamMembersComponent } from './team-members/team-members.component';
+import { TeammembersComponent } from './teammembers/teammembers.component';
+
+import { EditTeammemberFormComponent } from './forms/editteammember-form/editteammember-form.component';
+import { AddTeammemberFormComponent } from './forms/addteammember-form/addteammember-form.component';
+import { DeleteTeammemberFormComponent } from './forms/deleteteammember-form/deleteteammember-form.component';
+
+import { EditTeamFormComponent } from './forms/editteam-form/editteam-form.component';
+import { AddTeamFormComponent } from './forms/addteam-form/addteam-form.component';
+import { DeleteTeamFormComponent } from './forms/deleteteam-form/deleteteam-form.component';
+
+import { DeleteTeammemberFromTeamFormComponent } from './forms/deleteteammemberfromteam-form/deleteteammemberfromteam-form.component';
 
 const routes: Routes = [
   {path: 'teams', component: TeamsComponent},
-  {path: 'teammembers', component: TeamMembersComponent},
+  {path: 'teammembers', component: TeammembersComponent},
   {path: '', redirectTo: '/teammembers', pathMatch: 'full'}
 ]
 
@@ -26,11 +33,15 @@ const routes: Routes = [
     AppComponent,
     AlertModalComponent,
     AlertComponent,
-    AddPersonFormComponent,
-    EditPersonFormComponent,
-    DeletePersonFormComponent,
     TeamsComponent,
-    TeamMembersComponent
+    TeammembersComponent,
+    EditTeammemberFormComponent,
+    AddTeammemberFormComponent,
+    DeleteTeammemberFormComponent,
+    AddTeamFormComponent,
+    DeleteTeamFormComponent,
+    EditTeamFormComponent,
+    DeleteTeammemberFromTeamFormComponent
   ],
   imports: [
     BrowserModule,

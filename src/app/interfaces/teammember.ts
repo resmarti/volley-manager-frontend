@@ -1,17 +1,16 @@
-export interface Person {
+export interface Teammember {
     id: number;
     firstName: string;
     lastName: string;
     dateOfBirth: string;
     gender: string;
-    emailaddressPlayer: string;
-    mobileNumberPlayer: string;
+    email: string;
+    mobile: string;
     street: string;
     streetNb: number;
     postalCode: number;
     location: string;
     isPlayer: boolean;
-    isTrainer: boolean;
+    isCoach: boolean;
     isAdmin: boolean;
-    imageUrl: string;
 }

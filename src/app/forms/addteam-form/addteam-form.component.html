@@ -1,0 +1,41 @@
+<div class="modal fade" id="addTeamModal" tabindex="-1" role="dialog" aria-labelledby="addTeamModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addTeamModalLabel">Team hinzufügen</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form #addForm="ngForm" (ngSubmit)="onAddTeam(addForm)">
+                    <div class="form-group mb-3">
+                        <label for="teamName">Teamname</label>
+                        <input type="text" ngModel #teamName="ngModel" [class.is-valid]="teamName.valid && teamName.touched" [class.is-invalid]="teamName.invalid && (teamName.dirty || teamName.touched)" name="teamName" class="form-control" id="teamName" placeholder="Teamname"
+                            required>
+                        <div *ngIf="teamName.invalid && (teamName.dirty || teamName.touched)" class="invalid-feedback">
+                            <div *ngIf="teamName.errors?.['required']">
+                                Der Teamname wird benötigt.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="maxAge">Maximalalter in Jahren</label>
+                        <input type="number" ngModel #maxAge="ngModel" name="maxAge" [class.is-valid]="maxAge.valid && maxAge.touched" [class.is-invalid]="maxAge.invalid && (maxAge.dirty || maxAge.touched)" class="form-control" id="maxAge" placeholder="Maximalalter" required
+                            pattern="\d{1,2}">
+                        <div *ngIf="maxAge.invalid && (maxAge.dirty || maxAge.touched)" class="invalid-feedback">
+                            <div *ngIf="maxAge.errors?.['required']">
+                                Das Maximalalter wird benötigt. Falls es kein Maximalalter gibt, wählen Sie 99.
+                            </div>
+                            <div *ngIf="maxAge.errors?.['pattern']">
+                                Das Maximalalter sollte ein- oder zweistellig sein.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="add-team-form" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary">Speichern</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

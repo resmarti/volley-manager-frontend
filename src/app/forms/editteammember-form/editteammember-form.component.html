@@ -1,8 +1,8 @@
-<div class="modal fade" id="updatePersonModal" tabindex="-1" role="dialog" aria-labelledby="personEditModalLabel" aria-hidden="true">
+<div class="modal fade" id="updateTeammemberModal" tabindex="-1" role="dialog" aria-labelledby="TeammemberEditModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="updatePersonModalLabel">Person {{editPerson?.firstName}} editieren</h5>
+                <h5 class="modal-title" id="updateTeammemberModalLabel">Teammember {{editTeammember?.firstName}} editieren</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -10,7 +10,7 @@
                 <form #editForm="ngForm">
                     <div class="form-group mb-3">
                         <label for="firstName">Vorname</label>
-                        <input type="text" ngModel="{{editPerson?.firstName}}" #editfirstName="ngModel" [class.is-valid]="editfirstName.valid && editfirstName.touched" [class.is-invalid]="editfirstName.invalid && (editfirstName.dirty || editfirstName.touched)" name="firstName"
+                        <input type="text" ngModel="{{editTeammember?.firstName}}" #editfirstName="ngModel" [class.is-valid]="editfirstName.valid && editfirstName.touched" [class.is-invalid]="editfirstName.invalid && (editfirstName.dirty || editfirstName.touched)" name="firstName"
                             class="form-control" id="firstName" placeholder="Vorname" required>
                         <div *ngIf="editfirstName.invalid && (editfirstName.dirty || editfirstName.touched)" class="invalid-feedback">
                             <div *ngIf="editfirstName.errors?.['required']">
@@ -18,7 +18,7 @@
                             </div>
                         </div>
                         <label for="lastName">Nachname</label>
-                        <input type="text" ngModel="{{editPerson?.lastName}}" #editlastName="ngModel" [class.is-valid]="editlastName.valid && editlastName.touched" [class.is-invalid]="editlastName.invalid && (editlastName.dirty || editlastName.touched)" name="lastName" class="form-control"
+                        <input type="text" ngModel="{{editTeammember?.lastName}}" #editlastName="ngModel" [class.is-valid]="editlastName.valid && editlastName.touched" [class.is-invalid]="editlastName.invalid && (editlastName.dirty || editlastName.touched)" name="lastName" class="form-control"
                             id="lastName" placeholder="Nachname" required>
                         <div *ngIf="editlastName.invalid && (editlastName.dirty || editlastName.touched)" class="invalid-feedback">
                             <div *ngIf="editlastName.errors?.['required']">
@@ -28,13 +28,13 @@
                     </div>
                     <div class="form-group mb-3">
                         <label for="dateOfBirth">Geburtsdatum</label>
-                        <input type="date" ngModel="{{editPerson?.dateOfBirth}}" #editdateOfBirth="ngModel" [class.is-valid]="editdateOfBirth.valid && editdateOfBirth.touched" [class.is-invalid]="editdateOfBirth.invalid && (editdateOfBirth.dirty || editdateOfBirth.touched)"
+                        <input type="date" ngModel="{{editTeammember?.dateOfBirth}}" #editdateOfBirth="ngModel" [class.is-valid]="editdateOfBirth.valid && editdateOfBirth.touched" [class.is-invalid]="editdateOfBirth.invalid && (editdateOfBirth.dirty || editdateOfBirth.touched)"
                             name="dateOfBirth" class="form-control" id="dateOfBirth" placeholder="Geburtsdatum" required>
                     </div>
                     <div class="form-group mb-3">
-                        <label for="emailaddressPlayer">Email Address</label>
-                        <input type="email" ngModel="{{editPerson?.emailaddressPlayer}}" #editemail="ngModel" [class.is-valid]="editemail.valid && editemail.touched" [class.is-invalid]="editemail.invalid && (editemail.dirty || editemail.touched)" name="emailaddressPlayer" class="form-control"
-                            id="emailaddressPlayer" placeholder="name@gmail.com" required email>
+                        <label for="email">Email Address</label>
+                        <input type="email" ngModel="{{editTeammember?.email}}" #editemail="ngModel" [class.is-valid]="editemail.valid && editemail.touched" [class.is-invalid]="editemail.invalid && (editemail.dirty || editemail.touched)" name="email" class="form-control" id="email"
+                            placeholder="name@gmail.com" required email>
                         <div *ngIf="editemail.invalid && (editemail.dirty || editemail.touched)" class="invalid-feedback">
                             <div *ngIf="editemail.errors?.['required']">
                                 Die Emailadresse wird benötigt.
@@ -44,20 +44,20 @@
                             </div>
                         </div>
                         <label for="gender">Geschlecht</label>
-                        <select class="form-select" ngModel="{{editPerson?.gender}}" ngModel #editgender="ngModel" [class.is-valid]="editgender.valid && editgender.touched" [class.is-invalid]="editgender.invalid && (editgender.dirty || editgender.touched)" name="gender" class="form-control"
-                            id="gender" aria-label="Geschlecht" required>
+                        <select class="form-select" ngModel="{{editTeammember?.gender}}" ngModel #editgender="ngModel" [class.is-valid]="editgender.valid && editgender.touched" [class.is-invalid]="editgender.invalid && (editgender.dirty || editgender.touched)" name="gender"
+                            class="form-control" id="gender" aria-label="Geschlecht" required>
                                 <option value="m">männlich</option>
                                 <option value="f">weiblich</option>
                                 <option value="d">divers</option>
                             </select>
-                        <label for="mobileNumberPlayer">Telefonnummer (mobil)</label>
-                        <input type="tel" ngModel="{{editPerson?.mobileNumberPlayer}}" #editmobileNumber="ngModel" [class.is-valid]="editmobileNumber.valid && editmobileNumber.touched" [class.is-invalid]="editmobileNumber.invalid && (editmobileNumber.dirty || editmobileNumber.touched)"
-                            name="mobileNumberPlayer" class="form-control" id="mobileNumberPlayer" placeholder="Telefonnummer" pattern="\+\d{1,2} \d{2} \d{3} \d{2} \d{2}" required>
-                        <div *ngIf="editmobileNumber.invalid && (editmobileNumber.dirty || editmobileNumber.touched)" class="invalid-feedback">
-                            <div *ngIf="editmobileNumber.errors?.['required']">
+                        <label for="mobile">Telefonnummer (mobil)</label>
+                        <input type="tel" ngModel="{{editTeammember?.mobile}}" #editmobile="ngModel" [class.is-valid]="editmobile.valid && editmobile.touched" [class.is-invalid]="editmobile.invalid && (editmobile.dirty || editmobile.touched)" name="mobile" class="form-control"
+                            id="mobile" placeholder="Telefonnummer" pattern="\+\d{1,2} \d{2} \d{3} \d{2} \d{2}" required>
+                        <div *ngIf="editmobile.invalid && (editmobile.dirty || editmobile.touched)" class="invalid-feedback">
+                            <div *ngIf="editmobile.errors?.['required']">
                                 Die Telefonnummer wird benötigt.
                             </div>
-                            <div *ngIf="editmobileNumber.errors?.['pattern']">
+                            <div *ngIf="editmobile.errors?.['pattern']">
                                 Die Telefonummer sollte das Format "+41 78 888 88 88" haben.
                             </div>
                         </div>
@@ -66,12 +66,12 @@
                         <div class="row">
                             <div class="col-md-8">
                                 <label for="street">Strasse</label>
-                                <input type="text" ngModel="{{editPerson?.street}}" #editstreet="ngModel" name="street" [class.is-valid]="editstreet.valid && editstreet.touched" [class.is-invalid]="editstreet.invalid && (editstreet.dirty || editstreet.touched)" class="form-control"
+                                <input type="text" ngModel="{{editTeammember?.street}}" #editstreet="ngModel" name="street" [class.is-valid]="editstreet.valid && editstreet.touched" [class.is-invalid]="editstreet.invalid && (editstreet.dirty || editstreet.touched)" class="form-control"
                                     id="street" placeholder="Strasse" required>
                             </div>
                             <div class="col-md-4">
                                 <label for="streetNb">Nummer</label>
-                                <input type="text" ngModel="{{editPerson?.streetNb}}" #editstreetNb="ngModel" name="streetNb" [class.is-valid]="editstreetNb.valid && editstreetNb.touched" [class.is-invalid]="editstreetNb.invalid && (editstreetNb.dirty || editstreetNb.touched)" class="form-control"
+                                <input type="text" ngModel="{{editTeammember?.streetNb}}" #editstreetNb="ngModel" name="streetNb" [class.is-valid]="editstreetNb.valid && editstreetNb.touched" [class.is-invalid]="editstreetNb.invalid && (editstreetNb.dirty || editstreetNb.touched)" class="form-control"
                                     id="streetNb" placeholder="" required>
                             </div>
                             <div *ngIf="(editstreet.invalid && (editstreet.dirty || editstreet.touched)) || (editstreetNb.invalid && (editstreetNb.dirty || editstreetNb.touched))" class="invalid-feedback">
@@ -83,7 +83,7 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <label for="postalCode">PLZ</label>
-                                <input type="number" ngModel="{{editPerson?.postalCode}}" #editpostalCode="ngModel" name="postalCode" [class.is-valid]="editpostalCode.valid && editpostalCode.touched" [class.is-invalid]="editpostalCode.invalid && (editpostalCode.dirty || editpostalCode.touched)"
+                                <input type="number" ngModel="{{editTeammember?.postalCode}}" #editpostalCode="ngModel" name="postalCode" [class.is-valid]="editpostalCode.valid && editpostalCode.touched" [class.is-invalid]="editpostalCode.invalid && (editpostalCode.dirty || editpostalCode.touched)"
                                     class="form-control" id="postalCode" placeholder="PLZ" required pattern="\d{4}">
                                 <div *ngIf="editpostalCode.invalid && (editpostalCode.dirty || editpostalCode.touched)" class="invalid-feedback">
                                     <div *ngIf="editpostalCode.errors?.['required']">
@@ -96,7 +96,7 @@
                             </div>
                             <div class="col-md-8">
                                 <label for="location">Ort</label>
-                                <input type="text" ngModel="{{editPerson?.location}}" #editlocation="ngModel" name="location" [class.is-valid]="editlocation.valid && editlocation.touched" [class.is-invalid]="editlocation.invalid && (editlocation.dirty || editlocation.touched)" class="form-control"
+                                <input type="text" ngModel="{{editTeammember?.location}}" #editlocation="ngModel" name="location" [class.is-valid]="editlocation.valid && editlocation.touched" [class.is-invalid]="editlocation.invalid && (editlocation.dirty || editlocation.touched)" class="form-control"
                                     id="location" placeholder="Ort" required>
                             </div>
                             <div *ngIf="editlocation.invalid && (editlocation.dirty || editlocation.touched)" class="invalid-feedback">
@@ -108,23 +108,19 @@
                     </div>
                     <div class="form-group mb-3">
                         <div class="form-check form-switch">
-                            <input class="form-check-input" [ngModel]="editPerson?.isPlayer" name="isPlayer" type="checkbox" role="switch" id="isPlayer">
+                            <input class="form-check-input" [ngModel]="editTeammember?.isPlayer" name="isPlayer" type="checkbox" role="switch" id="isPlayer">
                             <label class="form-check-label" for="isPlayer">Spieler/in</label>
                         </div>
                         <div class="form-check form-switch">
-                            <input class="form-check-input" [ngModel]="editPerson?.isTrainer" name="isTrainer" type="checkbox" role="switch" id="isTrainer">
-                            <label class="form-check-label" for="isTrainer">Trainer/in</label>
-                        </div>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" [ngModel]="editPerson?.isAdmin" name="isAdmin" type="checkbox" role="switch" id="isAdmin">
-                            <label class="form-check-label" for="isAdmin">Administrator/in</label>
+                            <input class="form-check-input" [ngModel]="editTeammember?.isCoach" name="isCoach" type="checkbox" role="switch" id="isCoach">
+                            <label class="form-check-label" for="isCoach">Coach</label>
                         </div>
                     </div>
-                    <input type="hidden" ngModel="{{editPerson?.id}}" name="id" class="form-control" id="id" placeholder="">
+                    <input type="hidden" ngModel="{{editTeammember?.id}}" name="id" class="form-control" id="id" placeholder="">
 
                     <div class="modal-footer">
-                        <button type="button" id="edit-person-form" data-bs-dismiss="modal" class="btn btn-secondary">Close</button>
-                        <button (click)="onUpdatePerson(editForm.value)" data-dismiss="modal" class="btn btn-primary">Speichern</button>
+                        <button type="button" id="edit-teammember-form" data-bs-dismiss="modal" class="btn btn-secondary">Close</button>
+                        <button (click)="onUpdateTeammember(editForm.value)" data-dismiss="modal" class="btn btn-primary">Speichern</button>
                     </div>
                 </form>
             </div>

@@ -1,26 +1,15 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Teammember } from './interfaces/teammember';
-import { TeammemberService } from './services/teammember.service';
-import { trigger, animate, transition, style } from '@angular/animations';
+import { Teammember } from '../interfaces/teammember';
+import { TeammemberService } from '../services/teammember.service';
+import { HttpErrorResponse } from '@angular/common/http';
+
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
-  animations: [
-    trigger('fade', [
-      transition('void => active', [ // using status here for transition
-        style({ opacity: 0 }),
-        animate(1000, style({ opacity: 1 }))
-      ]),
-      transition('* => void', [
-        animate(1000, style({ opacity: 0 }))
-      ])
-    ])
-  ]
+  selector: 'app-teammembers',
+  templateUrl: './teammembers.component.html',
+  styleUrls: ['./teammembers.component.css']
 })
-export class AppComponent implements OnInit {
+export class TeammembersComponent implements OnInit {
   public teammembers: Teammember[];
   public fallbackTeammembers: Teammember[];
   public editTeammember: Teammember | undefined;
@@ -29,16 +18,16 @@ export class AppComponent implements OnInit {
   public alertType: any | undefined;
   public searchLength: number;
 
-  constructor(private teammemberService: TeammemberService){
+  constructor(private teammemberService: TeammemberService) {
     this.teammembers = [];
     this.fallbackTeammembers =[];
     this.searchLength = 0;
-  }
+   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.getTeammembers();
     console.log(this.alert);
-  } 
+  }
 
   public getTeammembers(): void {
     this.teammemberService.getTeammembers().subscribe(
@@ -82,6 +71,27 @@ export class AppComponent implements OnInit {
     }
     this.searchLength = key.length;
     console.log(this.searchLength)
+  }
+
+  public onOpenModal(mode: string, teammember?: Teammember): void {
+    const container = document.getElementById('main-container');
+    const button = document.createElement('button');
+    button.type = 'button'
+    button.style.display = 'none';
+    button.setAttribute('data-bs-toggle', 'modal');
+    if(mode === 'add') {
+      button.setAttribute('data-bs-target', '#addTeammemberModal')
+    }
+    else if(mode === 'edit') {
+      this.editTeammember = teammember;
+      button.setAttribute('data-bs-target', '#updateTeammemberModal')
+    }
+    else if(mode === 'delete') {
+      this.deleteTeammember = teammember;
+      button.setAttribute('data-bs-target', '#deleteTeammemberModal')
+    }
+    container?.appendChild(button);
+    button.click();
   }
 
 }

@@ -1,13 +1,12 @@
-<div class="modal fade" id="addPersonModal" tabindex="-1" role="dialog" aria-labelledby="addPersonModalLabel" aria-hidden="true">
+<div class="modal fade" id="addTeammemberModal" tabindex="-1" role="dialog" aria-labelledby="addTeammemberModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addPersonModalLabel">Person hinzufügen</h5>
+                <h5 class="modal-title" id="addTeammemberModalLabel">Teammember hinzufügen</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <!--<form #addForm="ngForm" (ngSubmit)="onAddPerson(addForm)">-->
-                <form #addForm="ngForm" (ngSubmit)="onAddPerson(addForm)">
+                <form #addForm="ngForm" (ngSubmit)="onAddTeammember(addForm)">
                     <div class="form-group mb-3">
                         <label for="firstName">Vorname</label>
                         <input type="text" ngModel #firstName="ngModel" [class.is-valid]="firstName.valid && firstName.touched" [class.is-invalid]="firstName.invalid && (firstName.dirty || firstName.touched)" name="firstName" class="form-control" id="firstName" placeholder="Vorname"
@@ -32,9 +31,8 @@
                             placeholder="Geburtsdatum" required>
                     </div>
                     <div class="form-group mb-3">
-                        <label for="emailaddressPlayer">Email Address</label>
-                        <input type="email" ngModel #email="ngModel" [class.is-valid]="email.valid && email.touched" [class.is-invalid]="email.invalid && (email.dirty || email.touched)" name="emailaddressPlayer" class="form-control" id="emailaddressPlayer" placeholder="name@gmail.com"
-                            required email>
+                        <label for="email">Email Address</label>
+                        <input type="email" ngModel #email="ngModel" [class.is-valid]="email.valid && email.touched" [class.is-invalid]="email.invalid && (email.dirty || email.touched)" name="email" class="form-control" id="email" placeholder="name@gmail.com" required email>
                         <div *ngIf="email.invalid && (email.dirty || email.touched)" class="invalid-feedback">
                             <div *ngIf="email.errors?.['required']">
                                 Die Emailadresse wird benötigt.
@@ -49,14 +47,14 @@
                             <option value="f">weiblich</option>
                             <option value="d">divers</option>
                         </select>
-                        <label for="mobileNumberPlayer">Telefonnummer (mobil)</label>
-                        <input type="tel" ngModel #mobileNumber="ngModel" [class.is-valid]="mobileNumber.valid && mobileNumber.touched" [class.is-invalid]="mobileNumber.invalid && (mobileNumber.dirty || mobileNumber.touched)" name="mobileNumberPlayer" class="form-control" id="mobileNumberPlayer"
-                            placeholder="Telefonnummer" pattern="\+\d{1,2} \d{2} \d{3} \d{2} \d{2}" required>
-                        <div *ngIf="mobileNumber.invalid && (mobileNumber.dirty || mobileNumber.touched)" class="invalid-feedback">
-                            <div *ngIf="mobileNumber.errors?.['required']">
+                        <label for="mobile">Telefonnummer (mobil)</label>
+                        <input type="tel" ngModel #mobile="ngModel" [class.is-valid]="mobile.valid && mobile.touched" [class.is-invalid]="mobile.invalid && (mobile.dirty || mobile.touched)" name="mobile" class="form-control" id="mobile" placeholder="Telefonnummer" pattern="\+\d{1,2} \d{2} \d{3} \d{2} \d{2}"
+                            required>
+                        <div *ngIf="mobile.invalid && (mobile.dirty || mobile.touched)" class="invalid-feedback">
+                            <div *ngIf="mobile.errors?.['required']">
                                 Die Telefonnummer wird benötigt.
                             </div>
-                            <div *ngIf="mobileNumber.errors?.['pattern']">
+                            <div *ngIf="mobile.errors?.['pattern']">
                                 Die Telefonummer sollte das Format "+41 78 888 88 88" haben.
                             </div>
                         </div>
@@ -108,16 +106,12 @@
                             <label class="form-check-label" for="isPlayer">Spieler/in</label>
                         </div>
                         <div class="form-check form-switch">
-                            <input class="form-check-input" ngModel name="isTrainer" type="checkbox" role="switch" id="isTrainer">
-                            <label class="form-check-label" for="isTrainer">Trainer/in</label>
-                        </div>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" ngModel name="isAdmin" type="checkbox" role="switch" id="isAdmin">
-                            <label class="form-check-label" for="isAdmin">Administrator/in</label>
+                            <input class="form-check-input" ngModel name="isCoach" type="checkbox" role="switch" id="isCoach">
+                            <label class="form-check-label" for="isCoach">Trainer/in</label>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" id="add-person-form" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" id="add-teammember-form" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary">Speichern</button>
                     </div>
                 </form>
