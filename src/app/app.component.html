@@ -16,7 +16,7 @@
             </li>
         </ul>
         <form class="d-flex">
-            <input class="form-control me-2" type="search" (ngModelChange)="searchTeammember(key.value)" #key="ngModel" ngModel name="key" id="searchName" placeholder="Suche Teammitglieder..." required>
+            <input class="form-control me-2" type="search" (ngModelChange)="changeSearchTerm(key.value)" #key="ngModel" ngModel name="key" id="searchName" placeholder="Suche..." required>
         </form>
     </div>
 </nav>

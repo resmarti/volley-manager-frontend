@@ -1,0 +1,45 @@
+<div class="modal fade" id="addTeammemberToTeamModal" tabindex="-1" role="dialog" aria-labelledby="addTeammemberToTeamModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addTeamModalLabel">Mitglied zum Team {{addToTeam?.teamName}} hinzufügen</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Notification for no teammembers -->
+                <div *ngIf="teammembers?.length==0 " class="col-lg-12 col-md-12 col-xl-12 ">
+                    <div class="alert alert-info " role="alert ">
+                        <h4 class="alert-heading ">Keine Teammember!</h4>
+                        <p>Keine Teammember gefunden.</p>
+                    </div>
+                </div>
+                <form class="d-flex m-2">
+                    <input class="form-control me-2" type="search" (ngModelChange)="searchTeammember(key.value)" #key="ngModel" ngModel name="key" id="searchName" placeholder="Suche Teammitglieder..." required>
+                </form>
+                <app-alert [alert]="alert" [fading]="false" [type]="alertType" *ngIf="alert" (close)="alert=null;"></app-alert>
+
+                <div *ngFor="let teammember of teammembers" class="row">
+                    <div class="container col-md-12">
+                        <div class="row">
+                            <div class="col-2">
+                                <img src="assets/avatar.png" alt="" class="img-fluid rounded-circle w-60"><br/>
+                                <i *ngIf="teammember?.gender=='m'" class="bi bi-gender-male"></i>
+                                <i *ngIf="teammember?.gender=='f'" class="bi bi-gender-female"></i>
+                                <i *ngIf="teammember?.gender=='d'" class="bi bi-gender-ambiguous"></i>
+                            </div>
+                            <div class="col-8 card-title align-self-center mb-0">
+                                <h5>{{teammember?.firstName}} {{teammember?.lastName}}</h5>
+                                <p class="m-0">{{ teammember?.dateOfBirth | date:'dd.MM.YYYY' }}</p>
+                            </div>
+                            <div class="col-2 card-title align-self-center mb-0">
+                                <div class="float-end btn-group btn-group-sm">
+                                    <button (click)="onAddTeammemberToTeam(teammember!, addToTeam!)" class="btn btn-primary tooltips " data-placement="top " data-original-title="Add "><i class="bi bi-plus-lg "></i> </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,4 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnInit } from "@angular/core";
+import { trigger, animate, transition, style } from '@angular/animations';
 
 @Component({
     selector: 'app-alert', 

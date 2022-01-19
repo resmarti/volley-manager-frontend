@@ -21,6 +21,7 @@ import { AddTeamFormComponent } from './forms/addteam-form/addteam-form.componen
 import { DeleteTeamFormComponent } from './forms/deleteteam-form/deleteteam-form.component';
 
 import { DeleteTeammemberFromTeamFormComponent } from './forms/deleteteammemberfromteam-form/deleteteammemberfromteam-form.component';
+import { AddTeammemberToTeamFormComponent } from './forms/add-teammember-to-team-form/add-teammember-to-team-form.component';
 
 const routes: Routes = [
   {path: 'teams', component: TeamsComponent},
@@ -41,7 +42,8 @@ const routes: Routes = [
     AddTeamFormComponent,
     DeleteTeamFormComponent,
     EditTeamFormComponent,
-    DeleteTeammemberFromTeamFormComponent
+    DeleteTeammemberFromTeamFormComponent,
+    AddTeammemberToTeamFormComponent
   ],
   imports: [
     BrowserModule,

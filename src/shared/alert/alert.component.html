@@ -2,5 +2,5 @@
     <i *ngIf="type=='success'" class="bi bi-check-circle-fill p-2"></i>
     <i *ngIf="type=='warning'" class="bi bi-exclamation-circle-fill p-2"></i>
     <i *ngIf="type=='danger'" class="bi bi-x-circle-fill p-2"></i> {{alert}}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <button type="button" (click)="onCloseClick()" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>

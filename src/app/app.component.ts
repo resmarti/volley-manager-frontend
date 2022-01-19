@@ -1,8 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
 import { Teammember } from './interfaces/teammember';
 import { TeammemberService } from './services/teammember.service';
 import { trigger, animate, transition, style } from '@angular/animations';
+import { SearchTearmService } from './services/search-service.service';
 
 @Component({
   selector: 'app-root',
@@ -27,17 +28,17 @@ export class AppComponent implements OnInit {
   public deleteTeammember: Teammember | undefined;
   public alert: any | undefined;
   public alertType: any | undefined;
-  public searchLength: number;
+  public searchTerm: string | undefined;
 
-  constructor(private teammemberService: TeammemberService){
+  constructor(private teammemberService: TeammemberService, private searchTermService: SearchTearmService){
     this.teammembers = [];
     this.fallbackTeammembers =[];
-    this.searchLength = 0;
   }
 
   ngOnInit() {
     this.getTeammembers();
     console.log(this.alert);
+    this.searchTermService.currentSearchTerm.subscribe(searchTerm=> this.searchTerm=searchTerm)
   } 
 
   public getTeammembers(): void {
@@ -53,35 +54,8 @@ export class AppComponent implements OnInit {
     );
   }
 
-  public searchTeammember(key: string): void {
-    console.log(key);
-    if (this.searchLength>key.length) {
-      this.teammembers=this.fallbackTeammembers;
-    }
-    const results: Teammember[] = [];
-    for (const teammember of this.teammembers) {
-      if (teammember.firstName.toLowerCase().indexOf(key.toLowerCase()) !== -1
-      || teammember.lastName.toLowerCase().indexOf(key.toLowerCase()) !== -1
-      || teammember.street.toLowerCase().indexOf(key.toLowerCase()) !== -1
-      || teammember.location.toLowerCase().indexOf(key.toLowerCase()) !== -1
-      || teammember.email.toLowerCase().indexOf(key.toLowerCase()) !== -1
-      || teammember.mobile.toLowerCase().indexOf(key.toLowerCase()) !== -1) {
-        results.push(teammember);
-      }
-    }
-    this.teammembers = results;
-    if (results.length === 0 || !key) {
-      this.getTeammembers();
-    }; 
-    if (results.length ===0) {
-      this.alert="Die Suche hat keine Übereinstimmung gefunden!"
-      this.alertType="warning"
-    }
-    else {
-      this.alert=null;
-    }
-    this.searchLength = key.length;
-    console.log(this.searchLength)
+  public changeSearchTerm(searchTerm: string) {
+    this.searchTermService.announceSearchTerm(searchTerm);
   }
 
 }

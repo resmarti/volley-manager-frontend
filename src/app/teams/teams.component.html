@@ -73,6 +73,9 @@
                     </li>
                 </ul>
                 <div class="card-body">
+                    <div class="float btn-group btn-group-sm">
+                        <a (click)="onOpenModal('addteammembertoteam', team)" class="btn btn-primary tooltips" data-placement="top" data-original-title="Add"><i class="bi bi-plus-lg"></i> </a>
+                    </div>
                     <div class="float-end btn-group btn-group-sm">
                         <a (click)="onOpenModal('edit', team)" class="btn btn-primary tooltips" data-placement="top" data-original-title="Edit"><i class="bi bi-pencil"></i> </a>
                         <a (click)="onOpenModal('delete', team)" class="btn btn-danger tooltips" data-placement="top" data-original-title="Delete"><i class="bi bi-x-lg"></i></a>
@@ -93,6 +96,9 @@
 
     <!-- Remove Teammember Modal -->
     <deleteteammemberfromteam-form (getTeams)="getTeams()" [removeFromTeam]="removeFromTeam" [removeTeammember]="removeTeammember"></deleteteammemberfromteam-form>
+
+    <!-- Add Team Form-->
+    <app-add-teammember-to-team-form (getTeams)="getTeams()" [addToTeam]="addToTeam"></app-add-teammember-to-team-form>
 
 
 </div>

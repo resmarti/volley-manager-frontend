@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Teammember } from '../interfaces/teammember';
 import { TeammemberService } from '../services/teammember.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { SearchTearmService } from '../services/search-service.service';
 
 
 @Component({
@@ -16,9 +17,10 @@ export class TeammembersComponent implements OnInit {
   public deleteTeammember: Teammember | undefined;
   public alert: any | undefined;
   public alertType: any | undefined;
+  public searchTerm: string | undefined;
   public searchLength: number;
 
-  constructor(private teammemberService: TeammemberService) {
+  constructor(private teammemberService: TeammemberService, private searchTermService: SearchTearmService) {
     this.teammembers = [];
     this.fallbackTeammembers =[];
     this.searchLength = 0;
@@ -26,7 +28,10 @@ export class TeammembersComponent implements OnInit {
 
   ngOnInit(): void {
     this.getTeammembers();
-    console.log(this.alert);
+    this.searchTermService.currentSearchTerm.subscribe(searchTerm=> {
+      this.searchTerm=searchTerm;
+      this.searchTeammember(this.searchTerm);
+    })
   }
 
   public getTeammembers(): void {
@@ -42,6 +47,7 @@ export class TeammembersComponent implements OnInit {
     );
   }
 
+
   public searchTeammember(key: string): void {
     console.log(key);
     if (this.searchLength>key.length) {
@@ -49,8 +55,7 @@ export class TeammembersComponent implements OnInit {
     }
     const results: Teammember[] = [];
     for (const teammember of this.teammembers) {
-      if (teammember.firstName.toLowerCase().indexOf(key.toLowerCase()) !== -1
-      || teammember.lastName.toLowerCase().indexOf(key.toLowerCase()) !== -1
+      if ((teammember.firstName + " " + teammember.lastName).toLowerCase().indexOf(key.toLowerCase()) !== -1
       || teammember.street.toLowerCase().indexOf(key.toLowerCase()) !== -1
       || teammember.location.toLowerCase().indexOf(key.toLowerCase()) !== -1
       || teammember.email.toLowerCase().indexOf(key.toLowerCase()) !== -1
@@ -62,8 +67,8 @@ export class TeammembersComponent implements OnInit {
     if (results.length === 0 || !key) {
       this.getTeammembers();
     }; 
-    if (results.length ===0) {
-      this.alert="Die Suche hat keine Übereinstimmung gefunden!"
+    if (results.length ===0 && key.length>0) {
+      this.alert="Die Suche hat keine Übereinstimmung gefunden! Es werden alle Mitglieder angezeigt."
       this.alertType="warning"
     }
     else {

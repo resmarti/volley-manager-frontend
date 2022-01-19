@@ -20,7 +20,7 @@ export class DeleteTeammemberFormComponent implements OnInit {
   }
 
   public onDeleteTeammember(teammemberId: number): void {
-    this.teammemberService.deleteTeammemberForce(teammemberId).subscribe(
+    this.teammemberService.deleteTeammember(teammemberId).subscribe(
       (response: void) => {
         console.log(response);
         this.getTeammembers.emit();

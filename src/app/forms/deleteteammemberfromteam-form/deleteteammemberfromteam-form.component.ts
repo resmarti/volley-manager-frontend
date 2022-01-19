@@ -15,13 +15,13 @@ export class DeleteTeammemberFromTeamFormComponent implements OnInit {
   @Output("getTeams") getTeams: EventEmitter<any> = new EventEmitter();
   @ViewChild('closeDeleteModal') closeDeleteModal: ElementRef | undefined;
 
-  constructor(private teamService: TeammemberService) { }
+  constructor(private teammemberService: TeammemberService) { }
 
   ngOnInit(): void {
   }
 
   public onRemoveTeammembersFromTeam(teamId: number, teammemberId: number): void {
-    this.teamService.removeTeammemberFromTeam(teamId, teammemberId).subscribe(
+    this.teammemberService.removeTeammemberFromTeam(teamId, teammemberId).subscribe(
       (response: void) => {
         console.log(response);
         this.getTeams.emit();

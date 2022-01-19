@@ -39,5 +39,9 @@ export class TeammemberService {
       public removeTeammemberFromTeam(teamId: number, teammemberId: number): Observable<void> {
         return this.http.delete<void>(`${this.apiServerUrl}/teammember/removeteammemberfromteam/${teamId}/${teammemberId}`);
       }
+
+      public addTeammemberToTeam(teammemberId: number, teamId: number): Observable<void> {
+        return this.http.put<void>(`${this.apiServerUrl}/teammember/addteammembertoteam/${teammemberId}/${teamId}`, '');
+      }
       
 }
