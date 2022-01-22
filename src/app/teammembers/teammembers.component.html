@@ -7,10 +7,10 @@
             <a (click)="onOpenModal('add')" class="dropdown-item tooltips" data-placement="top" data-original-title="ContectualMenu"><i class="bi bi-plus-lg"></i> Teammember hinzufügen</a>
         </div>
     </div>
-    <app-alert class="m-1" [alert]="alert" [fading]="false" [type]="alertType" *ngIf="alert" (close)="alert=null;"></app-alert>
+    <app-alert class="ms-1" [alert]="alert" [fading]="false" [type]="alertType" *ngIf="alert" (close)="alert=null;"></app-alert>
     <div class="row">
         <div *ngFor="let teammember of teammembers" class="col-md-6 col-xl-3">
-            <div class="card m-b-30">
+            <div class="card main-card m-b-30 text-break">
                 <div class="card-body row">
                     <div class="col-4">
                         <img src="assets/avatar.png" alt="" class="img-fluid rounded-circle w-60">
@@ -27,13 +27,14 @@
                     <li class="list-group-item">
                         <div class="d-flex flex-row">
                             <div class="p-1"><i class="bi bi-envelope float-right"></i></div>
-                            <div class="p-1">{{teammember?.email}}</div>
+                            <div class="p-1">
+                                <a href="mailto:{{teammember?.email}}">{{teammember?.email}}</a></div>
                         </div>
                     </li>
-                    <li class="list-group-item">
+                    <li *ngIf="validPhonenumber(teammember?.mobile)" class="list-group-item">
                         <div class="d-flex flex-row">
                             <div class="p-1"><i class="bi bi-telephone float-right"></i></div>
-                            <div class="p-1">{{teammember?.mobile}}</div>
+                            <div class="p-1"><a href="tel:{{returnOnlyString(teammember?.mobile) | mask: '+00 00 000 00 00'}}">{{returnOnlyString(teammember?.mobile) | mask: '+00 00 000 00 00'}}</a></div>
                         </div>
                     </li>
                     <li class="list-group-item">
@@ -57,6 +58,56 @@
                     <ng-template #showFalse><i class="bi bi-x-circle text-danger"></i></ng-template>
                 </ul>
                 <div class="card-body">
+                    <div *ngIf="teammember?.contactPerson==null" class="card">
+                        <div class="card-body">
+                            Keine Kontaktperson
+                            <div class="float-end btn-group btn-group-sm">
+                                <button (click)="onOpenModal('addContactPerson', teammember)" class="btn btn-primary tooltips" data-placement="top" data-original-title="Add"><i class="bi bi-plus-lg"></i> </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="teammember?.contactPerson!=null" class="accordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#kontaktpersondropdown' + teammember?.id" aria-expanded="false" [attr.aria-controls]="'kontaktpersondropdown' + teammember?.id">
+                            Kontaktperson
+                            </button>
+                            </h2>
+                            <div [attr.id]="'kontaktpersondropdown' + teammember?.id" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item px-0 py-1">
+                                            <div class="d-flex flex-row">{{teammember?.contactPerson?.firstName}} {{teammember?.contactPerson?.lastName}}</div>
+                                        </li>
+                                        <li class="list-group-item px-0 py-1">
+                                            <div class="d-flex flex-row">
+                                                <div class="p-1"><i class="bi bi-envelope float-right"></i></div>
+                                                <div class="p-1">
+                                                    <a href="mailto:{{teammember?.contactPerson?.email}}">{{teammember?.contactPerson?.email}}</a></div>
+                                            </div>
+                                        </li>
+                                        <li *ngIf="validPhonenumber(teammember?.contactPerson?.mobile)" class="list-group-item px-0 py-1">
+                                            <div class="d-flex flex-row">
+                                                <div class="p-1"><i class="bi bi-telephone float-right"></i></div>
+                                                <div class="p-1"><a href="tel:{{returnOnlyString(teammember?.contactPerson?.mobile) | mask: '+00 00 000 00 00'}}">{{returnOnlyString(teammember?.contactPerson?.mobile) | mask: '+00 00 000 00 00'}}</a></div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item px-0 py-1">
+                                            <div class="d-flex flex-row">
+                                                <div class="p-1"><i class="bi bi-house-door"></i></div>
+                                                <div class="p-1">{{teammember?.contactPerson?.street}} {{teammember?.contactPerson?.streetNb}}<br/>{{teammember?.contactPerson?.postalCode}} {{teammember?.contactPerson?.location}}</div>
+                                            </div>
+                                            <div class="float-end btn-group btn-group-sm">
+                                                <a (click)="onOpenModal('removeContactPerson', teammember)" class="btn btn-danger tooltips" data-placement="top" data-original-title="Delete contactPerson"><i class="bi bi-x-lg"></i> </a>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
                     <div class="float-end btn-group btn-group-sm">
                         <a (click)="onOpenModal('edit', teammember)" class="btn btn-primary tooltips" data-placement="top" data-original-title="Edit"><i class="bi bi-pencil"></i> </a>
                         <a (click)="onOpenModal('delete', teammember)" class="btn btn-danger tooltips" data-placement="top" data-original-title="Delete"><i class="bi bi-x-lg"></i></a>
@@ -74,6 +125,12 @@
 
     <!-- Delete Modal -->
     <deleteteammember-form (getTeammembers)="getTeammembers()" [deleteTeammember]="deleteTeammember"></deleteteammember-form>
+
+    <!-- Delete Modal -->
+    <app-remove-contact-person (getTeammembers)="getTeammembers()" [removeContactPerson]="removeContactPerson"></app-remove-contact-person>
+
+    <!-- Add contactPerson Modal -->
+    <app-add-contact-person-to-teammember (getTeammembers)="getTeammembers()" [addToTeammember]="addToTeammember"></app-add-contact-person-to-teammember>
 
 </div>
 

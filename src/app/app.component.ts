@@ -37,7 +37,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.getTeammembers();
-    console.log(this.alert);
     this.searchTermService.currentSearchTerm.subscribe(searchTerm=> this.searchTerm=searchTerm)
   } 
 
@@ -46,7 +45,6 @@ export class AppComponent implements OnInit {
       (response: Teammember[]) => {
         this.teammembers = response;
         this.fallbackTeammembers = this.teammembers;
-        console.log(this.teammembers);
       },
       (error: HttpErrorResponse) => {
         alert(error.message);

@@ -48,13 +48,13 @@
                             <option value="d">divers</option>
                         </select>
                         <label for="mobile">Telefonnummer (mobil)</label>
-                        <input type="tel" ngModel #mobile="ngModel" [class.is-valid]="mobile.valid && mobile.touched" [class.is-invalid]="mobile.invalid && (mobile.dirty || mobile.touched)" name="mobile" class="form-control" id="mobile" placeholder="Telefonnummer" pattern="\+\d{1,2} \d{2} \d{3} \d{2} \d{2}"
+                        <input type="tel" ngModel #mobile="ngModel" [class.is-valid]="mobile.valid && mobile.touched" [class.is-invalid]="mobile.invalid && (mobile.dirty || mobile.touched)" name="mobile" class="form-control" id="mobile" placeholder="Telefonnummer" mask="+00 00 000 00 00"
                             required>
                         <div *ngIf="mobile.invalid && (mobile.dirty || mobile.touched)" class="invalid-feedback">
                             <div *ngIf="mobile.errors?.['required']">
                                 Die Telefonnummer wird benötigt.
                             </div>
-                            <div *ngIf="mobile.errors?.['pattern']">
+                            <div *ngIf="mobile.errors?.['mask']">
                                 Die Telefonummer sollte das Format "+41 78 888 88 88" haben.
                             </div>
                         </div>

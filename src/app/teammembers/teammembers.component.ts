@@ -15,6 +15,8 @@ export class TeammembersComponent implements OnInit {
   public fallbackTeammembers: Teammember[];
   public editTeammember: Teammember | undefined;
   public deleteTeammember: Teammember | undefined;
+  public removeContactPerson: Teammember | undefined;
+  public addToTeammember: Teammember | undefined;
   public alert: any | undefined;
   public alertType: any | undefined;
   public searchTerm: string | undefined;
@@ -39,7 +41,6 @@ export class TeammembersComponent implements OnInit {
       (response: Teammember[]) => {
         this.teammembers = response;
         this.fallbackTeammembers = this.teammembers;
-        console.log(this.teammembers);
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
@@ -95,8 +96,28 @@ export class TeammembersComponent implements OnInit {
       this.deleteTeammember = teammember;
       button.setAttribute('data-bs-target', '#deleteTeammemberModal')
     }
+    else if(mode === 'addContactPerson') {
+      this.addToTeammember = teammember;
+      button.setAttribute('data-bs-target', '#addContactPersonToTeammemberModal')
+    }
+    else if(mode === 'removeContactPerson') {
+      this.removeContactPerson = teammember;
+      //button.setAttribute('data-bs-target', '#deleteTeammemberModal')
+      button.setAttribute('data-bs-target', '#removeContactPersonModal')
+    }
     container?.appendChild(button);
     button.click();
+  }
+
+  public returnOnlyString(mobile: string | undefined): string {
+    if (typeof mobile === 'string') {
+      return mobile;
+    }
+    return "";
+  }
+
+  public validPhonenumber(mobile: string | undefined): boolean {
+    return RegExp("^[0-9]{11}").test(this.returnOnlyString(mobile))
   }
 
 }

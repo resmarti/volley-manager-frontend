@@ -1,0 +1,134 @@
+<div class="modal fade" id="addContactPersonToTeammemberModal" tabindex="-1" role="dialog" aria-labelledby="addContactPersonToTeammemberModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addTeammemberModalLabel">Kontaktperson hinzufügen</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <nav>
+                    <div class="nav nav-pills" id="pills-tab" role="tablist">
+                        <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Bestehende Kontaktperson</button>
+                        <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Neue Kontaktperson</button>
+                    </div>
+                </nav>
+                <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                        <!-- Notification for no teammembers -->
+                        <div *ngIf="contactPersons?.length==0 " class="col-lg-12 col-md-12 col-xl-12 ">
+                            <div class="alert alert-info " role="alert ">
+                                <h4 class="alert-heading ">Keine Teammember!</h4>
+                                <p>Keine Kontaktperson gefunden.</p>
+                            </div>
+                        </div>
+                        <form class="d-flex m-2">
+                            <input class="form-control me-2" type="search" (ngModelChange)="searchContactPerson(key.value)" #key="ngModel" ngModel name="key" id="searchName" placeholder="Suche Kontaktpersonen..." required>
+                        </form>
+                        <app-alert [alert]="alert" [fading]="false" [type]="alertType" *ngIf="alert" (close)="alert=null;"></app-alert>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item" *ngFor="let contactPerson of contactPersons">
+                                <span>{{contactPerson?.firstName}} {{contactPerson?.lastName}} <br/> {{contactPerson?.street}} {{contactPerson?.streetNb}} {{contactPerson?.postalCode}} {{contactPerson?.location}}</span>
+                                <div class="float-end btn-group btn-group-sm">
+                                    <button (click)="onAddExistingContactPerson(contactPerson!.id, addToTeammember!.id)" class="btn btn-primary tooltips " data-placement="top " data-original-title="Add "><i class="bi bi-plus-lg "></i> </button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                        <form #addForm="ngForm" (ngSubmit)="onAddNewContactPerson(addForm, addToTeammember!.id)">
+                            <div class="form-group mb-3">
+                                <label for="firstName">Vorname</label>
+                                <input type="text" ngModel #firstName="ngModel" [class.is-valid]="firstName.valid && firstName.touched" [class.is-invalid]="firstName.invalid && (firstName.dirty || firstName.touched)" name="firstName" class="form-control" id="firstName" placeholder="Vorname"
+                                    required>
+                                <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="invalid-feedback">
+                                    <div *ngIf="firstName.errors?.['required']">
+                                        Der Vorname wird benötigt.
+                                    </div>
+                                </div>
+                                <label for="lastName">Nachname</label>
+                                <input type="text" ngModel #lastName="ngModel" [class.is-valid]="lastName.valid && lastName.touched" [class.is-invalid]="lastName.invalid && (lastName.dirty || lastName.touched)" name="lastName" class="form-control" id="lastName" placeholder="Nachname"
+                                    required>
+                                <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" class="invalid-feedback">
+                                    <div *ngIf="lastName.errors?.['required']">
+                                        Der Nachname wird benötigt.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="email">Email Address</label>
+                                <input type="email" ngModel #email="ngModel" [class.is-valid]="email.valid && email.touched" [class.is-invalid]="email.invalid && (email.dirty || email.touched)" name="email" class="form-control" id="email" placeholder="name@gmail.com" required email>
+                                <div *ngIf="email.invalid && (email.dirty || email.touched)" class="invalid-feedback">
+                                    <div *ngIf="email.errors?.['required']">
+                                        Die Emailadresse wird benötigt.
+                                    </div>
+                                    <div *ngIf="email.errors?.['email']">
+                                        Das ist keine gültige Emailadresse.
+                                    </div>
+                                </div>
+                                <label for="mobile">Telefonnummer (mobil)</label>
+                                <input type="tel" ngModel #mobile="ngModel" [class.is-valid]="mobile.valid && mobile.touched" [class.is-invalid]="mobile.invalid && (mobile.dirty || mobile.touched)" name="mobile" class="form-control" id="mobile" placeholder="Telefonnummer" mask="+00 00 000 00 00"
+                                    required>
+                                <div *ngIf="mobile.invalid && (mobile.dirty || mobile.touched)" class="invalid-feedback">
+                                    <div *ngIf="mobile.errors?.['required']">
+                                        Die Telefonnummer wird benötigt.
+                                    </div>
+                                    <div *ngIf="mobile.errors?.['mask']">
+                                        Die Telefonummer sollte das Format "+41 78 888 88 88" haben.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group mb-3">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <label for="street">Strasse</label>
+                                        <input type="text" ngModel="{{addToTeammember?.street}}" #street="ngModel" name="street" [class.is-valid]="street.valid && street.touched" [class.is-invalid]="street.invalid && (street.dirty || street.touched)" class="form-control" id="street" placeholder="Strasse"
+                                            required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="streetNb">Nummer</label>
+                                        <input type="text" ngModel="{{addToTeammember?.streetNb}}" #streetNb="ngModel" name="streetNb" [class.is-valid]="streetNb.valid && streetNb.touched" [class.is-invalid]="streetNb.invalid && (streetNb.dirty || streetNb.touched)" class="form-control" id="streetNb"
+                                            placeholder="" required>
+                                    </div>
+                                    <div *ngIf="(street.invalid && (street.dirty || street.touched)) || (streetNb.invalid && (streetNb.dirty || streetNb.touched))" class="invalid-feedback">
+                                        <div *ngIf="street.errors?.['required'] || streetNb.errors?.['required']">
+                                            Die Strasse und die Hausnummer wird benötig.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label for="postalCode">PLZ</label>
+                                        <input type="number" ngModel="{{addToTeammember?.postalCode}}" #postalCode="ngModel" name="postalCode" [class.is-valid]="postalCode.valid && postalCode.touched" [class.is-invalid]="postalCode.invalid && (postalCode.dirty || postalCode.touched)" class="form-control"
+                                            id="postalCode" placeholder="PLZ" required pattern="\d{4}">
+                                        <div *ngIf="postalCode.invalid && (postalCode.dirty || postalCode.touched)" class="invalid-feedback">
+                                            <div *ngIf="postalCode.errors?.['required']">
+                                                Die Postleitzahl wird benötigt.
+                                            </div>
+                                            <div *ngIf="postalCode.errors?.['pattern']">
+                                                Die Postleitzahl sollte vierstellig sein.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <label for="location">Ort</label>
+                                        <input type="text" ngModel="{{addToTeammember?.location}}" #location="ngModel" name="location" [class.is-valid]="location.valid && location.touched" [class.is-invalid]="location.invalid && (location.dirty || location.touched)" class="form-control" id="location"
+                                            placeholder="Ort" required>
+                                    </div>
+                                    <div *ngIf="location.invalid && (location.dirty || location.touched)" class="invalid-feedback">
+                                        <div *ngIf="location.errors?.['required']">
+                                            Der Ort wird benötigt.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" id="add-contact-person-to-teammember-form" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary">Speichern</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

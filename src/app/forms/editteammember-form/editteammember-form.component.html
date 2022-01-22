@@ -52,12 +52,12 @@
                             </select>
                         <label for="mobile">Telefonnummer (mobil)</label>
                         <input type="tel" ngModel="{{editTeammember?.mobile}}" #editmobile="ngModel" [class.is-valid]="editmobile.valid && editmobile.touched" [class.is-invalid]="editmobile.invalid && (editmobile.dirty || editmobile.touched)" name="mobile" class="form-control"
-                            id="mobile" placeholder="Telefonnummer" pattern="\+\d{1,2} \d{2} \d{3} \d{2} \d{2}" required>
+                            id="mobile" placeholder="Telefonnummer" mask="+00 00 000 00 00" required>
                         <div *ngIf="editmobile.invalid && (editmobile.dirty || editmobile.touched)" class="invalid-feedback">
                             <div *ngIf="editmobile.errors?.['required']">
                                 Die Telefonnummer wird benötigt.
                             </div>
-                            <div *ngIf="editmobile.errors?.['pattern']">
+                            <div *ngIf="editmobile.errors?.['mask']">
                                 Die Telefonummer sollte das Format "+41 78 888 88 88" haben.
                             </div>
                         </div>
@@ -120,7 +120,7 @@
 
                     <div class="modal-footer">
                         <button type="button" id="edit-teammember-form" data-bs-dismiss="modal" class="btn btn-secondary">Close</button>
-                        <button (click)="onUpdateTeammember(editForm.value)" data-dismiss="modal" class="btn btn-primary">Speichern</button>
+                        <button [disabled]="editForm.invalid" (click)="onUpdateTeammember(editForm.value)" data-dismiss="modal" class="btn btn-primary">Speichern</button>
                     </div>
                 </form>
             </div>

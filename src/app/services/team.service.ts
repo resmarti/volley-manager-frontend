@@ -28,8 +28,4 @@ export class TeamService {
         return this.http.delete<void>(`${this.apiServerUrl}/team/delete/${teamId}`);
       }
 
-      public removeTeammemberFromTeam(teammemberId: number): Observable<void> {
-        return this.http.delete<void>(`${this.apiServerUrl}/team/removeTeamMemberFromTeam${teammemberId}`);
-      }
-
 }

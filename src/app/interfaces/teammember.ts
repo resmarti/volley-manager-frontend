@@ -1,3 +1,5 @@
+import { ContactPerson } from "./contacperson";
+
 export interface Teammember {
     id: number;
     firstName: string;
@@ -13,4 +15,5 @@ export interface Teammember {
     isPlayer: boolean;
     isCoach: boolean;
     isAdmin: boolean;
+    contactPerson: ContactPerson;
 }
