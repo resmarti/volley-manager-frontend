@@ -1,0 +1,107 @@
+<div class="modal fade" id="updateContactPersonModal" tabindex="-1" role="dialog" aria-labelledby="ContactPersonEditModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateContactPersonModalLabel">Kontaktperson {{editContactPerson?.firstName}} editieren</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <app-alert [alert]="alert" [fading]="true" [type]="alertType" [@fade]="alert" *ngIf="alert" (close)="alert=null;"></app-alert>
+                <form #editForm="ngForm">
+                    <div class="form-group mb-3">
+                        <label for="firstName">Vorname</label>
+                        <input type="text" ngModel="{{editContactPerson?.firstName}}" #editfirstName="ngModel" [class.is-valid]="editfirstName.valid && editfirstName.touched" [class.is-invalid]="editfirstName.invalid && (editfirstName.dirty || editfirstName.touched)" name="firstName"
+                            class="form-control" id="firstName" placeholder="Vorname" required>
+                        <div *ngIf="editfirstName.invalid && (editfirstName.dirty || editfirstName.touched)" class="invalid-feedback">
+                            <div *ngIf="editfirstName.errors?.['required']">
+                                Der Vorname wird benötigt.
+                            </div>
+                        </div>
+                        <label for="lastName">Nachname</label>
+                        <input type="text" ngModel="{{editContactPerson?.lastName}}" #editlastName="ngModel" [class.is-valid]="editlastName.valid && editlastName.touched" [class.is-invalid]="editlastName.invalid && (editlastName.dirty || editlastName.touched)" name="lastName"
+                            class="form-control" id="lastName" placeholder="Nachname" required>
+                        <div *ngIf="editlastName.invalid && (editlastName.dirty || editlastName.touched)" class="invalid-feedback">
+                            <div *ngIf="editlastName.errors?.['required']">
+                                Der Nachname wird benötigt.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="email">Email Address</label>
+                        <input type="email" ngModel="{{editContactPerson?.email}}" #editemail="ngModel" [class.is-valid]="editemail.valid && editemail.touched" [class.is-invalid]="editemail.invalid && (editemail.dirty || editemail.touched)" name="email" class="form-control"
+                            id="email" placeholder="name@gmail.com" required email>
+                        <div *ngIf="editemail.invalid && (editemail.dirty || editemail.touched)" class="invalid-feedback">
+                            <div *ngIf="editemail.errors?.['required']">
+                                Die Emailadresse wird benötigt.
+                            </div>
+                            <div *ngIf="editemail.errors?.['email']">
+                                Das ist keine gültige Emailadresse.
+                            </div>
+                        </div>
+                        <label for="mobile">Telefonnummer (mobil)</label>
+                        <input type="tel" ngModel="{{editContactPerson?.mobile}}" #editmobile="ngModel" [class.is-valid]="editmobile.valid && editmobile.touched" [class.is-invalid]="editmobile.invalid && (editmobile.dirty || editmobile.touched)" name="mobile" class="form-control"
+                            id="mobile" placeholder="Telefonnummer" mask="+00 00 000 00 00" required>
+                        <div *ngIf="editmobile.invalid && (editmobile.dirty || editmobile.touched)" class="invalid-feedback">
+                            <div *ngIf="editmobile.errors?.['required']">
+                                Die Telefonnummer wird benötigt.
+                            </div>
+                            <div *ngIf="editmobile.errors?.['mask']">
+                                Die Telefonummer sollte das Format "+41 78 888 88 88" haben.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <label for="street">Strasse</label>
+                                <input type="text" ngModel="{{editContactPerson?.street}}" #editstreet="ngModel" name="street" [class.is-valid]="editstreet.valid && editstreet.touched" [class.is-invalid]="editstreet.invalid && (editstreet.dirty || editstreet.touched)" class="form-control"
+                                    id="street" placeholder="Strasse" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="streetNb">Nummer</label>
+                                <input type="text" ngModel="{{editContactPerson?.streetNb}}" #editstreetNb="ngModel" name="streetNb" [class.is-valid]="editstreetNb.valid && editstreetNb.touched" [class.is-invalid]="editstreetNb.invalid && (editstreetNb.dirty || editstreetNb.touched)"
+                                    class="form-control" id="streetNb" placeholder="" required>
+                            </div>
+                            <div *ngIf="(editstreet.invalid && (editstreet.dirty || editstreet.touched)) || (editstreetNb.invalid && (editstreetNb.dirty || editstreetNb.touched))" class="invalid-feedback">
+                                <div *ngIf="editstreet.errors?.['required'] || editstreetNb.errors?.['required']">
+                                    Die Strasse und die Hausnummer wird benötig.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="postalCode">PLZ</label>
+                                <input type="number" ngModel="{{editContactPerson?.postalCode}}" #editpostalCode="ngModel" name="postalCode" [class.is-valid]="editpostalCode.valid && editpostalCode.touched" [class.is-invalid]="editpostalCode.invalid && (editpostalCode.dirty || editpostalCode.touched)"
+                                    class="form-control" id="postalCode" placeholder="PLZ" required pattern="\d{4}">
+                                <div *ngIf="editpostalCode.invalid && (editpostalCode.dirty || editpostalCode.touched)" class="invalid-feedback">
+                                    <div *ngIf="editpostalCode.errors?.['required']">
+                                        Die Postleitzahl wird benötigt.
+                                    </div>
+                                    <div *ngIf="editpostalCode.errors?.['pattern']">
+                                        Die Postleitzahl sollte vierstellig sein.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <label for="location">Ort</label>
+                                <input type="text" ngModel="{{editContactPerson?.location}}" #editlocation="ngModel" name="location" [class.is-valid]="editlocation.valid && editlocation.touched" [class.is-invalid]="editlocation.invalid && (editlocation.dirty || editlocation.touched)"
+                                    class="form-control" id="location" placeholder="Ort" required>
+                            </div>
+                            <div *ngIf="editlocation.invalid && (editlocation.dirty || editlocation.touched)" class="invalid-feedback">
+                                <div *ngIf="editlocation.errors?.['required']">
+                                    Der Ort wird benötigt.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" ngModel="{{editContactPerson?.id}}" name="id" class="form-control" id="id" placeholder="">
+
+                    <div class="modal-footer">
+                        <button type="button" id="edit-contact-person-form" data-bs-dismiss="modal" class="btn btn-secondary">Close</button>
+                        <button [disabled]="editForm.invalid" (click)="onUpdateContactPerson(editForm.value)" data-dismiss="modal" class="btn btn-primary">Speichern</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

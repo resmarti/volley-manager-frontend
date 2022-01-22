@@ -25,6 +25,7 @@ import { DeleteTeammemberFromTeamFormComponent } from './forms/deleteteammemberf
 import { AddTeammemberToTeamFormComponent } from './forms/add-teammember-to-team-form/add-teammember-to-team-form.component';
 import { AddContactPersonToTeammemberComponent } from './forms/add-contact-person-to-teammember/add-contact-person-to-teammember.component';
 import { RemoveContactPersonComponent } from './forms/remove-contact-person/remove-contact-person.component';
+import { EditContactPersonComponent } from './forms/edit-contact-person/edit-contact-person.component';
 
 const routes: Routes = [
   {path: 'teams', component: TeamsComponent},
@@ -52,7 +53,8 @@ const maskConfig: Partial<IConfig> = {
     DeleteTeammemberFromTeamFormComponent,
     AddTeammemberToTeamFormComponent,
     AddContactPersonToTeammemberComponent,
-    RemoveContactPersonComponent
+    RemoveContactPersonComponent,
+    EditContactPersonComponent
   ],
   imports: [
     BrowserModule,

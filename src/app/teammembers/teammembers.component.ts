@@ -3,6 +3,7 @@ import { Teammember } from '../interfaces/teammember';
 import { TeammemberService } from '../services/teammember.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SearchTearmService } from '../services/search-service.service';
+import { ContactPerson } from '../interfaces/contacperson';
 
 
 @Component({
@@ -21,6 +22,7 @@ export class TeammembersComponent implements OnInit {
   public alertType: any | undefined;
   public searchTerm: string | undefined;
   public searchLength: number;
+  public editContactPerson: ContactPerson | undefined;
 
   constructor(private teammemberService: TeammemberService, private searchTermService: SearchTearmService) {
     this.teammembers = [];
@@ -104,6 +106,10 @@ export class TeammembersComponent implements OnInit {
       this.removeContactPerson = teammember;
       //button.setAttribute('data-bs-target', '#deleteTeammemberModal')
       button.setAttribute('data-bs-target', '#removeContactPersonModal')
+    }
+    else if(mode === 'editContactPerson') {
+      this.editContactPerson = teammember?.contactPerson;
+      button.setAttribute('data-bs-target', '#updateContactPersonModal')
     }
     container?.appendChild(button);
     button.click();

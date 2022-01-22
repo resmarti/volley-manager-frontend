@@ -98,6 +98,7 @@
                                                 <div class="p-1">{{teammember?.contactPerson?.street}} {{teammember?.contactPerson?.streetNb}}<br/>{{teammember?.contactPerson?.postalCode}} {{teammember?.contactPerson?.location}}</div>
                                             </div>
                                             <div class="float-end btn-group btn-group-sm">
+                                                <a (click)="onOpenModal('editContactPerson', teammember)" class="btn btn-primary tooltips" data-placement="top" data-original-title="Edit"><i class="bi bi-pencil"></i> </a>
                                                 <a (click)="onOpenModal('removeContactPerson', teammember)" class="btn btn-danger tooltips" data-placement="top" data-original-title="Delete contactPerson"><i class="bi bi-x-lg"></i> </a>
                                             </div>
                                         </li>
@@ -131,6 +132,9 @@
 
     <!-- Add contactPerson Modal -->
     <app-add-contact-person-to-teammember (getTeammembers)="getTeammembers()" [addToTeammember]="addToTeammember"></app-add-contact-person-to-teammember>
+
+    <!-- Edit ContactPerson Form -->
+    <app-edit-contact-person (getTeammembers)="getTeammembers()" [editContactPerson]="editContactPerson"></app-edit-contact-person>
 
 </div>
 
