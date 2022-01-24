@@ -1,0 +1,46 @@
+<div class="modal fade" id="updateEventModal" tabindex="-1" role="dialog" aria-labelledby="updateEventModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateEventModalLabel">Event "{{editEvent?.eventName}}" editieren</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <app-alert [alert]="alert" [fading]="true" [type]="alertType" [@fade]="alert" *ngIf="alert" (close)="alert=null;"></app-alert>
+                <form #editForm="ngForm">
+                    <div class="form-group mb-3">
+                        <label for="EventName">Vorname</label>
+                        <input type="text" ngModel="{{editEvent?.eventName}}" #editEventName="ngModel" [class.is-valid]="editEventName.valid && editEventName.touched" [class.is-invalid]="editEventName.invalid && (editEventName.dirty || editEventName.touched)" name="eventName"
+                            class="form-control" id="eventName" placeholder="Eventname" required>
+                        <div *ngIf="editEventName.invalid && (editEventName.dirty || editEventName.touched)" class="invalid-feedback">
+                            <div *ngIf="editEventName.errors?.['required']">
+                                Der Eventname wird benötigt.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="eventDate">Datum des Events</label>
+                        <input type="date" ngModel="{{editEvent?.eventDate}}" #editEventDate="ngModel" [class.is-valid]="editEventDate.valid && editEventDate.touched" [class.is-invalid]="editEventDate.invalid && (editEventDate.dirty || editEventDate.touched)" name="eventDate"
+                            class="form-control" id="eventDate" placeholder="Datum des Events" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="EventLocation">Ort des Events</label>
+                        <input type="text" ngModel="{{editEvent?.eventLocation}}" #editEventLocation="ngModel" [class.is-valid]="editEventLocation.valid && editEventLocation.touched" [class.is-invalid]="editEventLocation.invalid && (editEventLocation.dirty || editEventLocation.touched)"
+                            name="eventLocation" class="form-control" id="eventLocation" placeholder="Eventname" required>
+                        <div *ngIf="editEventLocation.invalid && (editEventLocation.dirty || editEventLocation.touched)" class="invalid-feedback">
+                            <div *ngIf="editEventLocation.errors?.['required']">
+                                Der Ort des Events wird benötigt.
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" ngModel="{{editEvent?.eventId}}" name="eventId" class="form-control" id="eventId" placeholder="">
+
+                    <div class="modal-footer">
+                        <button type="button" id="edit-event-form" data-bs-dismiss="modal" class="btn btn-secondary">Close</button>
+                        <button (click)="onUpdateEvent(editForm.value)" data-dismiss="modal" class="btn btn-primary">Speichern</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

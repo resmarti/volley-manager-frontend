@@ -1,0 +1,43 @@
+<div class="modal fade" id="addEventModal" tabindex="-1" role="dialog" aria-labelledby="addEventModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addEVentModalLabel">Event hinzufügen</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form #addForm="ngForm" (ngSubmit)="onAddEvent(addForm)">
+                    <div class="form-group mb-3">
+                        <label for="eventName">Eventname</label>
+                        <input type="text" ngModel #eventName="ngModel" [class.is-valid]="eventName.valid && eventName.touched" [class.is-invalid]="eventName.invalid && (eventName.dirty || eventName.touched)" name="eventName" class="form-control" id="eventName" placeholder="Eventname"
+                            required>
+                        <div *ngIf="eventName.invalid && (eventName.dirty || eventName.touched)" class="invalid-feedback">
+                            <div *ngIf="eventName.errors?.['required']">
+                                Der Eventname wird benötigt.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="eventDate">Datum des Events</label>
+                        <input type="date" ngModel #eventDate="ngModel" [class.is-valid]="eventDate.valid && eventDate.touched" [class.is-invalid]="eventDate.invalid && (eventDate.dirty || eventDate.touched)" name="eventDate" class="form-control" id="eventDate" placeholder=""
+                            required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="eventLocation">Eventort</label>
+                        <input type="text" ngModel #eventLocation="ngModel" [class.is-valid]="eventLocation.valid && eventLocation.touched" [class.is-invalid]="eventLocation.invalid && (eventLocation.dirty || eventLocation.touched)" name="eventLocation" class="form-control"
+                            id="eventLocation" placeholder="Eventname" required>
+                        <div *ngIf="eventLocation.invalid && (eventLocation.dirty || eventLocation.touched)" class="invalid-feedback">
+                            <div *ngIf="eventLocation.errors?.['required']">
+                                Der Eventort wird benötigt.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="add-event-form" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary">Speichern</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

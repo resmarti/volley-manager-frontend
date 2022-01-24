@@ -9,7 +9,7 @@
                 <app-alert [alert]="alert" [fading]="true" [type]="alertType" [@fade]="alert" *ngIf="alert" (close)="alert=null;"></app-alert>
                 <form #editForm="ngForm">
                     <div class="form-group mb-3">
-                        <label for="teamName">Vorname</label>
+                        <label for="teamName">Teamname</label>
                         <input type="text" ngModel="{{editTeam?.teamName}}" #editTeamName="ngModel" [class.is-valid]="editTeamName.valid && editTeamName.touched" [class.is-invalid]="editTeamName.invalid && (editTeamName.dirty || editTeamName.touched)" name="teamName" class="form-control"
                             id="teamName" placeholder="Teamname" required>
                         <div *ngIf="editTeamName.invalid && (editTeamName.dirty || editTeamName.touched)" class="invalid-feedback">

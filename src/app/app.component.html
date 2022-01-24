@@ -6,13 +6,13 @@
     <div class="collapse navbar-collapse" id="navbarColor02">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-                <a class="nav-link active" routerLink="/teammembers">Mitglieder</a>
+                <a class="nav-link" routerLink="/teammembers" [routerLinkActive]="['active']">Mitglieder</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" routerLink="/teams">Teams</a>
+                <a class="nav-link" routerLink="/teams" [routerLinkActive]="['active']">Teams</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" routerLink="/teams">Events</a>
+                <a class="nav-link" routerLink="/events" [routerLinkActive]="['active']">Events</a>
             </li>
         </ul>
         <form class="d-flex">

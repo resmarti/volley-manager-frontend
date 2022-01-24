@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef }
 import { Team } from 'src/app/interfaces/team';
 import { TeamService } from '../../services/team.service';
 import { HttpErrorResponse } from '@angular/common/http';
+
 @Component({
   selector: 'deleteteam-form',
   templateUrl: './deleteteam-form.component.html',

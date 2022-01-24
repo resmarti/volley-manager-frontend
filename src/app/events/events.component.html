@@ -1,0 +1,154 @@
+<div class="container" id="main-container">
+    <div class="btn-group dropleft fixed-button">
+        <button type="button" class="btn btn-primary" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="bi bi-three-dots-vertical"></i> 
+        </button>
+        <div class="dropdown-menu">
+            <a (click)="onOpenModal('add')" class="dropdown-item tooltips" data-placement="top" data-original-title="ContectualMenu"><i class="bi bi-plus-lg"></i> Event hinzufügen</a>
+        </div>
+    </div>
+    <app-alert class="ms-1" [alert]="alert" [fading]="false" [type]="alertType" *ngIf="alert" (close)="alert=null;"></app-alert>
+    <div class="row">
+        <div *ngFor="let event of events" class="col-md-6 col-xl-3">
+            <div class="card main-card m-b-30">
+                <div class="card-body row">
+                    <div class="col-4">
+                        <img src="assets/event.png" alt="" class="img-fluid rounded-circle w-60">
+                    </div>
+                    <div class="col-8 card-title align-self-center mb-0">
+                        <h5>{{event?.eventName}}</h5>
+                    </div>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <div class="d-flex flex-row">
+                            <div class="p-1"><i class="bi bi-calendar-check float-right"></i></div>
+                            <div class="p-1">{{event?.eventDate | date:'dd.MM.YYYY' }}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="d-flex flex-row">
+                            <div class="p-1"><i class="bi bi-geo float-right"></i></div>
+                            <div class="p-1">{{event?.eventLocation}}</div>
+                        </div>
+                    </li>
+                </ul>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <div class="float-end btn-group btn-group-sm">
+                            <a (click)="onOpenModal('edit', event)" class="btn btn-primary tooltips" data-placement="top" data-original-title="Edit"><i class="bi bi-pencil"></i> </a>
+                            <a (click)="onOpenModal('delete', event)" class="btn btn-danger tooltips" data-placement="top" data-original-title="Delete"><i class="bi bi-x-lg"></i></a>
+                        </div>
+                    </li>
+                </ul>
+                <div class="card-body pt-0">
+                    <div *ngIf="!event?.teamsEager?.length" class="card">
+                        <div class="card-body">
+                            Keine zugeteilten Teams
+                            <div class="float-end btn-group btn-group-sm">
+                                <a (click)="onOpenModal('addteamtoevent', event)" class="btn btn-primary tooltips" data-placement="top" data-original-title="Add"><i class="bi bi-plus-lg"></i> </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="event?.teamsEager?.length" class="accordion">
+                        <div class="accordion-item">
+                            <div class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#teamdropdown' + event?.eventId" aria-expanded="false" [attr.aria-controls]="'teamdropdown' + event?.eventId">
+                                    Zugeteilte Teams
+                                </button>
+                            </div>
+                            <div [attr.id]="'teamdropdown' + event?.eventId" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item px-0 py-0">
+                                            <div class="float-end btn-group btn-group-sm">
+                                                <a (click)="onOpenModal('addteamtoevent', event)" class="btn btn-primary tooltips" data-placement="top" data-original-title="Add"><i class="bi bi-plus-lg"></i> </a>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item px-0 py-1" *ngFor="let team of event?.teamsEager">
+                                            <span>{{team["teamName"]}}</span>
+                                            <div class="float-end btn-group btn-group-sm">
+                                                <a (click)="onOpenModal('removeteamfromevent', event, undefined, team)" class="btn btn-danger tooltips" data-placement="top" data-original-title="Delete"><i class="bi bi-x-lg"></i></a>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body pt-0">
+                    <div *ngIf="!event?.teamMembersEager?.length" class="card">
+                        <div class="card-body">
+                            Keine einzeln zugeteilte Teammitglieder
+                            <div class="float-end btn-group btn-group-sm">
+                                <a (click)="onOpenModal('addteammembertoevent', event)" class="btn btn-primary tooltips" data-placement="top" data-original-title="Add"><i class="bi bi-plus-lg"></i> </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="event?.teamMembersEager?.length" class="accordion">
+                        <div class="accordion-item">
+                            <div class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#teammemberdropdown' + event?.eventId" aria-expanded="false" [attr.aria-controls]="'teammemberdropdown' + event?.eventId">
+                            Einzelne zugeteilte Teammitglieder
+                            </button>
+                            </div>
+                            <div [attr.id]="'teammemberdropdown' + event?.eventId" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item px-0 py-0">
+                                            <div class="float-end btn-group btn-group-sm">
+                                                <a (click)="onOpenModal('addteammembertoevent', event)" class="btn btn-primary tooltips" data-placement="top" data-original-title="Add"><i class="bi bi-plus-lg"></i> </a>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item px-0 py-1" *ngFor="let teammember of event?.teamMembersEager">
+                                            <span>{{teammember["firstName"]}} {{teammember["lastName"]}}</span>
+                                            <div class="float-end btn-group btn-group-sm">
+                                                <a (click)="onOpenModal('removeteammemberfromevent', event, teammember)" class="btn btn-danger tooltips" data-placement="top" data-original-title="Delete"><i class="bi bi-x-lg"></i></a>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Event Form-->
+    <app-add-event (getEvents)="getEvents()"></app-add-event>
+
+    <!-- Edit Event Form -->
+    <app-edit-event (getEvents)="getEvents()" [editEvent]="editEvent"></app-edit-event>
+
+    <!-- Delete Event Modal -->
+    <app-delete-event (getEvents)="getEvents()" [deleteEvent]="deleteEvent"></app-delete-event>
+
+    <!-- Add Team to Event Modal -->
+    <app-add-team-to-event (getEvents)="getEvents()" [addToEvent]="addToEvent"></app-add-team-to-event>
+
+    <!-- Add Teammember to Event Modal -->
+    <app-add-teammember-to-event (getEvents)="getEvents()" [addToEvent]="addToEvent"></app-add-teammember-to-event>
+
+    <!-- Remove Team from Event Modal -->
+    <app-remove-team-from-event (getEvents)="getEvents()" [removeFromEvent]="removeFromEvent" [removeTeam]="removeTeam"></app-remove-team-from-event>
+
+    <!-- Remove Teammember from Event Modal -->
+    <!--<app-remove-teammember-from-event (getEvents)="getEvents()" [removeFromEvent]="removeFromEvent" [removeTeammember]="removeTeammember"></app-remove-teammember-from-event>-->
+
+</div>
+
+<!-- Notification for no teams -->
+<div *ngIf="events?.length == 0" class="col-lg-12 col-md-12 col-xl-12">
+    <div class="alert alert-info" role="alert">
+        <h4 class="alert-heading">Keine Events!</h4>
+        <p>(Noch) keine Events gefunden.</p>
+    </div>
+</div>

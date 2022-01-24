@@ -20,7 +20,7 @@ export class TeamsComponent implements OnInit {
   public removeTeammember: Teammember | undefined;
   public alert: any | undefined;
   public alertType: any | undefined;
-  public searchTerm: string | undefined;
+  public searchTerm: string;
   public searchLength: number;
   public team: any | undefined;
   public teammember: any | undefined;
@@ -28,13 +28,14 @@ export class TeamsComponent implements OnInit {
   constructor(private teamService: TeamService, private searchTermService: SearchTearmService) {
     this.teams = [];
     this.fallbackTeams =[];
+    this.searchTerm = "";
     this.searchLength = 0;
    }
   ngOnInit(): void {
     this.getTeams();
     this.searchTermService.currentSearchTerm.subscribe(searchTerm=> {
       this.searchTerm=searchTerm;
-      this.searchTeammember(this.searchTerm);
+      this.searchTeams(this.searchTerm);
     })
   }
 
@@ -43,7 +44,7 @@ export class TeamsComponent implements OnInit {
       (response: Team[]) => {
         this.teams = response;
         this.fallbackTeams = this.teams;
-        console.log(this.teams);
+        this.searchTeams(this.searchTerm)
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
@@ -51,7 +52,7 @@ export class TeamsComponent implements OnInit {
     );
   }
 
-  public searchTeammember(key: string): void {
+  public searchTeams(key: string): void {
     console.log(key);
     if (this.searchLength>key.length) {
       this.teams=this.fallbackTeams;
@@ -78,7 +79,7 @@ export class TeamsComponent implements OnInit {
     }
     this.teams = results;
     if (results.length === 0 || !key) {
-      this.getTeams();
+      this.teams=this.fallbackTeams;
     }; 
     if (results.length ===0 && key.length>0) {
       this.alert="Die Suche hat keine Übereinstimmung gefunden! Es werden alle Teams angezeigt."

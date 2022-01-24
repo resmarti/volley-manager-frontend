@@ -20,13 +20,14 @@ export class TeammembersComponent implements OnInit {
   public addToTeammember: Teammember | undefined;
   public alert: any | undefined;
   public alertType: any | undefined;
-  public searchTerm: string | undefined;
+  public searchTerm: string;
   public searchLength: number;
   public editContactPerson: ContactPerson | undefined;
 
   constructor(private teammemberService: TeammemberService, private searchTermService: SearchTearmService) {
     this.teammembers = [];
     this.fallbackTeammembers =[];
+    this.searchTerm = "";
     this.searchLength = 0;
    }
 
@@ -43,6 +44,7 @@ export class TeammembersComponent implements OnInit {
       (response: Teammember[]) => {
         this.teammembers = response;
         this.fallbackTeammembers = this.teammembers;
+        this.searchTeammember(this.searchTerm)
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
@@ -68,7 +70,7 @@ export class TeammembersComponent implements OnInit {
     }
     this.teammembers = results;
     if (results.length === 0 || !key) {
-      this.getTeammembers();
+      this.teammembers = this.fallbackTeammembers;
     }; 
     if (results.length ===0 && key.length>0) {
       this.alert="Die Suche hat keine Übereinstimmung gefunden! Es werden alle Mitglieder angezeigt."
@@ -78,7 +80,6 @@ export class TeammembersComponent implements OnInit {
       this.alert=null;
     }
     this.searchLength = key.length;
-    console.log(this.searchLength)
   }
 
   public onOpenModal(mode: string, teammember?: Teammember): void {

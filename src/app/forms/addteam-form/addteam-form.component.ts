@@ -12,13 +12,13 @@ import { Team } from 'src/app/interfaces/team';
 export class AddTeamFormComponent implements OnInit {
   @Output("getTeams") getTeams: EventEmitter<any> = new EventEmitter();
 
-  constructor(private teammemberService: TeamService) { }
+  constructor(private teamService: TeamService) { }
 
   ngOnInit(): void {
   }
 
   public onAddTeam(addForm: NgForm): void {
-    this.teammemberService.addTeam(addForm.value).subscribe(
+    this.teamService.addTeam(addForm.value).subscribe(
       (response: Team) => {
         console.log(response);
         this.getTeams.emit();
