@@ -1,10 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Teammember } from '../interfaces/teammember';
-import { TeammemberService } from '../services/teammember.service';
+import { TeammembersService } from '../services/teammembers.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SearchTearmService } from '../services/search-service.service';
 import { ContactPerson } from '../interfaces/contacperson';
-
 
 @Component({
   selector: 'app-teammembers',
@@ -24,7 +23,7 @@ export class TeammembersComponent implements OnInit {
   public searchLength: number;
   public editContactPerson: ContactPerson | undefined;
 
-  constructor(private teammemberService: TeammemberService, private searchTermService: SearchTearmService) {
+  constructor(private teammembersService: TeammembersService, private searchTermService: SearchTearmService) {
     this.teammembers = [];
     this.fallbackTeammembers =[];
     this.searchTerm = "";
@@ -32,32 +31,36 @@ export class TeammembersComponent implements OnInit {
    }
 
   ngOnInit(): void {
+    //get team members from the api
     this.getTeammembers();
+    //subscribe to search term service to get search terms from parent
     this.searchTermService.currentSearchTerm.subscribe(searchTerm=> {
       this.searchTerm=searchTerm;
       this.searchTeammember(this.searchTerm);
     })
   }
 
+  //method to get team members from the api
   public getTeammembers(): void {
-    this.teammemberService.getTeammembers().subscribe(
-      (response: Teammember[]) => {
+    this.teammembersService.getTeammembers().subscribe({
+      next: (response: Teammember[]) => {
         this.teammembers = response;
         this.fallbackTeammembers = this.teammembers;
-        this.searchTeammember(this.searchTerm)
       },
-      (error: HttpErrorResponse) => {
-        alert(error.message);
+      error: (error: HttpErrorResponse) => {
+        this.alert=error.message;
+        this.alertType="danger";
       }
-    );
+    });
   }
 
-
+  //method to search team members
   public searchTeammember(key: string): void {
-    console.log(key);
+    //reset team members if characters are removed
     if (this.searchLength>key.length) {
       this.teammembers=this.fallbackTeammembers;
     }
+    //actual search within team members
     const results: Teammember[] = [];
     for (const teammember of this.teammembers) {
       if ((teammember.firstName + " " + teammember.lastName).toLowerCase().indexOf(key.toLowerCase()) !== -1
@@ -69,19 +72,24 @@ export class TeammembersComponent implements OnInit {
       }
     }
     this.teammembers = results;
+    //reset result if nothing is found
     if (results.length === 0 || !key) {
       this.teammembers = this.fallbackTeammembers;
-    }; 
+    };
+    //show alert if nothing is found and there is a search term
     if (results.length ===0 && key.length>0) {
       this.alert="Die Suche hat keine Übereinstimmung gefunden! Es werden alle Mitglieder angezeigt."
       this.alertType="warning"
     }
+    //else remove the alert
     else {
       this.alert=null;
     }
+    //set search term length to detect character removal
     this.searchLength = key.length;
   }
 
+  //method to open various modals
   public onOpenModal(mode: string, teammember?: Teammember): void {
     const container = document.getElementById('main-container');
     const button = document.createElement('button');
@@ -105,7 +113,6 @@ export class TeammembersComponent implements OnInit {
     }
     else if(mode === 'removeContactPerson') {
       this.removeContactPerson = teammember;
-      //button.setAttribute('data-bs-target', '#deleteTeammemberModal')
       button.setAttribute('data-bs-target', '#removeContactPersonModal')
     }
     else if(mode === 'editContactPerson') {
@@ -116,13 +123,15 @@ export class TeammembersComponent implements OnInit {
     button.click();
   }
 
+  //method to filter missing mobile numbers (needed for masking)
   public returnOnlyString(mobile: string | undefined): string {
     if (typeof mobile === 'string') {
       return mobile;
     }
     return "";
   }
-
+  
+  //method to filter only valid mobile nummbers (also neede for masking)
   public validPhonenumber(mobile: string | undefined): boolean {
     return RegExp("^[0-9]{11}").test(this.returnOnlyString(mobile))
   }

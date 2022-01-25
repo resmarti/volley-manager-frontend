@@ -33,31 +33,37 @@ export class EventsComponent implements OnInit {
    }
 
   ngOnInit(): void {
+    //get events from the api
     this.getEvents();
-    this.searchTermService.currentSearchTerm.subscribe(searchTerm=> {
+      //subscribe to search term service to get search terms from parent
+      this.searchTermService.currentSearchTerm.subscribe(searchTerm=> {
       this.searchTerm=searchTerm;
       this.searchTeammember(this.searchTerm);
     })
   }
 
+  //method to get events from the api
   public getEvents(): void {
-    this.eventsService.getEvents().subscribe(
-      (response: VolleyEvent[]) => {
+    this.eventsService.getEvents().subscribe({
+      next: (response: VolleyEvent[]) => {
         this.events = response;
         this.fallbackEvents = this.events;
         this.searchTeammember(this.searchTerm);
       },
-      (error: HttpErrorResponse) => {
-        alert(error.message);
+      error: (error: HttpErrorResponse) => {
+        this.alert=error.message;
+        this.alertType="danger";
       }
-    );
+    });
   }
 
+  //method to search events
   public searchTeammember(key: string): void {
-    console.log(key);
+    //reset events if characters are removed
     if (this.searchLength>key.length) {
       this.events=this.fallbackEvents;
     }
+    //actual search within events
     const results: VolleyEvent[] = [];
     for (const event of this.events) {
       //Search in connected Teammembers (I suspect this will get slow very fast)
@@ -75,7 +81,6 @@ export class EventsComponent implements OnInit {
       //Search in connected Teams
       let teams : Array<Team> | undefined = event.teamsEager ;
       teams?.forEach(team => {
-        console.log(team.teamName);
         if (team.teamName.toLowerCase().indexOf(key.toLowerCase()) !== -1) {
           found = true;
         }
@@ -88,20 +93,24 @@ export class EventsComponent implements OnInit {
       }
     }
     this.events = results;
+    //reset result if nothing is found
     if (results.length === 0 || !key) {
       this.events=this.fallbackEvents;
-    }; 
+    };
+    //show alert if nothing is found and there is a search term 
     if (results.length ===0 && key.length>0) {
       this.alert="Die Suche hat keine Übereinstimmung gefunden! Es werden alle Events angezeigt."
       this.alertType="warning"
     }
+    //else remove the alert
     else {
       this.alert=null;
     }
+    //set search term length to detect character removal
     this.searchLength = key.length;
-    console.log(this.searchLength)
   }
 
+  //method to open various modals
   public onOpenModal(mode: string, event?: VolleyEvent, teammember?: Teammember, team?: Team): void {
     const container = document.getElementById('main-container');
     const button = document.createElement('button');

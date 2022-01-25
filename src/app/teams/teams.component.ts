@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Team } from '../interfaces/team';
 import { Teammember } from '../interfaces/teammember';
-import { TeamService } from '../services/team.service';
+import { TeamsService } from '../services/teams.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SearchTearmService } from '../services/search-service.service';
 
@@ -25,43 +25,49 @@ export class TeamsComponent implements OnInit {
   public team: any | undefined;
   public teammember: any | undefined;
 
-  constructor(private teamService: TeamService, private searchTermService: SearchTearmService) {
+  constructor(private teamsService: TeamsService, private searchTermService: SearchTearmService) {
     this.teams = [];
     this.fallbackTeams =[];
     this.searchTerm = "";
     this.searchLength = 0;
    }
   ngOnInit(): void {
+    //get teams from the api
     this.getTeams();
+    //subscribe to search term service to get search terms from parent
     this.searchTermService.currentSearchTerm.subscribe(searchTerm=> {
       this.searchTerm=searchTerm;
       this.searchTeams(this.searchTerm);
     })
   }
 
+  //method to get teams from the api
   public getTeams(): void {
-    this.teamService.getTeams().subscribe(
-      (response: Team[]) => {
+    this.teamsService.getTeams().subscribe({
+      next: (response: Team[]) => {
         this.teams = response;
         this.fallbackTeams = this.teams;
         this.searchTeams(this.searchTerm)
       },
-      (error: HttpErrorResponse) => {
-        alert(error.message);
+      error: (error: HttpErrorResponse) => {
+        this.alert=error.message;
+        this.alertType="danger";
       }
-    );
+    });
   }
 
+  //method to search teams
   public searchTeams(key: string): void {
-    console.log(key);
+    //reset teams if characters are removed
     if (this.searchLength>key.length) {
       this.teams=this.fallbackTeams;
     }
+    //actual search within teams
     const results: Team[] = [];
     for (const team of this.teams) {
-      //Search in Teammembers (I suspect this will get slow very fast)
+      //Search in team members within teams (I suspect this will get slow very fast)
       let found: boolean = false;
-      let teammembers : Array<Teammember> | undefined = team.teammembers ;
+      let teammembers : Array<Teammember> | undefined = team.teamMembersEager ;
       teammembers?.forEach(teammember => {
         console.log(teammember.firstName);
         if ((teammember.firstName + " " + teammember.lastName).toLowerCase().indexOf(key.toLowerCase()) !== -1
@@ -78,20 +84,24 @@ export class TeamsComponent implements OnInit {
       }
     }
     this.teams = results;
+    //reset result if nothing is found
     if (results.length === 0 || !key) {
       this.teams=this.fallbackTeams;
     }; 
+    //show alert if nothing is found and there is a search term
     if (results.length ===0 && key.length>0) {
       this.alert="Die Suche hat keine Übereinstimmung gefunden! Es werden alle Teams angezeigt."
       this.alertType="warning"
     }
+    //else remove the alert
     else {
       this.alert=null;
     }
+    //set search term length to detect character removal
     this.searchLength = key.length;
-    console.log(this.searchLength)
   }
 
+  //method to open various modals
   public onOpenModal(mode: string, team?: Team, teammember?: Teammember): void {
     const container = document.getElementById('main-container');
     const button = document.createElement('button');
@@ -109,10 +119,10 @@ export class TeamsComponent implements OnInit {
       this.deleteTeam = team;
       button.setAttribute('data-bs-target', '#deleteTeamModal')
     }
-    else if(mode === 'deleteteammember') {
+    else if(mode === 'removeteammemberfromteam') {
       this.removeFromTeam = team;
       this.removeTeammember = teammember;
-      button.setAttribute('data-bs-target', '#deleteTeammemberFromTeamModal')
+      button.setAttribute('data-bs-target', '#removeTeammemberFromTeamModal')
     }
     else if(mode === 'addteammembertoteam') {
       this.addToTeam = team;

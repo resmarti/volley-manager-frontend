@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DeleteTeamFormComponent } from './deleteteam-form.component';
+import { EditTeamComponent } from './edit-team.component';
 
-describe('DeleteteamFormComponent', () => {
-  let component: DeleteTeamFormComponent;
-  let fixture: ComponentFixture<DeleteTeamFormComponent>;
+describe('EditTeamComponent', () => {
+  let component: EditTeamComponent;
+  let fixture: ComponentFixture<EditTeamComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DeleteTeamFormComponent ]
+      declarations: [ EditTeamComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DeleteTeamFormComponent);
+    fixture = TestBed.createComponent(EditTeamComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -20,18 +20,18 @@ export class RemoveTeammemberFromEventComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  //method to be called for removing a teammember from an event after confirmation
   public onRemoveTeammembersFromEvent(eventId: number, teammemberId: number): void {
-    this.eventsService.removeTeammemberFromEvent(eventId, teammemberId).subscribe(
-      (response: void) => {
-        console.log(response);
+    this.eventsService.removeTeammemberFromEvent(eventId, teammemberId).subscribe({
+      next: () => {
         this.getEvents.emit();
         if (this.closeDeleteModal) {
           this.closeDeleteModal.nativeElement.click();
         }
       },
-      (error: HttpErrorResponse) => {
+      error: (error: HttpErrorResponse) => {
         alert(error.message);
       }
-    );
+    });
   }
 }

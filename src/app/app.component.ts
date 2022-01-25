@@ -1,7 +1,4 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, Output } from '@angular/core';
-import { Teammember } from './interfaces/teammember';
-import { TeammemberService } from './services/teammember.service';
 import { trigger, animate, transition, style } from '@angular/animations';
 import { SearchTearmService } from './services/search-service.service';
 
@@ -22,36 +19,18 @@ import { SearchTearmService } from './services/search-service.service';
   ]
 })
 export class AppComponent implements OnInit {
-  public teammembers: Teammember[];
-  public fallbackTeammembers: Teammember[];
-  public editTeammember: Teammember | undefined;
-  public deleteTeammember: Teammember | undefined;
   public alert: any | undefined;
   public alertType: any | undefined;
   public searchTerm: string | undefined;
 
-  constructor(private teammemberService: TeammemberService, private searchTermService: SearchTearmService){
-    this.teammembers = [];
-    this.fallbackTeammembers =[];
-  }
+  constructor(private searchTermService: SearchTearmService){ }
 
   ngOnInit() {
-    this.getTeammembers();
+    //subscripe to the search term service
     this.searchTermService.currentSearchTerm.subscribe(searchTerm=> this.searchTerm=searchTerm)
   } 
 
-  public getTeammembers(): void {
-    this.teammemberService.getTeammembers().subscribe(
-      (response: Teammember[]) => {
-        this.teammembers = response;
-        this.fallbackTeammembers = this.teammembers;
-      },
-      (error: HttpErrorResponse) => {
-        alert(error.message);
-      }
-    );
-  }
-
+  //method to announce search term changes to child components
   public changeSearchTerm(searchTerm: string) {
     this.searchTermService.announceSearchTerm(searchTerm);
   }

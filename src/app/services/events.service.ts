@@ -7,6 +7,7 @@ import { VolleyEvent } from '../interfaces/event';
 @Injectable({
   providedIn: 'root'
 })
+//Service to get events from the api
 export class EventsService {
   private apiServerUrl = environment.apiBaseUrl;
 

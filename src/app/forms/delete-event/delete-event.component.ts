@@ -18,19 +18,19 @@ export class DeleteEventComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  //method to be called for deleting an event after confirmation
   public onDeleteEvent(eventId: number): void {
-    this.eventsService.deleteEvent(eventId).subscribe(
-      (response: void) => {
-        console.log(response);
+    this.eventsService.deleteEvent(eventId).subscribe({
+      next: () => {
         this.getEvents.emit();
         if (this.closeDeleteModal) {
           this.closeDeleteModal.nativeElement.click();
         }
       },
-      (error: HttpErrorResponse) => {
+      error: (error: HttpErrorResponse) => {
         alert(error.message);
       }
-    );
+    });
   }
 
 }

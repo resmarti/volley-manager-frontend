@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ContactPerson } from 'src/app/interfaces/contacperson';
 import { Teammember } from 'src/app/interfaces/teammember';
-import { ContactPersonService } from 'src/app/services/contactperson.service';
+import { ContactPersonsService } from 'src/app/services/contact-persons.service';
 import { RefreshContactPersonsService } from 'src/app/services/refresh-contact-persons.service';
 
 @Component({
@@ -23,69 +23,73 @@ export class AddContactPersonToTeammemberComponent implements OnInit {
   public alertType: any | undefined;
   public searchLength: number;
 
-  constructor(private contactPersonService: ContactPersonService, private refreshContactPersonsService: RefreshContactPersonsService) {
+  constructor(private contactPersonsService: ContactPersonsService, private refreshContactPersonsService: RefreshContactPersonsService) {
     this.contactPersons = [];
     this.fallbackContactPersons =[];
     this.searchLength = 0;
    }
 
   ngOnInit(): void {
+    //get existing contact persons
     this.getContactPersons();
+    //subscribe to service to refresh contact persons externally
     this.refreshContactPersonsService.currentRefreshContactPersons.subscribe(refreshContactPersons=> {
       this.refreshContactPersons=refreshContactPersons;
       if(this.refreshContactPersons) {
         this.getContactPersons();
-        this.contactPersonsRefresh(this.refreshContactPersons);
       }
     })
   }
 
+  //method to get existing contact persons from api (can also be called from other components)
   public getContactPersons(): void {
-    this.contactPersonService.getContactPersons().subscribe(
-      (response: ContactPerson[]) => {
+    this.contactPersonsService.getContactPersons().subscribe({
+      next: (response: ContactPerson[]) => {
         this.contactPersons = response;
         this.fallbackContactPersons = this.contactPersons;
-        console.log(this.contactPersons);
         this.refreshContactPersons=false;
       },
-      (error: HttpErrorResponse) => {
+      error: (error: HttpErrorResponse) => {
         alert(error.message);
       }
-    );
+    });
   }
 
+  //method to be called for adding an existing contact person to a teammember
   public onAddExistingContactPerson(contactPersonId: number, addToTeammember: number): void {
-    this.contactPersonService.addExistingContactPersonToTeammember(contactPersonId, addToTeammember).subscribe(
-      (response: void) => {
+    this.contactPersonsService.addExistingContactPersonToTeammember(contactPersonId, addToTeammember).subscribe({
+      next: () => {
         this.getTeammembers.emit();
       },
-      (error: HttpErrorResponse) => {
+      error: (error: HttpErrorResponse) => {
         alert(error.message);
       }
-     );
+    });
    }
 
-
+  //method to be called for adding a new contact person to a teammember after form completion
   public onAddNewContactPerson(addForm: NgForm, addToTeammemberId: number): void {
-    console.log(addForm.value);
-    this.contactPersonService.addNewContactPersonToTeammember(addForm.value, addToTeammemberId).subscribe(
-      (response: ContactPerson) => {
-        console.log(response);
+    this.contactPersonsService.addNewContactPersonToTeammember(addForm.value, addToTeammemberId).subscribe({
+      next: (response: ContactPerson) => {
+        //refresh the teammembers on parent component
         this.getTeammembers.emit();
-          addForm.reset();
+        //clear the form
+        addForm.reset();
       },
-      (error: HttpErrorResponse) => {
+      error: (error: HttpErrorResponse) => {
         alert(error.message);
         addForm.reset();
       }
-     );
+    });
    }
 
+   //method to search for existing contact persons within the add modal
    public searchContactPerson(key: string): void {
-    console.log(key);
+    //reseting contact persons, if characters are removed
     if (this.searchLength>key.length) {
       this.contactPersons=this.fallbackContactPersons;
     }
+    //actual search within contact persons array
     const results: ContactPerson[] = [];
     for (const contactPerson of this.contactPersons) {
       if ((contactPerson.firstName + " " + contactPerson.lastName).toLowerCase().indexOf(key.toLowerCase()) !== -1
@@ -95,20 +99,24 @@ export class AddContactPersonToTeammemberComponent implements OnInit {
       }
     }
     this.contactPersons = results;
+    //reset result if nothing is found
     if (results.length === 0 || !key) {
-      this.getContactPersons();
-    }; 
-    if (results.length ===0) {
+      this.contactPersons=this.fallbackContactPersons;
+    };
+    //show alert if nothing is found and there is a search term
+    if (results.length ===0 && key.length>0) {
       this.alert="Die Suche hat keine Übereinstimmung gefunden!"
       this.alertType="warning"
     }
+    //else remove the alert
     else {
       this.alert=null;
     }
+    //set search term length to detect character removal
     this.searchLength = key.length;
-    console.log(this.searchLength)
   }
 
+  //reseting the contact person refresh boolean 
   public contactPersonsRefresh(refreshContactPerson: boolean) {
     this.refreshContactPersonsService.announceRefreshContactPersons(refreshContactPerson);
   }

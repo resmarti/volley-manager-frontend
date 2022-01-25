@@ -4,6 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
+//service to ask for a refresh of contact persons between child components of the team member component
 export class RefreshContactPersonsService {
 
   // Observable string sources

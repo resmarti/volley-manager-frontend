@@ -119,15 +119,15 @@
     </div>
 
     <!-- Add Teammember Form-->
-    <addteammember-form (getTeammembers)="getTeammembers()"></addteammember-form>
+    <app-add-teammember (getTeammembers)="getTeammembers()"></app-add-teammember>
 
     <!-- Edit Teammember Form -->
-    <editteammember-form (getTeammembers)="getTeammembers()" [editTeammember]="editTeammember"></editteammember-form>
+    <app-edit-teammember (getTeammembers)="getTeammembers()" [editTeammember]="editTeammember"></app-edit-teammember>
 
     <!-- Delete Modal -->
-    <deleteteammember-form (getTeammembers)="getTeammembers()" [deleteTeammember]="deleteTeammember"></deleteteammember-form>
+    <app-delete-teammember (getTeammembers)="getTeammembers()" [deleteTeammember]="deleteTeammember"></app-delete-teammember>
 
-    <!-- Delete Modal -->
+    <!-- Remove ContactPerson Modal -->
     <app-remove-contact-person (getTeammembers)="getTeammembers()" [removeContactPerson]="removeContactPerson"></app-remove-contact-person>
 
     <!-- Add contactPerson Modal -->

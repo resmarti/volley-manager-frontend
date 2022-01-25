@@ -1,13 +1,13 @@
 import { Component, Input, Output, OnInit, EventEmitter} from '@angular/core';
-import { Teammember } from 'src/app/interfaces/teammember';
-import { TeammemberService } from '../../services/teammember.service';
+import { Team } from 'src/app/interfaces/team';
+import { TeamsService } from '../../services/teams.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { trigger, animate, transition, style } from '@angular/animations';
 
 @Component({
-  selector: 'editteammember-form',
-  templateUrl: './editteammember-form.component.html',
-  styleUrls: ['./editteammember-form.component.css'],
+  selector: 'app-edit-team',
+  templateUrl: './edit-team.component.html',
+  styleUrls: ['./edit-team.component.css'],
   animations: [
     trigger('fade', [
       transition('void => active', [ // using status here for transition
@@ -20,30 +20,31 @@ import { trigger, animate, transition, style } from '@angular/animations';
     ])
   ]
 })
-export class EditTeammemberFormComponent implements OnInit {
-  @Input() editTeammember: Teammember | undefined;
-  @Output("getTeammembers") getTeammembers: EventEmitter<any> = new EventEmitter();
+export class EditTeamComponent implements OnInit {
+  @Input() editTeam: Team | undefined;
+  @Output("getTeams") getTeams: EventEmitter<any> = new EventEmitter();
 
   public alert: any | undefined;
   public alertType: any | undefined;
 
-  constructor(private teammemberService: TeammemberService) { }
+  constructor(private teamsService: TeamsService) { }
 
   ngOnInit(): void {
   }
 
-  public onUpdateTeammember(teammember: Teammember): void {
-    this.teammemberService.updateTeammember(teammember).subscribe(
-      (response: Teammember) => {
+  //method to be called for updating a team after form completion
+  public onUpdateTeam(team: Team): void {
+    this.teamsService.updateTeam(team).subscribe({
+      next: (response: Team) => {
         console.log(response);
-        this.getTeammembers.emit();
+        this.getTeams.emit();
         this.alert="erfolgreich gespeichert";
         this.alertType="success";
       },
-      (error: HttpErrorResponse) => {
+      error: (error: HttpErrorResponse) => {
         alert(error.message);
       }
-    );
+    });
   }
 
 }

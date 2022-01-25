@@ -4,6 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
+//service to share search terms between components
 export class SearchTearmService {
 
   // Observable string sources

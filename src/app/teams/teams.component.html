@@ -40,16 +40,16 @@
                 </ul>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">
-                        <div *ngIf="team?.teammembers?.length == 0" class="d-flex flex-row">
+                        <div *ngIf="!team?.teamMembersEager?.length" class="d-flex flex-row">
                             <div class="p-1"><i class="bi bi-x-circle-fill float-right"></i></div>
                             <div class="p-1">Es gibt keine Mitglieder in diesem Team</div>
                         </div>
                     </li>
-                    <li class="list-group-item" *ngFor="let teammember of team?.teammembers">
+                    <li class="list-group-item" *ngFor="let teammember of team?.teamMembersEager">
                         <span>{{teammember["firstName"]}} {{teammember["lastName"]}}</span>
                         <div class="float-end btn-group btn-group-sm">
                             <!--<a (click)="onOpenModal('edit', team)" class="btn btn-primary tooltips" data-placement="top" data-original-title="Edit"><i class="bi bi-pencil"></i> </a>-->
-                            <a (click)="onOpenModal('deleteteammember', team, teammember)" class="btn btn-danger tooltips" data-placement="top" data-original-title="Delete"><i class="bi bi-x-lg"></i></a>
+                            <a (click)="onOpenModal('removeteammemberfromteam', team, teammember)" class="btn btn-danger tooltips" data-placement="top" data-original-title="Delete"><i class="bi bi-x-lg"></i></a>
                         </div>
                     </li>
                 </ul>
@@ -58,19 +58,19 @@
     </div>
 
     <!-- Add Team Form-->
-    <addteam-form (getTeams)="getTeams()"></addteam-form>
+    <app-add-team (getTeams)="getTeams()"></app-add-team>
 
     <!-- Edit Team Form -->
-    <editteam-form (getTeams)="getTeams()" [editTeam]="editTeam"></editteam-form>
+    <app-edit-team (getTeams)="getTeams()" [editTeam]="editTeam"></app-edit-team>
 
     <!-- Delete Modal -->
-    <deleteteam-form (getTeams)="getTeams()" [deleteTeam]="deleteTeam"></deleteteam-form>
+    <app-delete-team (getTeams)="getTeams()" [deleteTeam]="deleteTeam"></app-delete-team>
 
     <!-- Remove Teammember Modal -->
-    <deleteteammemberfromteam-form (getTeams)="getTeams()" [removeFromTeam]="removeFromTeam" [removeTeammember]="removeTeammember"></deleteteammemberfromteam-form>
+    <app-remove-teammember-from-team (getTeams)="getTeams()" [removeFromTeam]="removeFromTeam" [removeTeammember]="removeTeammember"></app-remove-teammember-from-team>
 
     <!-- Add Team Form-->
-    <app-add-teammember-to-team-form (getTeams)="getTeams()" [addToTeam]="addToTeam"></app-add-teammember-to-team-form>
+    <app-add-teammember-to-team (getTeams)="getTeams()" [addToTeam]="addToTeam"></app-add-teammember-to-team>
 
 
 </div>

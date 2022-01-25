@@ -1,14 +1,13 @@
-
 import { Component, Input, Output, OnInit, EventEmitter} from '@angular/core';
+import { Teammember } from 'src/app/interfaces/teammember';
+import { TeammembersService } from '../../services/teammembers.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { trigger, animate, transition, style } from '@angular/animations';
-import { ContactPerson } from 'src/app/interfaces/contacperson';
-import { ContactPersonsService } from 'src/app/services/contact-persons.service';
 
 @Component({
-  selector: 'app-edit-contact-person',
-  templateUrl: './edit-contact-person.component.html',
-  styleUrls: ['./edit-contact-person.component.css'],
+  selector: 'app-edit-teammember',
+  templateUrl: './edit-teammember.component.html',
+  styleUrls: ['./edit-teammember.component.css'],
   animations: [
     trigger('fade', [
       transition('void => active', [ // using status here for transition
@@ -21,23 +20,22 @@ import { ContactPersonsService } from 'src/app/services/contact-persons.service'
     ])
   ]
 })
-
-export class EditContactPersonComponent implements OnInit {
-  @Input() editContactPerson: ContactPerson | undefined;
+export class EditTeammemberComponent implements OnInit {
+  @Input() editTeammember: Teammember | undefined;
   @Output("getTeammembers") getTeammembers: EventEmitter<any> = new EventEmitter();
 
   public alert: any | undefined;
   public alertType: any | undefined;
 
-  constructor(private contactPersonsService: ContactPersonsService) { }
+  constructor(private teammembersService: TeammembersService) { }
 
   ngOnInit(): void {
   }
 
-  //method to be called for updating a contact person after form completion
-  public onUpdateContactPerson(contactPerson: ContactPerson): void {
-    this.contactPersonsService.updateContactPerson(contactPerson).subscribe({
-      next: (response: ContactPerson) => {
+  //method to be called for updating a teammember after form completion
+  public onUpdateTeammember(teammember: Teammember): void {
+    this.teammembersService.updateTeammember(teammember).subscribe({
+      next: (response: Teammember) => {
         console.log(response);
         this.getTeammembers.emit();
         this.alert="erfolgreich gespeichert";

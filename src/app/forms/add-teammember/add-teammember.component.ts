@@ -1,34 +1,35 @@
 import { Component, Output, EventEmitter, OnInit } from "@angular/core";
 import { NgForm } from '@angular/forms';
-import { TeammemberService } from '../../services/teammember.service';
+import { TeammembersService } from '../../services/teammembers.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Teammember } from 'src/app/interfaces/teammember';
 
 @Component({
-  selector: 'addteammember-form', 
-  templateUrl: './addteammember-form.component.html',
-  styleUrls: ['./addteammember-form.component.css']
+  selector: 'app-add-teammember',
+  templateUrl: './add-teammember.component.html',
+  styleUrls: ['./add-teammember.component.css']
 })
-export class AddTeammemberFormComponent{
+export class AddTeammemberComponent implements OnInit {
   @Output("getTeammembers") getTeammembers: EventEmitter<any> = new EventEmitter();
 
-  constructor(private teammemberService: TeammemberService) { }
+  constructor(private teammembersService: TeammembersService) { }
 
   ngOnInit(): void {
   }
 
+  //method to be called for adding a teammember after form completion
   public onAddTeammember(addForm: NgForm): void {
     console.log(addForm.value);
-    this.teammemberService.addTeammember(addForm.value).subscribe(
-      (response: Teammember) => {
+    this.teammembersService.addTeammember(addForm.value).subscribe({
+      next: (response: Teammember) => {
         console.log(response);
         this.getTeammembers.emit();
           addForm.reset();
       },
-      (error: HttpErrorResponse) => {
+      error: (error: HttpErrorResponse) => {
         alert(error.message);
         addForm.reset();
       }
-     );
+    });
    }
 }

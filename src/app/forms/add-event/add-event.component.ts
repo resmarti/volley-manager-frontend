@@ -17,19 +17,19 @@ export class AddEventComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  //method to be called for adding a event after form completion
   public onAddEvent(addForm: NgForm): void {
-    console.log(addForm.value);
-    this.eventsService.addEvent(addForm.value).subscribe(
-      (response: VolleyEvent) => {
+    this.eventsService.addEvent(addForm.value).subscribe({
+      next: (response: VolleyEvent) => {
         console.log(response);
         this.getEvents.emit();
         addForm.reset();
       },
-      (error: HttpErrorResponse) => {
+      error: (error: HttpErrorResponse) => {
         alert(error.message);
         addForm.reset();
       }
-    );
+    });
   }
 
 }

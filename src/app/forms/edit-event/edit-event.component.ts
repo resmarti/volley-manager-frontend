@@ -32,19 +32,19 @@ export class EditEventComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  //method to be called for updating an event person after form completion
   public onUpdateEvent(event: VolleyEvent): void {
-    console.log(event);
-    this.eventsService.updateEvent(event).subscribe(
-      (response: VolleyEvent) => {
+    this.eventsService.updateEvent(event).subscribe({
+      next: (response: VolleyEvent) => {
         console.log(response);
         this.getEvents.emit();
         this.alert="erfolgreich gespeichert";
         this.alertType="success";
       },
-      (error: HttpErrorResponse) => {
+      error: (error: HttpErrorResponse) => {
         alert(error.message);
       }
-    );
+    });
   }
 
 }

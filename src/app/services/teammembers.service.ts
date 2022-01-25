@@ -7,7 +7,8 @@ import { environment } from "src/environments/environment";
 @Injectable({
     providedIn: 'root'
 })
-export class TeammemberService {
+//Service to get team members from the api
+export class TeammembersService {
     private apiServerUrl = environment.apiBaseUrl;
 
     constructor(private http:HttpClient) { }
