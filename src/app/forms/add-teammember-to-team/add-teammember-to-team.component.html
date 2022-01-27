@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addTeamModalLabel">Mitglied zum Team {{addToTeam?.teamName}} hinzufügen</h5>
+                <h5 class="modal-title" id="addTeammemberToTeamModalLabel">Mitglied zum Team {{addToTeam?.teamName}} hinzufügen</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -23,9 +23,11 @@
                         <div class="row">
                             <div class="col-2">
                                 <img src="assets/avatar.png" alt="" class="img-fluid rounded-circle w-60"><br/>
-                                <i *ngIf="teammember?.gender=='m'" class="bi bi-gender-male"></i>
-                                <i *ngIf="teammember?.gender=='f'" class="bi bi-gender-female"></i>
-                                <i *ngIf="teammember?.gender=='d'" class="bi bi-gender-ambiguous"></i>
+                                <span [ngSwitch]="teammember?.gender">
+                                    <i *ngSwitchCase="'m'" class="bi bi-gender-male"></i>
+                                    <i *ngSwitchCase="'f'" class="bi bi-gender-female"></i>
+                                    <i *ngSwitchCase="'d'" class="bi bi-gender-ambiguous"></i>
+                                </span>
                             </div>
                             <div class="col-8 card-title align-self-center mb-0">
                                 <h5>{{teammember?.firstName}} {{teammember?.lastName}}</h5>

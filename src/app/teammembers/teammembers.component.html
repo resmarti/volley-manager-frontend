@@ -14,9 +14,11 @@
                 <div class="card-body row">
                     <div class="col-4">
                         <img src="assets/avatar.png" alt="" class="img-fluid rounded-circle w-60">
-                        <i *ngIf="teammember?.gender=='m'" class="bi bi-gender-male"></i>
-                        <i *ngIf="teammember?.gender=='f'" class="bi bi-gender-female"></i>
-                        <i *ngIf="teammember?.gender=='d'" class="bi bi-gender-ambiguous"></i>
+                        <span [ngSwitch]="teammember?.gender">
+                            <i *ngSwitchCase="'m'" class="bi bi-gender-male"></i>
+                            <i *ngSwitchCase="'f'" class="bi bi-gender-female"></i>
+                            <i *ngSwitchCase="'d'" class="bi bi-gender-ambiguous"></i>
+                        </span>
                     </div>
                     <div class="col-8 card-title align-self-center mb-0">
                         <h5>{{teammember?.firstName}}<br/>{{teammember?.lastName}}</h5>
