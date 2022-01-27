@@ -109,32 +109,34 @@ export class TeamsComponent implements OnInit {
     button.type = 'button'
     button.style.display = 'none';
     button.setAttribute('data-bs-toggle', 'modal');
-    if(mode === 'add') {
-      button.setAttribute('data-bs-target', '#addTeamModal')
-    }
-    else if(mode === 'edit') {
-      this.selectedTeam = team;
-      button.setAttribute('data-bs-target', '#updateTeamModal')
-    }
-    else if(mode === 'deleteTeam') {
-      this.action="delete"
-      this.selectedTeam=team;
-      this.modalTitle = "Team löschen";
-      this.modalMessage = "Bist du sicher, dass du das die Team " + this.selectedTeam?.teamName + " löschen möchtest?"
-      button.setAttribute('data-bs-target', '#confirmModal')
-    }
-    else if(mode === 'removeTeammemberFromTeam') {
-      this.action="removeTeammemberFromTeam";
-      this.selectedTeam=team;
-      this.selectedTeammember=teammember;
-      this.modalTitle = "Teammitglied aus Team entfernen";
-      this.modalMessage = "Bist du sicher, dass du das Teammitglied " + this.selectedTeammember?.firstName + " " + this.selectedTeammember?.lastName + " aus dem Team " + this.selectedTeam?.teamName + " entfernen möchtest?"
-      button.setAttribute('data-bs-target', '#confirmModal')
-    }
-    else if(mode === 'addteammembertoteam') {
-      this.selectedTeam = team;
-      this.modalTitle = "Mitglied zum Team " + this.selectedTeam?.teamName + " hinzufügen";
-      button.setAttribute('data-bs-target', '#selectTeammemberModal')
+    switch (mode) {
+      case 'add':
+        button.setAttribute('data-bs-target', '#addTeamModal');
+        break;
+      case 'edit': 
+        this.selectedTeam = team;
+        button.setAttribute('data-bs-target', '#updateTeamModal');
+        break;
+      case 'deleteTeam':
+        this.action="delete";
+        this.selectedTeam=team;
+        this.modalTitle = "Team löschen";
+        this.modalMessage = "Bist du sicher, dass du das die Team " + this.selectedTeam?.teamName + " löschen möchtest?";
+        button.setAttribute('data-bs-target', '#confirmModal');
+        break;
+      case 'removeTeammemberFromTeam':
+        this.action="removeTeammemberFromTeam";
+        this.selectedTeam=team;
+        this.selectedTeammember=teammember;
+        this.modalTitle = "Teammitglied aus Team entfernen";
+        this.modalMessage = "Bist du sicher, dass du das Teammitglied " + this.selectedTeammember?.firstName + " " + this.selectedTeammember?.lastName + " aus dem Team " + this.selectedTeam?.teamName + " entfernen möchtest?";
+        button.setAttribute('data-bs-target', '#confirmModal');
+        break;
+      case 'addTeammemberToTeam':
+        this.selectedTeam = team;
+        this.modalTitle = "Mitglied zum Team " + this.selectedTeam?.teamName + " hinzufügen";
+        button.setAttribute('data-bs-target', '#selectTeammemberModal');
+        break;
     }
     container?.appendChild(button);
     button.click();

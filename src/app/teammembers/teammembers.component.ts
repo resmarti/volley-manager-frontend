@@ -104,38 +104,36 @@ export class TeammembersComponent implements OnInit {
     button.type = 'button'
     button.style.display = 'none';
     button.setAttribute('data-bs-toggle', 'modal');
-    if(mode === 'add') {
-      button.setAttribute('data-bs-target', '#addTeammemberModal')
-    }
-    else if(mode === 'edit') {
-      this.selectedTeammember = teammember;
-      button.setAttribute('data-bs-target', '#updateTeammemberModal')
-    }
-    else if(mode === 'delete') {
-      this.selectedTeammember = teammember;
-      button.setAttribute('data-bs-target', '#deleteTeammemberModal')
-    }
-    else if(mode === 'deleteTeammember') {
-      this.action="delete"
-      this.selectedTeammember=teammember;
-      this.confirmTitle = "Mitglied löschen";
-      this.confirmMessage = "Bist du sicher, dass du das die Mitglied " + this.selectedTeammember?.firstName + " " + this.selectedTeammember?.lastName + " löschen möchtest?"
-      button.setAttribute('data-bs-target', '#confirmModal')
-    }
-    else if(mode === 'removeContactPersonFromTeammember') {
-      this.action="removeTeammemberFromTeam";
-      this.selectedTeammember=teammember;
-      this.confirmTitle = "Kontaktperson entfernen";
-      this.confirmMessage = "Bist du sicher, dass du " + this.selectedTeammember?.contactPerson?.firstName + " " + this.selectedTeammember?.contactPerson?.lastName + " als Kontaktperson von " + this.selectedTeammember?.firstName + " " + this.selectedTeammember?.lastName + " entfernen möchtest?"
-      button.setAttribute('data-bs-target', '#confirmModal')
-    }
-    else if(mode === 'addContactPerson') {
-      this.selectedTeammember = teammember;
-      button.setAttribute('data-bs-target', '#addContactPersonToTeammemberModal')
-    }
-    else if(mode === 'editContactPerson') {
-      this.selectedContactPerson = teammember?.contactPerson;
-      button.setAttribute('data-bs-target', '#updateContactPersonModal')
+    switch(mode) {
+      case 'add': 
+        button.setAttribute('data-bs-target', '#addTeammemberModal');
+        break;
+      case 'edit':
+        this.selectedTeammember = teammember;
+        button.setAttribute('data-bs-target', '#updateTeammemberModal');
+        break;
+      case 'deleteTeammember':
+        this.action="delete";
+        this.selectedTeammember=teammember;
+        this.confirmTitle = "Mitglied löschen";
+        this.confirmMessage = "Bist du sicher, dass du das die Mitglied " + this.selectedTeammember?.firstName + " " + this.selectedTeammember?.lastName + " löschen möchtest?";
+        button.setAttribute('data-bs-target', '#confirmModal');
+        break;
+      case 'removeContactPersonFromTeammember':
+        this.action="removeTeammemberFromTeam";
+        this.selectedTeammember=teammember;
+        this.confirmTitle = "Kontaktperson entfernen";
+        this.confirmMessage = "Bist du sicher, dass du " + this.selectedTeammember?.contactPerson?.firstName + " " + this.selectedTeammember?.contactPerson?.lastName + " als Kontaktperson von " + this.selectedTeammember?.firstName + " " + this.selectedTeammember?.lastName + " entfernen möchtest?";
+        button.setAttribute('data-bs-target', '#confirmModal');
+        break;
+      case 'addContactPerson':
+        this.selectedTeammember = teammember;
+        button.setAttribute('data-bs-target', '#addContactPersonToTeammemberModal');
+        break;
+      case 'editContactPerson':
+        this.selectedContactPerson = teammember?.contactPerson;
+        button.setAttribute('data-bs-target', '#updateContactPersonModal');
+        break;
     }
     container?.appendChild(button);
     button.click();

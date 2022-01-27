@@ -119,47 +119,49 @@ export class EventsComponent implements OnInit {
     button.type = 'button'
     button.style.display = 'none';
     button.setAttribute('data-bs-toggle', 'modal');
-    if(mode === 'add') {
-      button.setAttribute('data-bs-target', '#addEventModal')
-    }
-    else if(mode === 'edit') {
-      this.selectedEvent = event;
-      button.setAttribute('data-bs-target', '#updateEventModal')
-    }
-    else if(mode === 'addTeamToEvent') {
-      this.selectedEvent = event;
-      button.setAttribute('data-bs-target', '#addTeamToEventModal')
-    }
-    else if(mode === 'addTeammemberToEvent') {
-      this.selectedEvent = event;
-      this.modalTitle = "Einzeles Mitglied zum Event " + this.selectedEvent?.eventName + " hinzufügen"
-      button.setAttribute('data-bs-target', '#selectTeammemberModal')
-    }
-    else if(mode === 'deleteEvent') {
-      this.action="delete"
-      this.selectedEvent=event;
-      this.modalTitle = "Event löschen";
-      this.modalMessage = "Bist du sicher, dass du das die Event " + this.selectedEvent?.eventName + " löschen möchtest?"
-      button.id = "toggleConfirmModal";
-      button.setAttribute('data-bs-target', '#confirmModal')
-    }
-    else if(mode === 'removeTeamFromEvent') {
-      this.action="removeTeamFromEvent";
-      this.selectedEvent=event;
-      this.selectedTeam=team;
-      this.modalTitle = "Team aus Event entfernen";
-      this.modalMessage = "Bist du sicher, dass du das Team " + this.selectedTeam?.teamName + " aus dem Event " + this.selectedEvent?.eventName + " entfernen möchtest?"
-      button.id = "toggleConfirmModal";
-      button.setAttribute('data-bs-target', '#confirmModal')
-    }
-    else if(mode === 'removeTeammemberFromEvent') {
-      this.action="removeTeammemberFromEvent";
-      this.selectedEvent=event;
-      this.selectedTeammember=teammember;
-      this.modalTitle = "Mitglied aus Event entfernen";
-      this.modalMessage = "Bist du sicher, dass du das Teammitglied " + this.selectedTeammember?.firstName + " " + this.selectedTeammember?.lastName + " aus dem Event " + this.selectedEvent?.eventName + " entfernen möchtest?"
-      button.id = "toggleConfirmModal";
-      button.setAttribute('data-bs-target', '#confirmModal')
+    switch(mode) {
+      case 'add': 
+        button.setAttribute('data-bs-target', '#addEventModal');
+        break;
+      case 'edit': 
+        this.selectedEvent = event;
+        button.setAttribute('data-bs-target', '#updateEventModal');
+        break;
+      case 'addTeamToEvent': 
+        this.selectedEvent = event;
+        button.setAttribute('data-bs-target', '#addTeamToEventModal');
+        break;
+      case 'addTeammemberToEvent': 
+        this.selectedEvent = event;
+        this.modalTitle = "Einzeles Mitglied zum Event " + this.selectedEvent?.eventName + " hinzufügen";
+        button.setAttribute('data-bs-target', '#selectTeammemberModal');
+        break;
+      case 'deleteEvent': 
+        this.action="delete";
+        this.selectedEvent=event;
+        this.modalTitle = "Event löschen";
+        this.modalMessage = "Bist du sicher, dass du das die Event " + this.selectedEvent?.eventName + " löschen möchtest?";
+        button.id = "toggleConfirmModal";
+        button.setAttribute('data-bs-target', '#confirmModal');
+        break;
+      case 'removeTeamFromEvent': 
+        this.action="removeTeamFromEvent";
+        this.selectedEvent=event;
+        this.selectedTeam=team;
+        this.modalTitle = "Team aus Event entfernen";
+        this.modalMessage = "Bist du sicher, dass du das Team " + this.selectedTeam?.teamName + " aus dem Event " + this.selectedEvent?.eventName + " entfernen möchtest?";
+        button.id = "toggleConfirmModal";
+        button.setAttribute('data-bs-target', '#confirmModal');
+        break;
+      case 'removeTeammemberFromEvent': 
+        this.action="removeTeammemberFromEvent";
+        this.selectedEvent=event;
+        this.selectedTeammember=teammember;
+        this.modalTitle = "Mitglied aus Event entfernen";
+        this.modalMessage = "Bist du sicher, dass du das Teammitglied " + this.selectedTeammember?.firstName + " " + this.selectedTeammember?.lastName + " aus dem Event " + this.selectedEvent?.eventName + " entfernen möchtest?";
+        button.id = "toggleConfirmModal";
+        button.setAttribute('data-bs-target', '#confirmModal');
+        break;
     }
     container?.appendChild(button);
     button.click();
