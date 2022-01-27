@@ -37,7 +37,7 @@
                     <li class="list-group-item">
                         <div class="float-end btn-group btn-group-sm">
                             <a (click)="onOpenModal('edit', event)" class="btn btn-primary tooltips" data-placement="top" data-original-title="Edit"><i class="bi bi-pencil"></i> </a>
-                            <a (click)="onOpenModal('delete', event)" class="btn btn-danger tooltips" data-placement="top" data-original-title="Delete"><i class="bi bi-x-lg"></i></a>
+                            <a (click)="onOpenModal('deleteEvent', event)" class="btn btn-danger tooltips" data-placement="top" data-original-title="Delete"><i class="bi bi-x-lg"></i></a>
                         </div>
                     </li>
                 </ul>
@@ -70,7 +70,7 @@
                                         <li class="list-group-item px-0 py-1" *ngFor="let team of event?.teamsEager">
                                             <span>{{team["teamName"]}}</span>
                                             <div class="float-end btn-group btn-group-sm">
-                                                <a (click)="onOpenModal('removeteamfromevent', event, undefined, team)" class="btn btn-danger tooltips" data-placement="top" data-original-title="Delete"><i class="bi bi-x-lg"></i></a>
+                                                <a (click)="onOpenModal('removeTeamFromEvent', event, undefined, team)" class="btn btn-danger tooltips" data-placement="top" data-original-title="Delete"><i class="bi bi-x-lg"></i></a>
                                             </div>
                                         </li>
                                     </ul>
@@ -109,7 +109,7 @@
                                         <li class="list-group-item px-0 py-1" *ngFor="let teammember of event?.teamMembersEager">
                                             <span>{{teammember["firstName"]}} {{teammember["lastName"]}}</span>
                                             <div class="float-end btn-group btn-group-sm">
-                                                <a (click)="onOpenModal('removeteammemberfromevent', event, teammember)" class="btn btn-danger tooltips" data-placement="top" data-original-title="Delete"><i class="bi bi-x-lg"></i></a>
+                                                <a (click)="onOpenModal('removeTeammemberFromEvent', event, teammember)" class="btn btn-danger tooltips" data-placement="top" data-original-title="Delete"><i class="bi bi-x-lg"></i></a>
                                             </div>
                                         </li>
                                     </ul>
@@ -126,29 +126,23 @@
     <app-add-event (getEvents)="getEvents()"></app-add-event>
 
     <!-- Edit Event Form -->
-    <app-edit-event (getEvents)="getEvents()" [editEvent]="editEvent"></app-edit-event>
+    <app-edit-event (getEvents)="getEvents()" [editEvent]="selectedEvent"></app-edit-event>
 
-    <!-- Delete Event Modal -->
-    <app-delete-event (getEvents)="getEvents()" [deleteEvent]="deleteEvent"></app-delete-event>
+    <!-- Confirm Modal for Delete and Remove -->
+    <app-confirm-modal (confirmed)="confirmedAction()" [confirmTitle]="confirmTitle" [confirmMessage]="confirmMessage"></app-confirm-modal>
 
     <!-- Add Team to Event Modal -->
-    <app-add-team-to-event (getEvents)="getEvents()" [addToEvent]="addToEvent"></app-add-team-to-event>
+    <app-add-team-to-event (getEvents)="getEvents() " [addToEvent]="selectedEvent "></app-add-team-to-event>
 
     <!-- Add Teammember to Event Modal -->
-    <app-add-teammember-to-event (getEvents)="getEvents()" [addToEvent]="addToEvent"></app-add-teammember-to-event>
-
-    <!-- Remove Team from Event Modal -->
-    <app-remove-team-from-event (getEvents)="getEvents()" [removeFromEvent]="removeFromEvent" [removeTeam]="removeTeam"></app-remove-team-from-event>
-
-    <!-- Remove Teammember from Event Modal -->
-    <!--<app-remove-teammember-from-event (getEvents)="getEvents()" [removeFromEvent]="removeFromEvent" [removeTeammember]="removeTeammember"></app-remove-teammember-from-event>-->
+    <app-add-teammember-to-event (getEvents)="getEvents() " [addToEvent]="selectedEvent "></app-add-teammember-to-event>
 
 </div>
 
 <!-- Notification for no teams -->
-<div *ngIf="events?.length == 0" class="col-lg-12 col-md-12 col-xl-12">
-    <div class="alert alert-info" role="alert">
-        <h4 class="alert-heading">Keine Events!</h4>
+<div *ngIf="events?.length==0 " class="col-lg-12 col-md-12 col-xl-12 ">
+    <div class="alert alert-info " role="alert ">
+        <h4 class="alert-heading ">Keine Events!</h4>
         <p>(Noch) keine Events gefunden.</p>
     </div>
 </div>

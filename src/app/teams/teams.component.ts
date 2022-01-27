@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Team } from '../interfaces/team';
 import { Teammember } from '../interfaces/teammember';
 import { TeamsService } from '../services/teams.service';
+import { TeammembersService } from '../services/teammembers.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SearchTearmService } from '../services/search-service.service';
 
@@ -13,19 +14,17 @@ import { SearchTearmService } from '../services/search-service.service';
 export class TeamsComponent implements OnInit {
   public teams: Team[];
   public fallbackTeams: Team[];
-  public editTeam: Team | undefined;
-  public deleteTeam: Team | undefined;
-  public addToTeam: Team | undefined;
-  public removeFromTeam: Team | undefined;
-  public removeTeammember: Teammember | undefined;
+  public selectedTeam: Team | undefined;
+  public selectedTeammember: Teammember | undefined;
   public alert: any | undefined;
   public alertType: any | undefined;
   public searchTerm: string;
   public searchLength: number;
-  public team: any | undefined;
-  public teammember: any | undefined;
+  public action: string | undefined;
+  public confirmTitle: string | undefined;
+  public confirmMessage: string | undefined;
 
-  constructor(private teamsService: TeamsService, private searchTermService: SearchTearmService) {
+  constructor(private teamsService: TeamsService, private teammembersService: TeammembersService, private searchTermService: SearchTearmService) {
     this.teams = [];
     this.fallbackTeams =[];
     this.searchTerm = "";
@@ -112,24 +111,71 @@ export class TeamsComponent implements OnInit {
       button.setAttribute('data-bs-target', '#addTeamModal')
     }
     else if(mode === 'edit') {
-      this.editTeam = team;
+      this.selectedTeam = team;
       button.setAttribute('data-bs-target', '#updateTeamModal')
     }
-    else if(mode === 'delete') {
-      this.deleteTeam = team;
-      button.setAttribute('data-bs-target', '#deleteTeamModal')
+    else if(mode === 'deleteTeam') {
+      this.action="delete"
+      this.selectedTeam=team;
+      this.confirmTitle = "Team löschen";
+      this.confirmMessage = "Bist du sicher, dass du das die Team " + this.selectedTeam?.teamName + " löschen möchtest?"
+      button.setAttribute('data-bs-target', '#confirmModal')
     }
-    else if(mode === 'removeteammemberfromteam') {
-      this.removeFromTeam = team;
-      this.removeTeammember = teammember;
-      button.setAttribute('data-bs-target', '#removeTeammemberFromTeamModal')
+    else if(mode === 'removeTeammemberFromTeam') {
+      this.action="removeTeammemberFromTeam";
+      this.selectedTeam=team;
+      this.selectedTeammember=teammember;
+      this.confirmTitle = "Teammitglied aus Team entfernen";
+      this.confirmMessage = "Bist du sicher, dass du das Teammitglied " + this.selectedTeammember?.firstName + " " + this.selectedTeammember?.lastName + " aus dem Team " + this.selectedTeam?.teamName + " entfernen möchtest?"
+      button.setAttribute('data-bs-target', '#confirmModal')
     }
     else if(mode === 'addteammembertoteam') {
-      this.addToTeam = team;
+      this.selectedTeam = team;
       button.setAttribute('data-bs-target', '#addTeammemberToTeamModal')
     }
     container?.appendChild(button);
     button.click();
+  }
+
+  //method to be called after confirmation in confirm modal
+  public confirmedAction(): void {
+    if(this.action=="delete") {
+      this.onDeleteTeam();
+    }
+    else if (this.action=="selectedTeammemberFromTeam") {
+      this.onRemoveTeammemberFromTeam();
+    }
+  }
+
+  //method to be called for deleting a team after confirmation
+  public onDeleteTeam(): void {
+    this.teamsService.deleteTeam(this.selectedTeam!.teamId).subscribe({
+      next: (response: void) => {
+        console.log(response);
+        this.getTeams();
+        /*if (this.closeDeleteModal) {
+          this.closeDeleteModal.nativeElement.click();
+        }*/
+      },
+      error: (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    });
+  }
+
+  //method to be called for removin a teammember from a team after confirmation
+  public onRemoveTeammemberFromTeam(): void {
+    this.teammembersService.removeTeammemberFromTeam(this.selectedTeam!.teamId, this.selectedTeammember!.id).subscribe({
+      next: () => {
+        this.getTeams();
+        /*if (this.closeDeleteModal) {
+          this.closeDeleteModal.nativeElement.click();
+        }*/
+      },
+      error: (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    });
   }
 
 }

@@ -99,7 +99,7 @@
                                             </div>
                                             <div class="float-end btn-group btn-group-sm">
                                                 <a (click)="onOpenModal('editContactPerson', teammember)" class="btn btn-primary tooltips" data-placement="top" data-original-title="Edit"><i class="bi bi-pencil"></i> </a>
-                                                <a (click)="onOpenModal('removeContactPerson', teammember)" class="btn btn-danger tooltips" data-placement="top" data-original-title="Delete contactPerson"><i class="bi bi-x-lg"></i> </a>
+                                                <a (click)="onOpenModal('removeContactPersonFromTeammember', teammember)" class="btn btn-danger tooltips" data-placement="top" data-original-title="Delete contactPerson"><i class="bi bi-x-lg"></i> </a>
                                             </div>
                                         </li>
                                     </ul>
@@ -111,7 +111,7 @@
                 <div class="card-body">
                     <div class="float-end btn-group btn-group-sm">
                         <a (click)="onOpenModal('edit', teammember)" class="btn btn-primary tooltips" data-placement="top" data-original-title="Edit"><i class="bi bi-pencil"></i> </a>
-                        <a (click)="onOpenModal('delete', teammember)" class="btn btn-danger tooltips" data-placement="top" data-original-title="Delete"><i class="bi bi-x-lg"></i></a>
+                        <a (click)="onOpenModal('deleteTeammember', teammember)" class="btn btn-danger tooltips" data-placement="top" data-original-title="Delete"><i class="bi bi-x-lg"></i></a>
                     </div>
                 </div>
             </div>
@@ -122,19 +122,16 @@
     <app-add-teammember (getTeammembers)="getTeammembers()"></app-add-teammember>
 
     <!-- Edit Teammember Form -->
-    <app-edit-teammember (getTeammembers)="getTeammembers()" [editTeammember]="editTeammember"></app-edit-teammember>
-
-    <!-- Delete Modal -->
-    <app-delete-teammember (getTeammembers)="getTeammembers()" [deleteTeammember]="deleteTeammember"></app-delete-teammember>
-
-    <!-- Remove ContactPerson Modal -->
-    <app-remove-contact-person (getTeammembers)="getTeammembers()" [removeContactPerson]="removeContactPerson"></app-remove-contact-person>
+    <app-edit-teammember (getTeammembers)="getTeammembers()" [editTeammember]="selectedTeammember"></app-edit-teammember>
 
     <!-- Add contactPerson Modal -->
-    <app-add-contact-person-to-teammember (getTeammembers)="getTeammembers()" [addToTeammember]="addToTeammember"></app-add-contact-person-to-teammember>
+    <app-add-contact-person-to-teammember (getTeammembers)="getTeammembers()" [addToTeammember]="selectedTeammember"></app-add-contact-person-to-teammember>
 
     <!-- Edit ContactPerson Form -->
-    <app-edit-contact-person (getTeammembers)="getTeammembers()" [editContactPerson]="editContactPerson"></app-edit-contact-person>
+    <app-edit-contact-person (getTeammembers)="getTeammembers()" [editContactPerson]="selectedContactPerson"></app-edit-contact-person>
+
+    <!-- Confirm Modal for Delete and Remove -->
+    <app-confirm-modal (confirmed)="confirmedAction()" [confirmTitle]="confirmTitle" [confirmMessage]="confirmMessage"></app-confirm-modal>
 
 </div>
 

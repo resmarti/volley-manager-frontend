@@ -14,16 +14,16 @@ import { SearchTearmService } from '../services/search-service.service';
 export class EventsComponent implements OnInit {
   public events: VolleyEvent[];
   public fallbackEvents: VolleyEvent[];
-  public editEvent: VolleyEvent | undefined;
-  public deleteEvent: VolleyEvent | undefined;
-  public addToEvent: VolleyEvent | undefined;
-  public removeFromEvent: VolleyEvent | undefined;
-  public removeTeammember: Teammember | undefined;
-  public removeTeam: Team | undefined;
+  public selectedEvent: VolleyEvent | undefined;
+  public selectedTeammember: Teammember | undefined;
+  public selectedTeam: Team | undefined;
   public alert: any | undefined;
   public alertType: any | undefined;
   public searchTerm: string;
   public searchLength: number;
+  public action: string | undefined;
+  public confirmTitle: string | undefined;
+  public confirmMessage: string | undefined;
 
   constructor(private eventsService: EventsService, private searchTermService: SearchTearmService) {
     this.events = [];
@@ -121,33 +121,104 @@ export class EventsComponent implements OnInit {
       button.setAttribute('data-bs-target', '#addEventModal')
     }
     else if(mode === 'edit') {
-      this.editEvent = event;
+      this.selectedEvent = event;
       button.setAttribute('data-bs-target', '#updateEventModal')
     }
-    else if(mode === 'delete') {
-      this.deleteEvent = event;
-      button.setAttribute('data-bs-target', '#deleteEventModal')
-    }
     else if(mode === 'addteamtoevent') {
-      this.addToEvent = event;
+      this.selectedEvent = event;
       button.setAttribute('data-bs-target', '#addTeamToEventModal')
     }
     else if(mode === 'addteammembertoevent') {
-      this.addToEvent = event;
+      this.selectedEvent = event;
       button.setAttribute('data-bs-target', '#addTeammemberToEventModal')
     }
-    else if(mode === 'removeteammemberfromevent') {
-      this.removeFromEvent = event;
-      this.removeTeammember = teammember;
-      button.setAttribute('data-bs-target', '#removeTeammemberFromEventModal')
+    else if(mode === 'deleteEvent') {
+      this.action="delete"
+      this.selectedEvent=event;
+      this.confirmTitle = "Event löschen";
+      this.confirmMessage = "Bist du sicher, dass du das die Event " + this.selectedEvent?.eventName + " löschen möchtest?"
+      button.setAttribute('data-bs-target', '#confirmModal')
     }
-    else if(mode === 'removeteamfromevent') {
-      this.removeFromEvent = event;
-      this.removeTeam = team;
-      button.setAttribute('data-bs-target', '#removeTeamFromEventModal')
+    else if(mode === 'removeTeamFromEvent') {
+      this.action="removeTeamFromEvent";
+      this.selectedEvent=event;
+      this.selectedTeam=team;
+      this.confirmTitle = "Team aus Event entfernen";
+      this.confirmMessage = "Bist du sicher, dass du das Team " + this.selectedTeam?.teamName + " aus dem Event " + this.selectedEvent?.eventName + " entfernen möchtest?"
+      button.setAttribute('data-bs-target', '#confirmModal')
+    }
+    else if(mode === 'removeTeammemberFromEvent') {
+      this.action="removeTeammemberFromEvent";
+      this.selectedEvent=event;
+      this.selectedTeammember=teammember;
+      this.confirmTitle = "Mitglied aus Event entfernen";
+      this.confirmMessage = "Bist du sicher, dass du das Teammitglied " + this.selectedTeammember?.firstName + " " + this.selectedTeammember?.lastName + " aus dem Event " + this.selectedEvent?.eventName + " entfernen möchtest?"
+      button.setAttribute('data-bs-target', '#confirmModal')
     }
     container?.appendChild(button);
     button.click();
+  }
+
+  //method to be called after confirmation in confirm modal
+  public confirmedAction(): void {
+    if(this.action=="delete") {
+      this.onDeleteEvent();
+    }
+    else if (this.action=="removeTeamFromEvent") {
+      this.onRemoveTeamFromEvent()
+    }
+    else if (this.action=="removeTeammemberFromEvent") {
+      this.onRemoveTeammemberFromEvent()
+    }
+  }
+
+  //method to be called for deleting an event after confirmation
+  public onDeleteEvent(): void {
+    this.eventsService.deleteEvent(this.selectedEvent!.eventId).subscribe({
+      next: () => {
+        this.getEvents();
+        /*if (this.closeDeleteModal) {
+          this.closeDeleteModal.nativeElement.click();
+        }*/
+      },
+      error: (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    });
+  }
+
+  //method to be called for removing a team from an event after confirmation
+  public onRemoveTeamFromEvent(): void {
+    this.eventsService.removeTeamFromEvent(this.selectedEvent!.eventId, this.selectedTeam!.teamId).subscribe({
+      next: () => {
+        this.getEvents();
+        /*if (this.closeDeleteModal) {
+          this.closeDeleteModal.nativeElement.click();
+        }*/
+      },
+      error: (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    });
+  }
+
+  //method to be called for removing a teammember from an event after confirmation
+  public onRemoveTeammemberFromEvent(): void {
+    this.eventsService.removeTeammemberFromEvent(this.selectedEvent!.eventId, this.selectedTeammember!.id).subscribe({
+      next: () => {
+        this.getEvents();
+        /*if (this.closeDeleteModal) {
+          this.closeDeleteModal.nativeElement.click();
+        }*/
+      },
+      error: (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    });
+  }
+
+  public alertTest(string: String): void {
+    alert(string);
   }
 
 }

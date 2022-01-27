@@ -4,6 +4,9 @@ import { TeammembersService } from '../services/teammembers.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SearchTearmService } from '../services/search-service.service';
 import { ContactPerson } from '../interfaces/contacperson';
+import { ContactPersonsService } from 'src/app/services/contact-persons.service';
+import { RefreshContactPersonsService } from 'src/app/services/refresh-contact-persons.service';
+
 
 @Component({
   selector: 'app-teammembers',
@@ -13,17 +16,18 @@ import { ContactPerson } from '../interfaces/contacperson';
 export class TeammembersComponent implements OnInit {
   public teammembers: Teammember[];
   public fallbackTeammembers: Teammember[];
-  public editTeammember: Teammember | undefined;
-  public deleteTeammember: Teammember | undefined;
-  public removeContactPerson: Teammember | undefined;
-  public addToTeammember: Teammember | undefined;
+  public selectedTeammember: Teammember | undefined;
+  public selectedContactPerson: ContactPerson | undefined;
   public alert: any | undefined;
   public alertType: any | undefined;
   public searchTerm: string;
   public searchLength: number;
-  public editContactPerson: ContactPerson | undefined;
+  public action: string | undefined;
+  public confirmTitle: string | undefined;
+  public confirmMessage: string | undefined;
+  public refreshContactPersons: boolean | undefined;
 
-  constructor(private teammembersService: TeammembersService, private searchTermService: SearchTearmService) {
+  constructor(private teammembersService: TeammembersService, private contactPersonsService: ContactPersonsService, private refreshContactPersonsService: RefreshContactPersonsService, private searchTermService: SearchTearmService) {
     this.teammembers = [];
     this.fallbackTeammembers =[];
     this.searchTerm = "";
@@ -37,6 +41,10 @@ export class TeammembersComponent implements OnInit {
     this.searchTermService.currentSearchTerm.subscribe(searchTerm=> {
       this.searchTerm=searchTerm;
       this.searchTeammember(this.searchTerm);
+    })
+    //subscribe to service for announcing a contact person refresh
+    this.refreshContactPersonsService.currentRefreshContactPersons.subscribe(refreshContactPersons=> {
+      this.refreshContactPersons=refreshContactPersons;
     })
   }
 
@@ -100,27 +108,47 @@ export class TeammembersComponent implements OnInit {
       button.setAttribute('data-bs-target', '#addTeammemberModal')
     }
     else if(mode === 'edit') {
-      this.editTeammember = teammember;
+      this.selectedTeammember = teammember;
       button.setAttribute('data-bs-target', '#updateTeammemberModal')
     }
     else if(mode === 'delete') {
-      this.deleteTeammember = teammember;
+      this.selectedTeammember = teammember;
       button.setAttribute('data-bs-target', '#deleteTeammemberModal')
     }
+    else if(mode === 'deleteTeammember') {
+      this.action="delete"
+      this.selectedTeammember=teammember;
+      this.confirmTitle = "Mitglied löschen";
+      this.confirmMessage = "Bist du sicher, dass du das die Mitglied " + this.selectedTeammember?.firstName + " " + this.selectedTeammember?.lastName + " löschen möchtest?"
+      button.setAttribute('data-bs-target', '#confirmModal')
+    }
+    else if(mode === 'removeContactPersonFromTeammember') {
+      this.action="removeTeammemberFromTeam";
+      this.selectedTeammember=teammember;
+      this.confirmTitle = "Kontaktperson entfernen";
+      this.confirmMessage = "Bist du sicher, dass du " + this.selectedTeammember?.contactPerson?.firstName + " " + this.selectedTeammember?.contactPerson?.lastName + " als Kontaktperson von " + this.selectedTeammember?.firstName + " " + this.selectedTeammember?.lastName + " entfernen möchtest?"
+      button.setAttribute('data-bs-target', '#confirmModal')
+    }
     else if(mode === 'addContactPerson') {
-      this.addToTeammember = teammember;
+      this.selectedTeammember = teammember;
       button.setAttribute('data-bs-target', '#addContactPersonToTeammemberModal')
     }
-    else if(mode === 'removeContactPerson') {
-      this.removeContactPerson = teammember;
-      button.setAttribute('data-bs-target', '#removeContactPersonModal')
-    }
     else if(mode === 'editContactPerson') {
-      this.editContactPerson = teammember?.contactPerson;
+      this.selectedContactPerson = teammember?.contactPerson;
       button.setAttribute('data-bs-target', '#updateContactPersonModal')
     }
     container?.appendChild(button);
     button.click();
+  }
+
+  //method to be called after confirmation in confirm modal
+  public confirmedAction(): void {
+    if(this.action=="delete") {
+      this.onDeleteTeammember();
+    }
+    else if (this.action=="removeTeammemberFromTeam") {
+      this.onRemoveContactPerson();
+    }
   }
 
   //method to filter missing mobile numbers (needed for masking)
@@ -134,6 +162,45 @@ export class TeammembersComponent implements OnInit {
   //method to filter only valid mobile nummbers (also neede for masking)
   public validPhonenumber(mobile: string | undefined): boolean {
     return RegExp("^[0-9]{11}").test(this.returnOnlyString(mobile))
+  }
+
+  //method to be called for deleting a teammember after confirmation
+  public onDeleteTeammember(): void {
+    this.teammembersService.deleteTeammember(this.selectedTeammember!.id).subscribe({
+      next: (response: void) => {
+        console.log(response);
+        this.getTeammembers();
+        /*if (this.closeDeleteModal) {
+          this.closeDeleteModal.nativeElement.click();
+        }*/
+      },
+      error: (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    });
+  }
+
+  //method to be called for removing a contact person from teammember after confirmation
+  public onRemoveContactPerson(): void {
+    this.contactPersonsService.removeContactPersonFromTeammember(this.selectedTeammember!.contactPerson!.id, this.selectedTeammember!.id).subscribe({
+      next: () => {
+        this.getTeammembers();
+        this.refreshContactPersons=true;
+        //ask for a refresh of existing contact persons
+        this.contactPersonsRefresh(this.refreshContactPersons);
+        /*if (this.closeRemoveModal) {
+          this.closeRemoveModal.nativeElement.click();
+        }*/
+      },
+      error: (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    });
+  }
+
+  //method to ask for a refresh of existing contact persons in sibling component
+  public contactPersonsRefresh(refreshContactPerson: boolean) {
+    this.refreshContactPersonsService.announceRefreshContactPersons(refreshContactPerson);
   }
 
 }

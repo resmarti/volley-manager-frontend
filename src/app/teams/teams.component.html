@@ -34,7 +34,7 @@
                         </div>
                         <div class="float-end btn-group btn-group-sm">
                             <a (click)="onOpenModal('edit', team)" class="btn btn-primary tooltips" data-placement="top" data-original-title="Edit"><i class="bi bi-pencil"></i> </a>
-                            <a (click)="onOpenModal('delete', team)" class="btn btn-danger tooltips" data-placement="top" data-original-title="Delete"><i class="bi bi-x-lg"></i></a>
+                            <a (click)="onOpenModal('deleteTeam', team)" class="btn btn-danger tooltips" data-placement="top" data-original-title="Delete"><i class="bi bi-x-lg"></i></a>
                         </div>
                     </li>
                 </ul>
@@ -49,7 +49,7 @@
                         <span>{{teammember["firstName"]}} {{teammember["lastName"]}}</span>
                         <div class="float-end btn-group btn-group-sm">
                             <!--<a (click)="onOpenModal('edit', team)" class="btn btn-primary tooltips" data-placement="top" data-original-title="Edit"><i class="bi bi-pencil"></i> </a>-->
-                            <a (click)="onOpenModal('removeteammemberfromteam', team, teammember)" class="btn btn-danger tooltips" data-placement="top" data-original-title="Delete"><i class="bi bi-x-lg"></i></a>
+                            <a (click)="onOpenModal('removeTeammemberFromTeam', team, teammember)" class="btn btn-danger tooltips" data-placement="top" data-original-title="Delete"><i class="bi bi-x-lg"></i></a>
                         </div>
                     </li>
                 </ul>
@@ -61,17 +61,13 @@
     <app-add-team (getTeams)="getTeams()"></app-add-team>
 
     <!-- Edit Team Form -->
-    <app-edit-team (getTeams)="getTeams()" [editTeam]="editTeam"></app-edit-team>
-
-    <!-- Delete Modal -->
-    <app-delete-team (getTeams)="getTeams()" [deleteTeam]="deleteTeam"></app-delete-team>
-
-    <!-- Remove Teammember Modal -->
-    <app-remove-teammember-from-team (getTeams)="getTeams()" [removeFromTeam]="removeFromTeam" [removeTeammember]="removeTeammember"></app-remove-teammember-from-team>
+    <app-edit-team (getTeams)="getTeams()" [editTeam]="selectedTeam"></app-edit-team>
 
     <!-- Add Team Form-->
-    <app-add-teammember-to-team (getTeams)="getTeams()" [addToTeam]="addToTeam"></app-add-teammember-to-team>
+    <app-add-teammember-to-team (getTeams)="getTeams()" [addToTeam]="selectedTeam"></app-add-teammember-to-team>
 
+    <!-- Confirm Modal for Delete and Remove -->
+    <app-confirm-modal (confirmed)="confirmedAction()" [confirmTitle]="confirmTitle" [confirmMessage]="confirmMessage"></app-confirm-modal>
 
 </div>
 

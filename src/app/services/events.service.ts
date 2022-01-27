@@ -42,6 +42,6 @@ export class EventsService {
   }
 
   public removeTeammemberFromEvent(eventId: number, teammemberId: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiServerUrl}/event/removeteammembertfromevent/${eventId}/${teammemberId}`);
+    return this.http.delete<void>(`${this.apiServerUrl}/event/removeteammemberfromevent/${eventId}/${teammemberId}`);
   }
 }
