@@ -15,11 +15,9 @@ import { TeammembersComponent } from './teammembers/teammembers.component';
 import { EventsComponent } from './events/events.component';
 
 import { AddTeamToEventComponent } from './forms/add-team-to-event/add-team-to-event.component';
-import { AddTeammemberToEventComponent } from './forms/add-teammember-to-event/add-teammember-to-event.component';
 import { EditEventComponent } from './forms/edit-event/edit-event.component';
 import { AddEventComponent } from './forms/add-event/add-event.component';
 
-import { AddTeammemberToTeamComponent } from './forms/add-teammember-to-team/add-teammember-to-team.component';
 import { AddTeamComponent } from './forms/add-team/add-team.component';
 import { EditTeamComponent } from './forms/edit-team/edit-team.component';
 
@@ -27,6 +25,7 @@ import { AddTeammemberComponent } from './forms/add-teammember/add-teammember.co
 import { EditTeammemberComponent } from './forms/edit-teammember/edit-teammember.component';
 import { AddContactPersonToTeammemberComponent } from './forms/add-contact-person-to-teammember/add-contact-person-to-teammember.component';
 import { EditContactPersonComponent } from './forms/edit-contact-person/edit-contact-person.component';
+import { SelectTeammemberComponent } from './forms/select-teammember/select-teammember.component';
 
 const routes: Routes = [
   {path: 'events', component: EventsComponent},
@@ -51,13 +50,12 @@ const maskConfig: Partial<IConfig> = {
     EditEventComponent,
     AddEventComponent,
     AddTeamToEventComponent,
-    AddTeammemberToEventComponent,
-    AddTeammemberToTeamComponent,
     AddTeamComponent,
     AddTeammemberComponent,
     EditTeamComponent,
     EditTeammemberComponent,
-    ConfirmModalComponent
+    ConfirmModalComponent,
+    SelectTeammemberComponent
   ],
   imports: [
     BrowserModule,

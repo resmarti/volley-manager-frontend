@@ -62,7 +62,7 @@
                                     <ul class="list-group list-group-flush">
                                         <li class="list-group-item px-0 py-0">
                                             <div class="float-end btn-group btn-group-sm">
-                                                <a (click)="onOpenModal('addteamtoevent', event)" class="btn btn-primary tooltips" data-placement="top" data-original-title="Add"><i class="bi bi-plus-lg"></i> </a>
+                                                <a (click)="onOpenModal('addTeamToEvent', event)" class="btn btn-primary tooltips" data-placement="top" data-original-title="Add"><i class="bi bi-plus-lg"></i> </a>
                                             </div>
                                         </li>
                                     </ul>
@@ -101,7 +101,7 @@
                                     <ul class="list-group list-group-flush">
                                         <li class="list-group-item px-0 py-0">
                                             <div class="float-end btn-group btn-group-sm">
-                                                <a (click)="onOpenModal('addteammembertoevent', event)" class="btn btn-primary tooltips" data-placement="top" data-original-title="Add"><i class="bi bi-plus-lg"></i> </a>
+                                                <a (click)="onOpenModal('addTeammemberToEvent', event)" class="btn btn-primary tooltips" data-placement="top" data-original-title="Add"><i class="bi bi-plus-lg"></i> </a>
                                             </div>
                                         </li>
                                     </ul>
@@ -129,13 +129,13 @@
     <app-edit-event (getEvents)="getEvents()" [editEvent]="selectedEvent"></app-edit-event>
 
     <!-- Confirm Modal for Delete and Remove -->
-    <app-confirm-modal (confirmed)="confirmedAction()" [confirmTitle]="confirmTitle" [confirmMessage]="confirmMessage"></app-confirm-modal>
+    <app-confirm-modal (confirmed)="confirmedAction()" [confirmTitle]="modalTitle" [confirmMessage]="modalMessage"></app-confirm-modal>
 
     <!-- Add Team to Event Modal -->
-    <app-add-team-to-event (getEvents)="getEvents() " [addToEvent]="selectedEvent "></app-add-team-to-event>
+    <app-add-team-to-event (getEvents)="getEvents()" [addToEvent]="selectedEvent "></app-add-team-to-event>
 
     <!-- Add Teammember to Event Modal -->
-    <app-add-teammember-to-event (getEvents)="getEvents() " [addToEvent]="selectedEvent "></app-add-teammember-to-event>
+    <app-select-teammember (selectedTeammember)="onAddTeammemberToEvent($event)" [modalTitle]="modalTitle" [alert]="modalAlert" [alertType]="modalAlertType"></app-select-teammember>
 
 </div>
 

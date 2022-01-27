@@ -1,8 +1,8 @@
-<div class="modal fade" id="addTeammemberToEventModal" tabindex="-1" role="dialog" aria-labelledby="addTeammemberToEventModalLabel" aria-hidden="true">
+<div class="modal fade" id="selectTeammemberModal" tabindex="-1" role="dialog" aria-labelledby="selectTeammemberModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addTeammemberToEventModalLabel">Einzeles Mitglied zum Event {{addToEvent?.eventName}} hinzufügen</h5>
+                <h5 class="modal-title" id="selectTeammemberModalLabel">{{modalTitle}}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -35,7 +35,7 @@
                             </div>
                             <div class="col-2 card-title align-self-center mb-0">
                                 <div class="float-end btn-group btn-group-sm">
-                                    <button (click)="onAddTeammemberToEvent(teammember!, addToEvent!)" class="btn btn-primary tooltips " data-placement="top " data-original-title="Add "><i class="bi bi-plus-lg "></i> </button>
+                                    <button (click)="this.selectedTeammember.emit(teammember)" class="btn btn-primary tooltips " data-placement="top " data-original-title="Add "><i class="bi bi-plus-lg "></i> </button>
                                 </div>
                             </div>
                         </div>

@@ -21,8 +21,10 @@ export class TeamsComponent implements OnInit {
   public searchTerm: string;
   public searchLength: number;
   public action: string | undefined;
-  public confirmTitle: string | undefined;
-  public confirmMessage: string | undefined;
+  public modalTitle: string | undefined;
+  public modalMessage: string | undefined;
+  public modalAlert: string | undefined;
+  public modalAlertType: string | undefined
 
   constructor(private teamsService: TeamsService, private teammembersService: TeammembersService, private searchTermService: SearchTearmService) {
     this.teams = [];
@@ -117,21 +119,22 @@ export class TeamsComponent implements OnInit {
     else if(mode === 'deleteTeam') {
       this.action="delete"
       this.selectedTeam=team;
-      this.confirmTitle = "Team löschen";
-      this.confirmMessage = "Bist du sicher, dass du das die Team " + this.selectedTeam?.teamName + " löschen möchtest?"
+      this.modalTitle = "Team löschen";
+      this.modalMessage = "Bist du sicher, dass du das die Team " + this.selectedTeam?.teamName + " löschen möchtest?"
       button.setAttribute('data-bs-target', '#confirmModal')
     }
     else if(mode === 'removeTeammemberFromTeam') {
       this.action="removeTeammemberFromTeam";
       this.selectedTeam=team;
       this.selectedTeammember=teammember;
-      this.confirmTitle = "Teammitglied aus Team entfernen";
-      this.confirmMessage = "Bist du sicher, dass du das Teammitglied " + this.selectedTeammember?.firstName + " " + this.selectedTeammember?.lastName + " aus dem Team " + this.selectedTeam?.teamName + " entfernen möchtest?"
+      this.modalTitle = "Teammitglied aus Team entfernen";
+      this.modalMessage = "Bist du sicher, dass du das Teammitglied " + this.selectedTeammember?.firstName + " " + this.selectedTeammember?.lastName + " aus dem Team " + this.selectedTeam?.teamName + " entfernen möchtest?"
       button.setAttribute('data-bs-target', '#confirmModal')
     }
     else if(mode === 'addteammembertoteam') {
       this.selectedTeam = team;
-      button.setAttribute('data-bs-target', '#addTeammemberToTeamModal')
+      this.modalTitle = "Mitglied zum Team " + this.selectedTeam?.teamName + " hinzufügen";
+      button.setAttribute('data-bs-target', '#selectTeammemberModal')
     }
     container?.appendChild(button);
     button.click();
@@ -170,5 +173,21 @@ export class TeamsComponent implements OnInit {
       }
     });
   }
+
+    //method to be called for adding a teammember to a team
+    public onAddTeammemberToTeam(teammember: Teammember): void {
+      this.teammembersService.addTeammemberToTeam(this.selectedTeam!.teamId, teammember.id).subscribe({
+        next: () => {
+          this.getTeams();
+          this.alert=teammember.firstName + " " + teammember.lastName + " wurde zum Team " + this.selectedTeam?.teamName + " hinzugefügt!";
+          this.alertType="success";
+        },
+        error: (error: HttpErrorResponse) => {
+          console.log(error);
+          this.alert=teammember.firstName + " " + teammember.lastName + " wurde NICHT zum Team " + this.selectedTeam?.teamName + " hinzugefügt! Vermutlich ist das Alter von " + teammember.firstName + " " + teammember.lastName + " zu hoch." ;
+          this.alertType="danger";
+        }
+      });
+    }
 
 }

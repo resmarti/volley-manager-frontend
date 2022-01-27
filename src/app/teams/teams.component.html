@@ -63,11 +63,11 @@
     <!-- Edit Team Form -->
     <app-edit-team (getTeams)="getTeams()" [editTeam]="selectedTeam"></app-edit-team>
 
-    <!-- Add Team Form-->
-    <app-add-teammember-to-team (getTeams)="getTeams()" [addToTeam]="selectedTeam"></app-add-teammember-to-team>
+    <!-- Add Teammember Form-->
+    <app-select-teammember (selectedTeammember)="onAddTeammemberToTeam($event)" [modalTitle]="modalTitle" [alert]="modalAlert" [alertType]="modalAlertType"></app-select-teammember>
 
     <!-- Confirm Modal for Delete and Remove -->
-    <app-confirm-modal (confirmed)="confirmedAction()" [confirmTitle]="confirmTitle" [confirmMessage]="confirmMessage"></app-confirm-modal>
+    <app-confirm-modal (confirmed)="confirmedAction()" [confirmTitle]="modalTitle" [confirmMessage]="modalMessage"></app-confirm-modal>
 
 </div>
 

@@ -22,8 +22,10 @@ export class EventsComponent implements OnInit {
   public searchTerm: string;
   public searchLength: number;
   public action: string | undefined;
-  public confirmTitle: string | undefined;
-  public confirmMessage: string | undefined;
+  public modalTitle: string | undefined;
+  public modalMessage: string | undefined;
+  public modalAlert: string | undefined;
+  public modalAlertType: string | undefined
 
   constructor(private eventsService: EventsService, private searchTermService: SearchTearmService) {
     this.events = [];
@@ -124,19 +126,20 @@ export class EventsComponent implements OnInit {
       this.selectedEvent = event;
       button.setAttribute('data-bs-target', '#updateEventModal')
     }
-    else if(mode === 'addteamtoevent') {
+    else if(mode === 'addTeamToEvent') {
       this.selectedEvent = event;
       button.setAttribute('data-bs-target', '#addTeamToEventModal')
     }
-    else if(mode === 'addteammembertoevent') {
+    else if(mode === 'addTeammemberToEvent') {
       this.selectedEvent = event;
-      button.setAttribute('data-bs-target', '#addTeammemberToEventModal')
+      this.modalTitle = "Einzeles Mitglied zum Event " + this.selectedEvent?.eventName + " hinzufügen"
+      button.setAttribute('data-bs-target', '#selectTeammemberModal')
     }
     else if(mode === 'deleteEvent') {
       this.action="delete"
       this.selectedEvent=event;
-      this.confirmTitle = "Event löschen";
-      this.confirmMessage = "Bist du sicher, dass du das die Event " + this.selectedEvent?.eventName + " löschen möchtest?"
+      this.modalTitle = "Event löschen";
+      this.modalMessage = "Bist du sicher, dass du das die Event " + this.selectedEvent?.eventName + " löschen möchtest?"
       button.id = "toggleConfirmModal";
       button.setAttribute('data-bs-target', '#confirmModal')
     }
@@ -144,8 +147,8 @@ export class EventsComponent implements OnInit {
       this.action="removeTeamFromEvent";
       this.selectedEvent=event;
       this.selectedTeam=team;
-      this.confirmTitle = "Team aus Event entfernen";
-      this.confirmMessage = "Bist du sicher, dass du das Team " + this.selectedTeam?.teamName + " aus dem Event " + this.selectedEvent?.eventName + " entfernen möchtest?"
+      this.modalTitle = "Team aus Event entfernen";
+      this.modalMessage = "Bist du sicher, dass du das Team " + this.selectedTeam?.teamName + " aus dem Event " + this.selectedEvent?.eventName + " entfernen möchtest?"
       button.id = "toggleConfirmModal";
       button.setAttribute('data-bs-target', '#confirmModal')
     }
@@ -153,8 +156,8 @@ export class EventsComponent implements OnInit {
       this.action="removeTeammemberFromEvent";
       this.selectedEvent=event;
       this.selectedTeammember=teammember;
-      this.confirmTitle = "Mitglied aus Event entfernen";
-      this.confirmMessage = "Bist du sicher, dass du das Teammitglied " + this.selectedTeammember?.firstName + " " + this.selectedTeammember?.lastName + " aus dem Event " + this.selectedEvent?.eventName + " entfernen möchtest?"
+      this.modalTitle = "Mitglied aus Event entfernen";
+      this.modalMessage = "Bist du sicher, dass du das Teammitglied " + this.selectedTeammember?.firstName + " " + this.selectedTeammember?.lastName + " aus dem Event " + this.selectedEvent?.eventName + " entfernen möchtest?"
       button.id = "toggleConfirmModal";
       button.setAttribute('data-bs-target', '#confirmModal')
     }
@@ -211,8 +214,20 @@ export class EventsComponent implements OnInit {
     });
   }
 
-  public alertTest(string: String): void {
-    alert(string);
+  //method to be called for adding a teammember to an event
+  public onAddTeammemberToEvent(teammember: Teammember): void {
+    this.eventsService.addTeammemberToEvent(this.selectedEvent!.eventId, teammember.id).subscribe({
+      next: () => {
+        this.getEvents();
+        this.modalAlert=teammember.firstName + " " + teammember.lastName + " wurde zum Event " + this.selectedEvent!.eventName + " hinzugefügt!";
+        this.modalAlertType="success";
+      },
+      error: (error: HttpErrorResponse) => {
+        console.log(error);
+        this.modalAlert=teammember.firstName + " " + teammember.lastName + " wurde NICHT zum Event " + this.selectedEvent!.eventName + " hinzugefügt!" ;
+        this.modalAlertType="danger";
+      }
+    });
   }
 
 }

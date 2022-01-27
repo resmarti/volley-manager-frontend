@@ -1,25 +1,26 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Team } from '../../interfaces/team';
+import { VolleyEvent } from '../../interfaces/event';
 import { Teammember } from '../../interfaces/teammember';
 import { TeammembersService } from '../../services/teammembers.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { EventsService } from 'src/app/services/events.service';
 
 @Component({
-  selector: 'app-add-teammember-to-team',
-  templateUrl: './add-teammember-to-team.component.html',
-  styleUrls: ['./add-teammember-to-team.component.css']
+  selector: 'app-select-teammember',
+  templateUrl: './select-teammember.component.html',
+  styleUrls: ['./select-teammember.component.css']
 })
-export class AddTeammemberToTeamComponent implements OnInit {
-  @Input() addToTeam: Team | undefined;
-  @Output("getTeams") getTeams: EventEmitter<any> = new EventEmitter();
+export class SelectTeammemberComponent implements OnInit {
+  @Input() modalTitle: any;
+  @Input() alert: any;
+  @Input() alertType: any;
+  @Output("selectedTeammember") selectedTeammember: EventEmitter<Teammember> = new EventEmitter()
 
   public teammembers: Teammember[];
   public fallbackTeammembers: Teammember[];
-  public alert: any | undefined;
-  public alertType: any | undefined;
   public searchLength: number;
 
-  constructor(private teammembersService: TeammembersService) { 
+  constructor(private teammembersService: TeammembersService, private eventsService: EventsService) { 
     this.teammembers = [];
     this.fallbackTeammembers =[];
     this.searchLength = 0;
@@ -44,25 +45,6 @@ export class AddTeammemberToTeamComponent implements OnInit {
     });
   }
 
-  //method to be called for adding a teammember to a team
-  public onAddTeammemberToTeam(teammember: Teammember, addToTeam: Team): void {
-    this.teammembersService.addTeammemberToTeam(addToTeam.teamId, teammember.id).subscribe({
-      next: () => {
-        this.getTeams.emit();
-        this.alert=teammember.firstName + " " + teammember.lastName + " wurde zum Team " + addToTeam.teamName + " hinzugefügt!";
-        this.alertType="success";
-        /*if (this.closeDeleteModal) {
-          this.closeDeleteModal.nativeElement.click();
-        }*/
-      },
-      error: (error: HttpErrorResponse) => {
-        console.log(error);
-        this.alert=teammember.firstName + " " + teammember.lastName + " wurde NICHT zum Team " + addToTeam.teamName + " hinzugefügt! Vermutlich ist das Alter von " + teammember.firstName + " " + teammember.lastName + " zu hoch." ;
-        this.alertType="danger";
-      }
-    });
-  }
-
   //method to search for existing teammembers within the add modal
   public searchTeammember(key: string): void {
     //reseting teammembers, if characters are removed
@@ -82,7 +64,7 @@ export class AddTeammemberToTeamComponent implements OnInit {
     if (results.length === 0 || !key) {
       this.getTeammembers();
     };
-    //show alert if nothing is found and there is a search term
+    //show alert if nothing is found and there is a search term  
     if (results.length ===0) {
       this.alert="Die Suche hat keine Übereinstimmung gefunden!"
       this.alertType="warning"
@@ -96,3 +78,4 @@ export class AddTeammemberToTeamComponent implements OnInit {
   }
 
 }
+
