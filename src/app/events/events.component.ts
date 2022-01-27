@@ -137,6 +137,7 @@ export class EventsComponent implements OnInit {
       this.selectedEvent=event;
       this.confirmTitle = "Event löschen";
       this.confirmMessage = "Bist du sicher, dass du das die Event " + this.selectedEvent?.eventName + " löschen möchtest?"
+      button.id = "toggleConfirmModal";
       button.setAttribute('data-bs-target', '#confirmModal')
     }
     else if(mode === 'removeTeamFromEvent') {
@@ -145,6 +146,7 @@ export class EventsComponent implements OnInit {
       this.selectedTeam=team;
       this.confirmTitle = "Team aus Event entfernen";
       this.confirmMessage = "Bist du sicher, dass du das Team " + this.selectedTeam?.teamName + " aus dem Event " + this.selectedEvent?.eventName + " entfernen möchtest?"
+      button.id = "toggleConfirmModal";
       button.setAttribute('data-bs-target', '#confirmModal')
     }
     else if(mode === 'removeTeammemberFromEvent') {
@@ -153,6 +155,7 @@ export class EventsComponent implements OnInit {
       this.selectedTeammember=teammember;
       this.confirmTitle = "Mitglied aus Event entfernen";
       this.confirmMessage = "Bist du sicher, dass du das Teammitglied " + this.selectedTeammember?.firstName + " " + this.selectedTeammember?.lastName + " aus dem Event " + this.selectedEvent?.eventName + " entfernen möchtest?"
+      button.id = "toggleConfirmModal";
       button.setAttribute('data-bs-target', '#confirmModal')
     }
     container?.appendChild(button);
@@ -177,9 +180,6 @@ export class EventsComponent implements OnInit {
     this.eventsService.deleteEvent(this.selectedEvent!.eventId).subscribe({
       next: () => {
         this.getEvents();
-        /*if (this.closeDeleteModal) {
-          this.closeDeleteModal.nativeElement.click();
-        }*/
       },
       error: (error: HttpErrorResponse) => {
         alert(error.message);
@@ -192,9 +192,6 @@ export class EventsComponent implements OnInit {
     this.eventsService.removeTeamFromEvent(this.selectedEvent!.eventId, this.selectedTeam!.teamId).subscribe({
       next: () => {
         this.getEvents();
-        /*if (this.closeDeleteModal) {
-          this.closeDeleteModal.nativeElement.click();
-        }*/
       },
       error: (error: HttpErrorResponse) => {
         alert(error.message);
@@ -207,9 +204,6 @@ export class EventsComponent implements OnInit {
     this.eventsService.removeTeammemberFromEvent(this.selectedEvent!.eventId, this.selectedTeammember!.id).subscribe({
       next: () => {
         this.getEvents();
-        /*if (this.closeDeleteModal) {
-          this.closeDeleteModal.nativeElement.click();
-        }*/
       },
       error: (error: HttpErrorResponse) => {
         alert(error.message);

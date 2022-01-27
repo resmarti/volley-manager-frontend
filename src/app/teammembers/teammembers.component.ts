@@ -167,12 +167,8 @@ export class TeammembersComponent implements OnInit {
   //method to be called for deleting a teammember after confirmation
   public onDeleteTeammember(): void {
     this.teammembersService.deleteTeammember(this.selectedTeammember!.id).subscribe({
-      next: (response: void) => {
-        console.log(response);
+      next: () => {
         this.getTeammembers();
-        /*if (this.closeDeleteModal) {
-          this.closeDeleteModal.nativeElement.click();
-        }*/
       },
       error: (error: HttpErrorResponse) => {
         alert(error.message);
@@ -185,12 +181,9 @@ export class TeammembersComponent implements OnInit {
     this.contactPersonsService.removeContactPersonFromTeammember(this.selectedTeammember!.contactPerson!.id, this.selectedTeammember!.id).subscribe({
       next: () => {
         this.getTeammembers();
-        this.refreshContactPersons=true;
         //ask for a refresh of existing contact persons
+        this.refreshContactPersons=true;
         this.contactPersonsRefresh(this.refreshContactPersons);
-        /*if (this.closeRemoveModal) {
-          this.closeRemoveModal.nativeElement.click();
-        }*/
       },
       error: (error: HttpErrorResponse) => {
         alert(error.message);

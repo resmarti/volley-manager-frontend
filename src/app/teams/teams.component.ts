@@ -150,12 +150,8 @@ export class TeamsComponent implements OnInit {
   //method to be called for deleting a team after confirmation
   public onDeleteTeam(): void {
     this.teamsService.deleteTeam(this.selectedTeam!.teamId).subscribe({
-      next: (response: void) => {
-        console.log(response);
+      next: () => {
         this.getTeams();
-        /*if (this.closeDeleteModal) {
-          this.closeDeleteModal.nativeElement.click();
-        }*/
       },
       error: (error: HttpErrorResponse) => {
         alert(error.message);
@@ -168,9 +164,6 @@ export class TeamsComponent implements OnInit {
     this.teammembersService.removeTeammemberFromTeam(this.selectedTeam!.teamId, this.selectedTeammember!.id).subscribe({
       next: () => {
         this.getTeams();
-        /*if (this.closeDeleteModal) {
-          this.closeDeleteModal.nativeElement.click();
-        }*/
       },
       error: (error: HttpErrorResponse) => {
         alert(error.message);
