@@ -19,10 +19,8 @@ export class AddTeammemberComponent implements OnInit {
 
   //method to be called for adding a teammember after form completion
   public onAddTeammember(addForm: NgForm): void {
-    console.log(addForm.value);
     this.teammembersService.addTeammember(addForm.value).subscribe({
       next: (response: Teammember) => {
-        console.log(response);
         this.getTeammembers.emit();
           addForm.reset();
       },

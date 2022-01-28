@@ -37,7 +37,6 @@ export class SelectTeammemberComponent implements OnInit {
       next: (response: Teammember[]) => {
         this.teammembers = response;
         this.fallbackTeammembers = this.teammembers;
-        console.log(this.teammembers);
       },
       error: (error: HttpErrorResponse) => {
         alert(error.message);

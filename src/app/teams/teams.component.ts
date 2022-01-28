@@ -70,7 +70,6 @@ export class TeamsComponent implements OnInit {
       let found: boolean = false;
       let teammembers : Array<Teammember> | undefined = team.teamMembersEager ;
       teammembers?.forEach(teammember => {
-        console.log(teammember.firstName);
         if ((teammember.firstName + " " + teammember.lastName).toLowerCase().indexOf(key.toLowerCase()) !== -1
         || teammember.street.toLowerCase().indexOf(key.toLowerCase()) !== -1
         || teammember.location.toLowerCase().indexOf(key.toLowerCase()) !== -1

@@ -37,7 +37,6 @@ export class AddTeamToEventComponent implements OnInit {
       next: (response: Team[]) => {
         this.teams = response;
         this.fallbackTeams = this.teams;
-        console.log(this.teams);
       },
       error: (error: HttpErrorResponse) => {
         alert(error.message);
