@@ -4,7 +4,7 @@
             <i class="bi bi-three-dots-vertical"></i> 
         </button>
         <div class="dropdown-menu">
-            <a (click)="onOpenModal('add')" class="dropdown-item tooltips" data-placement="top" data-original-title="ContectualMenu"><i class="bi bi-plus-lg"></i> Event hinzufügen</a>
+            <button (click)="onOpenModal('add')" class="dropdown-item tooltips" data-placement="top" data-original-title="ContectualMenu"><i class="bi bi-plus-lg"></i> Event hinzufügen</button>
         </div>
     </div>
     <app-alert class="ms-1" [alert]="alert" [fading]="false" [type]="alertType" *ngIf="alert" (close)="alert=null;"></app-alert>
@@ -36,8 +36,8 @@
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">
                         <div class="float-end btn-group btn-group-sm">
-                            <a (click)="onOpenModal('edit', event)" class="btn btn-primary tooltips" data-placement="top" data-original-title="Edit"><i class="bi bi-pencil"></i> </a>
-                            <a (click)="onOpenModal('deleteEvent', event)" class="btn btn-danger tooltips" data-placement="top" data-original-title="Delete"><i class="bi bi-x-lg"></i></a>
+                            <button (click)="onOpenModal('edit', event)" class="btn btn-primary tooltips" data-placement="top" data-original-title="Edit"><i class="bi bi-pencil"></i> </button>
+                            <button (click)="onOpenModal('deleteEvent', event)" class="btn btn-danger tooltips" data-placement="top" data-original-title="Delete"><i class="bi bi-x-lg"></i></button>
                         </div>
                     </li>
                 </ul>
@@ -46,7 +46,7 @@
                         <div class="card-body">
                             Keine zugeteilten Teams
                             <div class="float-end btn-group btn-group-sm">
-                                <a (click)="onOpenModal('addTeamToEvent', event)" class="btn btn-primary tooltips" data-placement="top" data-original-title="Add"><i class="bi bi-plus-lg"></i> </a>
+                                <button (click)="onOpenModal('addTeamToEvent', event)" class="btn btn-primary tooltips" data-placement="top" data-original-title="Add"><i class="bi bi-plus-lg"></i> </button>
                             </div>
                         </div>
                     </div>
@@ -62,7 +62,7 @@
                                     <ul class="list-group list-group-flush">
                                         <li class="list-group-item px-0 py-0">
                                             <div class="float-end btn-group btn-group-sm">
-                                                <a (click)="onOpenModal('addTeamToEvent', event)" class="btn btn-primary tooltips" data-placement="top" data-original-title="Add"><i class="bi bi-plus-lg"></i> </a>
+                                                <button (click)="onOpenModal('addTeamToEvent', event)" class="btn btn-primary tooltips" data-placement="top" data-original-title="Add"><i class="bi bi-plus-lg"></i> </button>
                                             </div>
                                         </li>
                                     </ul>
@@ -70,7 +70,7 @@
                                         <li class="list-group-item px-0 py-1" *ngFor="let team of event?.teamsEager">
                                             <span>{{team["teamName"]}}</span>
                                             <div class="float-end btn-group btn-group-sm">
-                                                <a (click)="onOpenModal('removeTeamFromEvent', event, undefined, team)" class="btn btn-danger tooltips" data-placement="top" data-original-title="Delete"><i class="bi bi-x-lg"></i></a>
+                                                <button (click)="onOpenModal('removeTeamFromEvent', event, undefined, team)" class="btn btn-danger tooltips" data-placement="top" data-original-title="Delete"><i class="bi bi-x-lg"></i></button>
                                             </div>
                                         </li>
                                     </ul>
@@ -85,7 +85,7 @@
                         <div class="card-body">
                             Keine einzeln zugeteilte Teammitglieder
                             <div class="float-end btn-group btn-group-sm">
-                                <a (click)="onOpenModal('addTeammemberToEvent', event)" class="btn btn-primary tooltips" data-placement="top" data-original-title="Add"><i class="bi bi-plus-lg"></i> </a>
+                                <button (click)="onOpenModal('addTeammemberToEvent', event)" class="btn btn-primary tooltips" data-placement="top" data-original-title="Add"><i class="bi bi-plus-lg"></i> </button>
                             </div>
                         </div>
                     </div>
@@ -101,7 +101,7 @@
                                     <ul class="list-group list-group-flush">
                                         <li class="list-group-item px-0 py-0">
                                             <div class="float-end btn-group btn-group-sm">
-                                                <a (click)="onOpenModal('addTeammemberToEvent', event)" class="btn btn-primary tooltips" data-placement="top" data-original-title="Add"><i class="bi bi-plus-lg"></i> </a>
+                                                <button (click)="onOpenModal('addTeammemberToEvent', event)" class="btn btn-primary tooltips" data-placement="top" data-original-title="Add"><i class="bi bi-plus-lg"></i> </button>
                                             </div>
                                         </li>
                                     </ul>
@@ -109,7 +109,7 @@
                                         <li class="list-group-item px-0 py-1" *ngFor="let teammember of event?.teamMembersEager">
                                             <span>{{teammember["firstName"]}} {{teammember["lastName"]}}</span>
                                             <div class="float-end btn-group btn-group-sm">
-                                                <a (click)="onOpenModal('removeTeammemberFromEvent', event, teammember)" class="btn btn-danger tooltips" data-placement="top" data-original-title="Delete"><i class="bi bi-x-lg"></i></a>
+                                                <button (click)="onOpenModal('removeTeammemberFromEvent', event, teammember)" class="btn btn-danger tooltips" data-placement="top" data-original-title="Delete"><i class="bi bi-x-lg"></i></button>
                                             </div>
                                         </li>
                                     </ul>

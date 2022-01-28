@@ -4,7 +4,7 @@
             <i class="bi bi-three-dots-vertical"></i> 
         </button>
         <div class="dropdown-menu">
-            <a (click)="onOpenModal('add')" class="dropdown-item tooltips" data-placement="top" data-original-title="ContectualMenu"><i class="bi bi-plus-lg"></i> Teammember hinzufügen</a>
+            <button (click)="onOpenModal('add')" class="dropdown-item tooltips" data-placement="top" data-original-title="ContectualMenu"><i class="bi bi-plus-lg"></i> Teammember hinzufügen</button>
         </div>
     </div>
     <app-alert class="ms-1" [alert]="alert" [fading]="false" [type]="alertType" *ngIf="alert" (close)="alert=null;"></app-alert>
@@ -100,8 +100,8 @@
                                                 <div class="p-1">{{teammember?.contactPerson?.street}} {{teammember?.contactPerson?.streetNb}}<br/>{{teammember?.contactPerson?.postalCode}} {{teammember?.contactPerson?.location}}</div>
                                             </div>
                                             <div class="float-end btn-group btn-group-sm">
-                                                <a (click)="onOpenModal('editContactPerson', teammember)" class="btn btn-primary tooltips" data-placement="top" data-original-title="Edit"><i class="bi bi-pencil"></i> </a>
-                                                <a (click)="onOpenModal('removeContactPersonFromTeammember', teammember)" class="btn btn-danger tooltips" data-placement="top" data-original-title="Delete contactPerson"><i class="bi bi-x-lg"></i> </a>
+                                                <button (click)="onOpenModal('editContactPerson', teammember)" class="btn btn-primary tooltips" data-placement="top" data-original-title="Edit"><i class="bi bi-pencil"></i> </button>
+                                                <button (click)="onOpenModal('removeContactPersonFromTeammember', teammember)" class="btn btn-danger tooltips" data-placement="top" data-original-title="Delete contactPerson"><i class="bi bi-x-lg"></i> </button>
                                             </div>
                                         </li>
                                     </ul>
@@ -112,8 +112,8 @@
                 </div>
                 <div class="card-body">
                     <div class="float-end btn-group btn-group-sm">
-                        <a (click)="onOpenModal('edit', teammember)" class="btn btn-primary tooltips" data-placement="top" data-original-title="Edit"><i class="bi bi-pencil"></i> </a>
-                        <a (click)="onOpenModal('deleteTeammember', teammember)" class="btn btn-danger tooltips" data-placement="top" data-original-title="Delete"><i class="bi bi-x-lg"></i></a>
+                        <button (click)="onOpenModal('edit', teammember)" class="btn btn-primary tooltips" data-placement="top" data-original-title="Edit"><i class="bi bi-pencil"></i> </button>
+                        <button (click)="onOpenModal('deleteTeammember', teammember)" class="btn btn-danger tooltips" data-placement="top" data-original-title="Delete"><i class="bi bi-x-lg"></i></button>
                     </div>
                 </div>
             </div>
