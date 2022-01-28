@@ -87,6 +87,7 @@ export class EventsComponent implements OnInit {
           found = true;
         }
       })
+      //Search in the actual Event
       if (event.eventName.toLowerCase().indexOf(key.toLowerCase()) !== -1
       || event.eventLocation.toLowerCase().indexOf(key.toLowerCase()) !== -1
       || event.eventDate.toLowerCase().indexOf(key.toLowerCase()) !== -1
